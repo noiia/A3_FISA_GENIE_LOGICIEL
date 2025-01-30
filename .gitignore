@@ -1,1 +1,8 @@
+.idea
 .vs
+
+bin/Debug
+bin/Release
+
+dll/code/Logger/bin/Debug
+dll/code/Logger/bin/Release
