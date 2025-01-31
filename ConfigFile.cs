@@ -4,17 +4,17 @@ namespace EasySave
 {
     public class ConfigFile
     {
-        private SaveJob[] saveJobs;
+        private SaveJob[] _SaveJobs;
 
         public ConfigFile(SaveJob[] saveJobs)
         {
-            this.saveJobs = saveJobs;
+            _SaveJobs = saveJobs;
         }
 
         public SaveJob[] SaveJobs
         {
-            get => SaveJobs;
-            set => SaveJobs = value ?? throw new ArgumentNullException(nameof(value));
+            get => _SaveJobs;
+            set => _SaveJobs = value;
         }
     }
 }

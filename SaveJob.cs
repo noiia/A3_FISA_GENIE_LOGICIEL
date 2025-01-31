@@ -4,58 +4,34 @@ namespace EasySave
 {
     public class SaveJob
     {
-        private string source;
-        private string destination;
-        private int id;
-        private string name;
-        private DateTime lastSave;
-        private DateTime created;
+        private string _Source;
+        private string _Destination;
+        private int _Id;
+        private string _Name;
+        private DateTime _LastSave;
+        private DateTime _Created;
 
-        public SaveJob(int id, string name, string source, string destination, DateTime lastSave, DateTime created)
+        public SaveJob( int id, string name, string source, string destination, DateTime lastSave, DateTime created)
         {
-            this.source = source;
-            this.destination = destination;
-            this.id = id;
-            this.name = name;
-            this.lastSave = lastSave;
-            this.created = created;
+            _Source = source;
+            _Destination = destination;
+            _Id = id;
+            _Name = name;
+            _LastSave = lastSave;
+            _Created = created;
         }
 
-        public string Source
-        {
-            get => source;
-            set => source = value ?? throw new ArgumentNullException(nameof(value));
-        }
+        public string Source => _Source;
 
-        public string Destination
-        {
-            get => destination;
-            set => destination = value ?? throw new ArgumentNullException(nameof(value));
-        }
+        public string Destination => _Destination;
 
-        public int Id
-        {
-            get => id;
-            set => id = value;
-        }
+        public int Id => _Id;
 
-        public string Name
-        {
-            get => name;
-            set => name = value ?? throw new ArgumentNullException(nameof(value));
-        }
+        public string Name => _Name;
 
-        public DateTime LastSave
-        {
-            get => lastSave;
-            set => lastSave = value;
-        }
+        public DateTime LastSave => _LastSave;
 
-        public DateTime Created
-        {
-            get => created;
-            set => created = value;
-        }
+        public DateTime Created => _Created;
     }
 
 }
