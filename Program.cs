@@ -16,10 +16,10 @@ namespace EasySave
         [STAThread]
         static void Main()
         {
-            string CONFIGPATH = ( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EsaySave\\" + "config.json");
-            Configuration configuration = new Configuration(CONFIGPATH);
-            configuration.loadConfiguration();
-            configuration.addSaveJob(3, "test", "test", "test", DateTime.Now, DateTime.Now);
+            // string CONFIGPATH = ( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EsaySave\\" + "config.json");
+            // Configuration configuration = new Configuration(CONFIGPATH);
+            // configuration.loadConfiguration();
+            // configuration.addSaveJob(3, "test", "test", "test", DateTime.Now, DateTime.Now);
             //LoggerUtility.WriteLog(LoggerUtility.INFO, "EasySave Application Start.");
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
