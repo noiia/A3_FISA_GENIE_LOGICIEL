@@ -1,0 +1,17 @@
+﻿services:
+  server:
+    build:
+      context: .
+#      target: development
+#    ports:
+#      - 8080:80
+#    depends_on:
+#      db:
+#        condition: service_healthy
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+#    environment:
+#      - ASPNETCORE_ENVIRONMENT=Development
+#      - ASPNETCORE_URLS=http://+:80'

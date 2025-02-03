@@ -1,7 +1,10 @@
+﻿.git
+.github
+.gitignore
 .idea
 .vs
-
 bin
 dll/code/Logger/bin/Debug
 dll/code/Logger/bin/Release
+LICENSE
 obj
