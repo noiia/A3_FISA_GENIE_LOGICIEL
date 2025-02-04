@@ -6,6 +6,7 @@
 <!-- added elements to pass compilation errors about duplication in generated /obj and /bin content -->
 <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+<EnableWindowsTargeting>true</EnableWindowsTargeting>
 ```
 ## Build and execute
 Build Dockerfile : `docker build --rm -t easysave-app .`<br>

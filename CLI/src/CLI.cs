@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace EasySave
+namespace CLI
 {
     public class CLI
     {

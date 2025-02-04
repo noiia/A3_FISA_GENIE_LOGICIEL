@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
+﻿
+using Config;
 
-namespace EasySave
+namespace CLI
 {
     public class CommandeAddSaveJob : Commande
     {

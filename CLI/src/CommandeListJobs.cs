@@ -1,6 +1,7 @@
 ﻿using System;
+using Config;
 
-namespace EasySave
+namespace CLI
 {
     public class CommandeListJobs : Commande
     {
@@ -22,6 +23,5 @@ namespace EasySave
                 Console.WriteLine(ConsoleColors.Reset);
             }
         }
-
     }
 }
