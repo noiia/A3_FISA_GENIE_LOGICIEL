@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLI", "CLI\CLI.csproj", "{8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{0083F9E1-4612-499F-BB12-41F09A3F5347}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySaveCLI", "EasySaveCLI\EasySaveCLI.csproj", "{5392C6E3-942E-4FE9-9D72-1ED059F5A5F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{0083F9E1-4612-499F-BB12-41F09A3F5347}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0083F9E1-4612-499F-BB12-41F09A3F5347}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0083F9E1-4612-499F-BB12-41F09A3F5347}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5392C6E3-942E-4FE9-9D72-1ED059F5A5F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5392C6E3-942E-4FE9-9D72-1ED059F5A5F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5392C6E3-942E-4FE9-9D72-1ED059F5A5F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5392C6E3-942E-4FE9-9D72-1ED059F5A5F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

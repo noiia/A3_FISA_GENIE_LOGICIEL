@@ -105,12 +105,11 @@ namespace Config
         {
             for (int i = 0; i < 100; i++)
             {
-                if (this.GetSaveJob(i) != null)
+                if (this.GetSaveJob(i) == null)
                 {
                     return i;
                 }
             }
-
             throw new Exception("There is no SaveJob");
         }
     }
