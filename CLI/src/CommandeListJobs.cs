@@ -10,6 +10,7 @@ namespace CLI
         public override void Action(string[] args)
         {
             SaveJob[] saveJobs = ServiceListSaveJob.Run(args);
+            
             foreach (var saveJob in saveJobs)
             {
                 Console.WriteLine(ConsoleColors.Bold + ConsoleColors.Yellow + "\tName : " + saveJob.Name + ConsoleColors.Reset);

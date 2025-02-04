@@ -12,14 +12,9 @@ public class ServiceAddSaveJob
     
     public static int Run(string[] args)
     {
-        foreach (var arg in args)
-        {
-            Console.WriteLine(arg);
-        }
-
         if (args.Length == 3)
         {
-            Configuration configuration = new Configuration( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EsaySave\\" + "config.json");
+            Configuration configuration = new Configuration( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
             configuration.LoadConfiguration();
             SaveJob saveJob = configuration.GetSaveJob(args[0]);
             if (saveJob != null)

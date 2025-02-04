@@ -29,6 +29,5 @@ public partial class MainWindow : Window
         //Application.SetCompatibleTextRenderingDefault(false);
         //Application.Run(new Form1());
         // Console.WriteLine("Hello World!");
-        CLI cli = new CLI();
     }
 }
