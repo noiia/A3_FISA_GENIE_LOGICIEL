@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CLI;
 
 namespace EasySave;
 
@@ -18,6 +19,16 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
-        InitializeComponent();
+        // InitializeComponent();
+        // string CONFIGPATH = ( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
+        // Configuration configuration = new Configuration(CONFIGPATH);
+        // configuration.LoadConfiguration();
+        // configuration.AddSaveJob(3, "test", "test", "test", DateTime.Now, DateTime.Now);
+        //LoggerUtility.WriteLog(LoggerUtility.INFO, "EasySave Application Start.");
+        //Application.EnableVisualStyles();
+        //Application.SetCompatibleTextRenderingDefault(false);
+        //Application.Run(new Form1());
+        // Console.WriteLine("Hello World!");
+        CLI cli = new CLI();
     }
 }

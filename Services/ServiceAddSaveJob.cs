@@ -1,4 +1,4 @@
-﻿using EasySave;
+﻿using Config;
 
 namespace Services;
 
