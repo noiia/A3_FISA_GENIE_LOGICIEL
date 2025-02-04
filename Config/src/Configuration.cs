@@ -1,59 +1,58 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using Newtonsoft.Json;
+using System.Text.Json;
 
-namespace EasySave
+namespace Config
 {
     public class Configuration
     {
-        private string _ConfigPath;
-        private ConfigFile _ConfigFile;
+        private string _configPath;
+        private ConfigFile _configFile;
 
         public Configuration(string configPath)
         {
-            this._ConfigPath = configPath;
-            Console.WriteLine(ConsoleColors.BgCyan + ConsoleColors.Black + $"Config path: {this._ConfigPath}" + ConsoleColors.Reset);
+            this._configPath = configPath;
         }
 
         public void LoadConfiguration()
         {
-            if (!File.Exists(this._ConfigPath))
+            if (!File.Exists(this._configPath))
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(this._ConfigPath));
-                File.WriteAllText(this._ConfigPath, "{\"SaveJobs\":[]}\n");
+                Directory.CreateDirectory(Path.GetDirectoryName(this._configPath));
+                File.WriteAllText(this._configPath, "{\"SaveJobs\":[]}\n");
             }
 
-            string fileContent = File.ReadAllText(this._ConfigPath);
-            this._ConfigFile = JsonConvert.DeserializeObject<ConfigFile>(fileContent);
+            string fileContent = File.ReadAllText(this._configPath);
+            this._configFile = JsonSerializer.Deserialize<ConfigFile>(fileContent);
         }
 
         public void SaveConfiguration()
         {
-            string json = JsonConvert.SerializeObject(this._ConfigFile, Formatting.Indented);
-            File.WriteAllText(this._ConfigPath, json);
+            string json = JsonSerializer.Serialize(this._configFile);
+            File.WriteAllText(this._configPath, json);
         }
 
         public SaveJob? GetSaveJob(int id)
         {
-            return _ConfigFile.SaveJobs.FirstOrDefault(job => job.Id == id);
+            return _configFile.SaveJobs.FirstOrDefault(job => job.Id == id);
         }
 
         public SaveJob? GetSaveJob(string name)
         {
-            return _ConfigFile.SaveJobs.FirstOrDefault(job => job.Name == name);
+            return _configFile.SaveJobs.FirstOrDefault(job => job.Name == name);
         }
 
         public SaveJob[] GetSaveJobs()
         {
-            return _ConfigFile.SaveJobs;
+            return _configFile.SaveJobs;
         }
 
         public void AddSaveJob(SaveJob saveJob)
         {
             if (this.GetSaveJob(saveJob.Id) == null && this.GetSaveJob(saveJob.Name) == null){
-                _ConfigFile.SaveJobs = _ConfigFile.SaveJobs.Append(saveJob).ToArray();
+                _configFile.SaveJobs = _configFile.SaveJobs.Append(saveJob).ToArray();
                 this.SaveConfiguration();
             }
             else
@@ -84,7 +83,7 @@ namespace EasySave
         {
             if (this.GetSaveJob(id) != null)
             {
-                _ConfigFile.SaveJobs = _ConfigFile.SaveJobs.Where(job => job.Id != id).ToArray();
+                _configFile.SaveJobs = _configFile.SaveJobs.Where(job => job.Id != id).ToArray();
                 this.SaveConfiguration();
             }
             else
@@ -97,7 +96,7 @@ namespace EasySave
         {
             if (this.GetSaveJob(name) != null)
             {
-                _ConfigFile.SaveJobs = _ConfigFile.SaveJobs.Where(job => job.Name != name).ToArray();
+                _configFile.SaveJobs = _configFile.SaveJobs.Where(job => job.Name != name).ToArray();
                 this.SaveConfiguration();   
             }
             else

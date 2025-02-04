@@ -1,4 +1,4 @@
-﻿namespace EasySave
+﻿namespace CLI
 {
     public static class ConsoleColors
     {

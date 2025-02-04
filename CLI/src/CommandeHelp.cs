@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasySave
+namespace CLI
 {
     public class CommandeHelp : Commande
     {

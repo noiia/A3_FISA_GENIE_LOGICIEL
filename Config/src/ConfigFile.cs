@@ -1,20 +1,20 @@
 ﻿using System;
 
-namespace EasySave
+namespace Config
 {
     public class ConfigFile
     {
-        private SaveJob[] _SaveJobs;
+        private SaveJob[] _saveJobs;
 
         public ConfigFile(SaveJob[] saveJobs)
         {
-            _SaveJobs = saveJobs;
+            _saveJobs = saveJobs;
         }
 
         public SaveJob[] SaveJobs
         {
-            get => _SaveJobs;
-            set => _SaveJobs = value;
+            get => _saveJobs;
+            set => _saveJobs = value;
         }
     }
 }

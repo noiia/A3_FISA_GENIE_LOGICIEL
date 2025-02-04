@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasySave
+namespace Config
 {
     public class SaveJob
     {
