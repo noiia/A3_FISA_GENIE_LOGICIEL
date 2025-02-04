@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using Newtonsoft.Json;
 
 namespace EasySave
@@ -34,12 +35,12 @@ namespace EasySave
             File.WriteAllText(this._ConfigPath, json);
         }
 
-        public SaveJob GetSaveJob(int id)
+        public SaveJob? GetSaveJob(int id)
         {
             return _ConfigFile.SaveJobs.FirstOrDefault(job => job.Id == id);
         }
 
-        public SaveJob GetSaveJob(string name)
+        public SaveJob? GetSaveJob(string name)
         {
             return _ConfigFile.SaveJobs.FirstOrDefault(job => job.Name == name);
         }
@@ -102,6 +103,17 @@ namespace EasySave
             else
             {
                 throw new Exception("There is no SaveJob with this name");
+            }
+        }
+
+        public int FindFirstFreeId()
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                if (this.GetSaveJob(i) != null)
+                {
+                    return i;
+                }
             }
         }
     }
