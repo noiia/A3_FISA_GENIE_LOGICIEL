@@ -2,7 +2,7 @@
 
 namespace Services;
 
-public class ServiceDeleteSaveJob
+public class ServiceExecSaveJob
 {
     public const int OK = 1;
     public const int BAD_ARGS = 2;
@@ -12,9 +12,7 @@ public class ServiceDeleteSaveJob
     {
         if (args.Length == 1)
         {
-            Configuration configuration =
-                new Configuration(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                                  "\\EasySave\\" + "config.json");
+            Configuration configuration = new Configuration(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
             configuration.LoadConfiguration();
             int id = int.Parse(args[0]);
             SaveJob saveJob = configuration.GetSaveJob(id);
@@ -22,7 +20,8 @@ public class ServiceDeleteSaveJob
             {
                 return JOB_DOES_NOT_EXIST;
             }
-            configuration.DeleteSaveJob(id);
+            DirCopy dirCopy = new DirCopy();
+            dirCopy.CopyDir(saveJob.Source, saveJob.Destination);
             return OK;
         }
         else
