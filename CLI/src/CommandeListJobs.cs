@@ -1,5 +1,6 @@
-﻿using System;
-using Config;
+using System;
+using Services;
+
 
 namespace CLI
 {
@@ -9,9 +10,7 @@ namespace CLI
 
         public override void Action(string[] args)
         {
-            Configuration configuration = new Configuration( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EsaySave\\" + "config.json");
-            configuration.LoadConfiguration();
-            SaveJob[] saveJobs = configuration.GetSaveJobs();
+            SaveJob[] saveJobs = ServiceListSaveJob.Run(args);
             foreach (var saveJob in saveJobs)
             {
                 Console.WriteLine(ConsoleColors.Bold + ConsoleColors.Yellow + "\tName : " + saveJob.Name + ConsoleColors.Reset);

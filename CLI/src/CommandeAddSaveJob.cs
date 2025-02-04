@@ -1,5 +1,7 @@
-﻿
-using Config;
+using System;
+using System.IO;
+using Services;
+
 
 namespace CLI
 {
@@ -9,35 +11,25 @@ namespace CLI
 
         public override void Action(string[] args)
         {
-            foreach (var arg in args)
+            int r = ServiceAddSaveJob.Run(args);
+            switch (r)
             {
-                Console.WriteLine(arg);
-            }
-
-            if (args.Length == 3)
-            {
-                Configuration configuration = new Configuration( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EsaySave\\" + "config.json");
-                configuration.LoadConfiguration();
-                SaveJob saveJob = configuration.GetSaveJob(args[0]);
-                if (saveJob != null)
-                {
+                case ServiceAddSaveJob.OK:
+                    Console.WriteLine(ConsoleColors.Green + "\t Save Job has benn created" + ConsoleColors.Reset);
+                    return;
+                case ServiceAddSaveJob.BAD_ARGS:
+                    Console.WriteLine(ConsoleColors.Red + "\t Bad arguments, require Add-Savejob <name> <source> <destination>" + ConsoleColors.Reset);
+                    return;
+                case ServiceAddSaveJob.NAME_ALREADY_USE:
                     Console.WriteLine(ConsoleColors.Red + "\t A save Job already exist with this name (" + args[0] + ")" + ConsoleColors.Reset);
                     return;
-                }
-                if (!Directory.Exists(args[1]))
-                {
-                    Console.WriteLine(ConsoleColors.Red + "Source directory does not exist ("  + args[1] + " )" + ConsoleColors.Reset);
+                case ServiceAddSaveJob.SOURCE_DOES_NOT_EXIST:
+                    Console.WriteLine(ConsoleColors.Red + "\t Source directory does not exist ("  + args[1] + " )" + ConsoleColors.Reset);
                     return;
-                }
-                if (!Directory.Exists(args[2]))
-                {
-                    Console.WriteLine(ConsoleColors.Red + "Destination directory does not exist ( " + args[2] + " )" + ConsoleColors.Reset);
+                case ServiceAddSaveJob.DESTINANTION_DOES_NOT_EXIST:
+                    Console.WriteLine(ConsoleColors.Red + "\t Destination directory does not exist ( " + args[2] + " )" + ConsoleColors.Reset);
                     return;
-                }
-            }
-            else
-            {
-                Console.WriteLine(ConsoleColors.Red + "\t Bad arguments, require Add-Savejob <name> <source> <destination>" + ConsoleColors.Reset);
+
             }
         }
 

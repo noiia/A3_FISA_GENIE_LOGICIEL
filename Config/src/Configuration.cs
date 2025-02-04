@@ -1,4 +1,8 @@
-﻿using System.Text.Json;
+using System;
+using System.IO;
+using System.Linq;
+using System.Xml;
+using System.Text.Json;
 
 namespace Config
 {
@@ -30,12 +34,12 @@ namespace Config
             File.WriteAllText(this._configPath, json);
         }
 
-        public SaveJob GetSaveJob(int id)
+        public SaveJob? GetSaveJob(int id)
         {
             return _configFile.SaveJobs.FirstOrDefault(job => job.Id == id);
         }
 
-        public SaveJob GetSaveJob(string name)
+        public SaveJob? GetSaveJob(string name)
         {
             return _configFile.SaveJobs.FirstOrDefault(job => job.Name == name);
         }
@@ -98,6 +102,17 @@ namespace Config
             else
             {
                 throw new Exception("There is no SaveJob with this name");
+            }
+        }
+
+        public int FindFirstFreeId()
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                if (this.GetSaveJob(i) != null)
+                {
+                    return i;
+                }
             }
         }
     }
