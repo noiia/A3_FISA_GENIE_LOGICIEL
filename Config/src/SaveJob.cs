@@ -10,8 +10,9 @@ namespace Config
         private string _Name;
         private DateTime _LastSave;
         private DateTime _Created;
+        private string _Type;
 
-        public SaveJob( int id, string name, string source, string destination, DateTime lastSave, DateTime created)
+        public SaveJob( int id, string name, string source, string destination, DateTime lastSave, DateTime created, string type)
         {
             _Source = source;
             _Destination = destination;
@@ -19,6 +20,7 @@ namespace Config
             _Name = name;
             _LastSave = lastSave;
             _Created = created;
+            _Type = type;
         }
 
         public string Source => _Source;
@@ -32,6 +34,8 @@ namespace Config
         public DateTime LastSave => _LastSave;
 
         public DateTime Created => _Created;
+
+        public string Type => _Type;
     }
 
 }
