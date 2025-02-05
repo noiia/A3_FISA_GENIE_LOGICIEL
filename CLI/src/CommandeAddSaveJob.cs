@@ -18,7 +18,7 @@ namespace CLI
                     Console.WriteLine(ConsoleColors.Green + "\t Save Job has benn created" + ConsoleColors.Reset);
                     return;
                 case ServiceAddSaveJob.BAD_ARGS:
-                    Console.WriteLine(ConsoleColors.Red + "\t Bad arguments, require Add-Savejob <name> <source> <destination>" + ConsoleColors.Reset);
+                    Console.WriteLine(ConsoleColors.Red + "\t Bad arguments, require Add-Savejob <name> <source> <destination> <type>" + ConsoleColors.Reset);
                     return;
                 case ServiceAddSaveJob.NAME_ALREADY_USE:
                     Console.WriteLine(ConsoleColors.Red + "\t A save Job already exist with this name (" + args[0] + ")" + ConsoleColors.Reset);
@@ -28,6 +28,9 @@ namespace CLI
                     return;
                 case ServiceAddSaveJob.DESTINANTION_DOES_NOT_EXIST:
                     Console.WriteLine(ConsoleColors.Red + "\t Destination directory does not exist ( " + args[2] + " )" + ConsoleColors.Reset);
+                    return;
+                case ServiceAddSaveJob.TYPE_DOES_NOT_EXIST:
+                    Console.WriteLine(ConsoleColors.Red + "\t Type is invalid does not exist ( " + args[3] + " ) real type is full | diff" + ConsoleColors.Reset);
                     return;
 
             }
