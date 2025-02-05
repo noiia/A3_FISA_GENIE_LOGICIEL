@@ -5,6 +5,12 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+
+        <!-- added elements to pass compilation errors about duplication in generated /obj and /bin content -->
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+        <RootNamespace>EasySave</RootNamespace>
+        <StartupObject>EasySaveCLI.Program</StartupObject>
     </PropertyGroup>
 
     <ItemGroup>

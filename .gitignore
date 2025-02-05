@@ -1,7 +1,17 @@
+# IDE files 
 .idea
 .vs
 
+# Compiled fields
 bin
-dll/code/Logger/bin/Debug
-dll/code/Logger/bin/Release
 obj
+CLI/bin/
+CLI/obj/
+Config/bin/
+Config/obj/
+dll/Logger/bin/
+dll/Logger/obj/
+EasySaveCLI/bin/
+EasySaveCLI/obj/
+Services/bin/
+Services/obj/

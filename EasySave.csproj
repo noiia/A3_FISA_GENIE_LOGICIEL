@@ -19,6 +19,7 @@
       <Folder Include="CLI\bin\Debug\net8.0\" />
       <Folder Include="Config\bin\Debug\net8.0\" />
       <Folder Include="dll\Logger\bin\Debug\net8.0\" />
+      <Folder Include="EasySave\" />
       <Folder Include="Services\bin\Debug\net8.0\" />
     </ItemGroup>
 

@@ -1,10 +1,22 @@
-﻿.git
+﻿# git and ide files
+.git
 .github
 .gitignore
 .idea
 .vs
+
+# Compiled fields
 bin
-dll/code/Logger/bin/Debug
-dll/code/Logger/bin/Release
-LICENSE
 obj
+CLI/bin/
+CLI/obj/
+Config/bin/
+Config/obj/
+dll/Logger/bin/
+dll/Logger/obj/
+EasySaveCLI/bin/
+EasySaveCLI/obj/
+Services/bin/
+Services/obj/
+
+LICENSE
