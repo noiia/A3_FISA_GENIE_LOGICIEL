@@ -4,31 +4,36 @@ using System.Text.Json;
 namespace Services
 {
     // Ajout d'une méthode pour stocker les infos dans des variables
-    public class FileAttribute
+    public class DirAttribute
     {
         // Création d'une classe pour stocker le nom du fichier
-        public required string FileName { get; set; }
-        // Création d'une classe pour stocker le type de fichier
-        public required string FileType { get; set; }
+        public string DirName { get; set; }
+        public List<string> Files { get; set; }
+        public List<DirAttribute> SubFolder { get; set; }
     }
     
-    internal class ServiceLogTreeStructure
+    public class ServiceLogTreeStructure
     {
-        public static void WriteLine(string fileName, string filetype)
+        public static void WriteFile(string sourceDir, string outputDir)
         {
-            //Créer l'objet File
-            var file = new FileAttribute { FileName = fileName, FileType = filetype};
-            
-            if (file.FileType == "File")
+            var directoryTree = GetDirectoryAttribute(sourceDir);
+
+            string json = JsonSerializer.Serialize(directoryTree, new JsonSerializerOptions { WriteIndented = true });
+
+            File.WriteAllText((outputDir + "/.structure.json"), json);
+        }
+        
+        
+        static DirAttribute GetDirectoryAttribute(string path)
+        {
+            return new DirAttribute
             {
-                // Sérialiser l'objet en JSON
-                var json = JsonSerializer.Serialize(file);
-
-                // Sauvegarder dans un fichier
-                File.WriteAllText("test.json", json);
-
-                Console.WriteLine("Fichier JSON créé !");
-            }
+                DirName = Path.GetFileName(path),
+                Files = new List<string>(Directory.GetFiles(path)),
+                SubFolder = new List<DirAttribute>(
+                    Array.ConvertAll(Directory.GetDirectories(path), GetDirectoryAttribute)
+                )
+            };
         }
     }
 }
