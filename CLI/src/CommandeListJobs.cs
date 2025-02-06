@@ -1,5 +1,6 @@
 using Config;
 using Services;
+using Logger;
 
 namespace CLI
 {
@@ -9,8 +10,14 @@ namespace CLI
 
         public override void Action(string[] args)
         {
+            LoggerUtility.WriteLog(LoggerUtility.Info, "List-SaveJob : is call with args : "+string.Join(" ", args));
+
             SaveJob[] saveJobs = ServiceListSaveJob.Run(args);
-            
+            if (saveJobs.Length == 0)
+            {
+                LoggerUtility.WriteLog(LoggerUtility.Info, "There is no SaveJob to print");
+
+            }
             foreach (var saveJob in saveJobs)
             {
                 Console.WriteLine(ConsoleColors.Bold + ConsoleColors.Yellow + "\tName : " + saveJob.Name + ConsoleColors.Reset);

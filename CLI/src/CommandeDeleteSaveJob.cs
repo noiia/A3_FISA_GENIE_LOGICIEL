@@ -4,6 +4,7 @@ using Services;
 namespace CLI;
 using System;
 using System.Collections.Generic;
+using Logger;
 
     public class CommandDeleteSaveJob : Commande
     {
@@ -11,6 +12,8 @@ using System.Collections.Generic;
 
         public override void Action(string[] args)
         {
+            LoggerUtility.WriteLog(LoggerUtility.Info, "Delete-SaveJob : is call with args : "+string.Join(" ", args));
+
             int id = 0;
             try
             {

@@ -1,4 +1,5 @@
 ﻿using Config;
+using Logger;
 
 namespace Services;
 
@@ -18,14 +19,22 @@ public class ServiceExecSaveJob
             SaveJob saveJob = configuration.GetSaveJob(id);
             if (saveJob == null)
             {
+                LoggerUtility.WriteLog(LoggerUtility.Warning, "Cant found SaveJob with id: "+args[0].ToString());
                 return JOB_DOES_NOT_EXIST;
+            }
+            else
+            {
+                LoggerUtility.WriteLog(LoggerUtility.Info, "Saving :  id: "+id.ToString()+", name : "+saveJob.Name+" from ("+saveJob.Source+") to (" + saveJob.Destination + ")");
+
             }
             DirCopy dirCopy = new DirCopy();
             dirCopy.CopyDir(saveJob.Source, saveJob.Destination);
+            LoggerUtility.WriteLog(LoggerUtility.Info, "Save (  id: "+id.ToString()+", name : "+saveJob.Name+" ) is save");
             return OK;
         }
         else
         {
+            LoggerUtility.WriteLog(LoggerUtility.Warning, "Some args are missing or incorect");
             return BAD_ARGS;
         }
     }

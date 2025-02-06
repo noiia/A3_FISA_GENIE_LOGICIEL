@@ -10,4 +10,10 @@
       <ProjectReference Include="..\Services\Services.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Logger">
+        <HintPath>..\..\..\RiderProjects\A3_FISA_GENIE_LOGICIEL\dll\code\Logger\bin\Debug\Logger.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

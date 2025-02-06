@@ -11,8 +11,9 @@ namespace CLI
             Console.WriteLine("Help : ");
             Console.WriteLine("\tlHelp");
             Console.WriteLine("\tList-Jobs");
-            Console.WriteLine("\tAdd-Savejob <name> <source> <destination>");
-            Console.WriteLine("\tDelete-Savejob <id>|<name>");
+            Console.WriteLine("\tAdd-SaveJob <name> <source> <destination>");
+            Console.WriteLine("\tDelete-SaveJob <id>|<name>");
+            Console.WriteLine("\tExec-SaveJob <id>|<name>");
         }
 
     }

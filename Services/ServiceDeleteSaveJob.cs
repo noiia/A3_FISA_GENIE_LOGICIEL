@@ -1,4 +1,5 @@
 ﻿using Config;
+using Logger;
 
 namespace Services;
 
@@ -20,13 +21,16 @@ public class ServiceDeleteSaveJob
             SaveJob saveJob = configuration.GetSaveJob(id);
             if (saveJob == null)
             {
+                LoggerUtility.WriteLog(LoggerUtility.Warning, "SaveJob does not exist ("+args[0]+")");
                 return JOB_DOES_NOT_EXIST;
             }
             configuration.DeleteSaveJob(id);
+            LoggerUtility.WriteLog(LoggerUtility.Info, "SaveJob has been deleted id: "+args[0]);
             return OK;
         }
         else
         {
+            LoggerUtility.WriteLog(LoggerUtility.Warning, "Some args are missing or incorect");
             return BAD_ARGS;
         }
     }

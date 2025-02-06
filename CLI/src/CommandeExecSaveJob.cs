@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Services;
+using Logger;
 
 
 namespace CLI
@@ -11,6 +12,7 @@ namespace CLI
 
         public override void Action(string[] args)
         {
+            LoggerUtility.WriteLog(LoggerUtility.Info, "Exec-SaveJob : is call with args : "+string.Join(" ", args));
             int intType;
             int r;
             if(args[0].Contains(";"))

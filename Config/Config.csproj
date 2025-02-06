@@ -6,4 +6,10 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Reference Include="Logger">
+        <HintPath>..\..\..\RiderProjects\A3_FISA_GENIE_LOGICIEL\dll\code\Logger\bin\Debug\Logger.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
