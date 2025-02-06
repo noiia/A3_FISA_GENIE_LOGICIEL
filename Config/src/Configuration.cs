@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Logger;
 
 namespace Config
 {
@@ -17,7 +18,7 @@ namespace Config
             if (!File.Exists(this._configPath))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(this._configPath));
-                File.WriteAllText(this._configPath, "{\"SaveJobs\":[]}\n");
+                File.WriteAllText(this._configPath, "{\"saveJobs\":[],\n\"logPath\":\""+ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\Logs\\" +"\"}");
             }
 
             string fileContent = File.ReadAllText(this._configPath);
@@ -103,14 +104,24 @@ namespace Config
 
         public int FindFirstFreeId()
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 5; i++)
             {
                 if (this.GetSaveJob(i) == null)
                 {
                     return i;
                 }
             }
-            throw new Exception("There is no SaveJob");
+            return -1;
         }
+        
+        public string GetLogPath(){
+            return this._configFile.LogPath;
+        }
+        
+        public void SetLogPath(string logPath){
+            this._configFile.LogPath = logPath;
+            return;
+        }
+        
     }
 }

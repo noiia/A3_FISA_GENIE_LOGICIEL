@@ -1,4 +1,5 @@
-﻿using Config;
+﻿using System.Diagnostics;
+using Config;
 using Logger;
 
 namespace Services;
@@ -27,9 +28,14 @@ public class ServiceExecSaveJob
                 LoggerUtility.WriteLog(LoggerUtility.Info, "Saving :  id: "+id.ToString()+", name : "+saveJob.Name+" from ("+saveJob.Source+") to (" + saveJob.Destination + ")");
 
             }
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             DirCopy dirCopy = new DirCopy();
             dirCopy.CopyDir(saveJob.Source, saveJob.Destination);
-            LoggerUtility.WriteLog(LoggerUtility.Info, "Save (  id: "+id.ToString()+", name : "+saveJob.Name+" ) is save");
+            stopwatch.Stop();
+            Console.WriteLine($"Execution Time: {stopwatch.ElapsedMilliseconds} ms");
+            LoggerUtility.WriteLog(LoggerUtility.Info, "The savejob took "+stopwatch.ElapsedMilliseconds+" ms");
+            LoggerUtility.WriteLog(LoggerUtility.Info, "Save :  id: "+id.ToString()+", name : "+saveJob.Name+" from ("+saveJob.Source+") to (" + saveJob.Destination + ") is save");
             return OK;
         }
         else

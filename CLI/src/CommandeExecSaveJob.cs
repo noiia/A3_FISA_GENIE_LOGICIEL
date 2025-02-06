@@ -8,6 +8,8 @@ namespace CLI
 {
     public class CommandeExecSaveJob : Commande
     {
+        
+        //TODO : ajouté le temps du fichier delta du cp 
         public CommandeExecSaveJob() : base("Exec-SaveJob", new string[] { "execsj", "e-sj" }) { }
 
         public override void Action(string[] args)

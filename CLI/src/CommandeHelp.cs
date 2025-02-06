@@ -14,6 +14,7 @@ namespace CLI
             Console.WriteLine("\tAdd-SaveJob <name> <source> <destination>");
             Console.WriteLine("\tDelete-SaveJob <id>|<name>");
             Console.WriteLine("\tExec-SaveJob <id>|<name>");
+            Console.WriteLine("\tSet-LogPath <path>");
         }
 
     }
