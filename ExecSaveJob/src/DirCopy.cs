@@ -125,7 +125,7 @@ public class DirCopy
             {
                 FileName = "ExecSaveJob.exe", // Programme à exécuter
                 Arguments = string.Join(' ', [RootDir, ToDir]),           // Arguments optionnels
-                UseShellExecute = true,    // Utiliser le shell Windows (obligatoire pour certaines applications)
+                UseShellExecute = false,    // Utiliser le shell Windows (obligatoire pour certaines applications)
                 RedirectStandardOutput = true, // Capture la sortie standard
                 RedirectStandardError = true,  // Capture les erreurs
                 CreateNoWindow = true         // Évite d'afficher une fenêtre

@@ -52,7 +52,7 @@ public class ServiceAddSaveJob
         }
         else
         {
-            LoggerUtility.WriteLog(LoggerUtility.Warning, "Some args are missing or incorect");
+            LoggerUtility.WriteLog(LoggerUtility.Warning, "Some args are missing or incorrect");
             return ReturnCodes.BAD_ARGS;
         }
     }

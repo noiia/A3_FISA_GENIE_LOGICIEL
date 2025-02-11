@@ -8,7 +8,6 @@ namespace AddSaveJob
         public static int Main(string[] args)
         {
             Configuration config = new Configuration(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
-            config.GetSaveJob(args[0]);
             return ServiceAddSaveJob.Run(args, config);
         }
     }

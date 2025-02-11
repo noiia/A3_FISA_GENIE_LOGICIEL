@@ -20,9 +20,9 @@ namespace CLI
             LoggerUtility.WriteLog(LoggerUtility.Info, $"{language[0]} {string.Join(" ", args)}");
             ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
             {
-                FileName = "AddSaveJob.exe", // Programme à exécuter
-                Arguments = "",           // Arguments optionnels
-                UseShellExecute = true,    // Utiliser le shell Windows (obligatoire pour certaines applications)
+                FileName = "..\\..\\..\\..\\AddSaveJob\\bin\\Debug\\net8.0\\AddSaveJob.exe", // Programme à exécuter
+                Arguments = string.Join(' ', args),           // Arguments optionnels
+                UseShellExecute = false,    // Utiliser le shell Windows (obligatoire pour certaines applications)
                 RedirectStandardOutput = true, // Capture la sortie standard
                 RedirectStandardError = true,  // Capture les erreurs
                 CreateNoWindow = true         // Évite d'afficher une fenêtre

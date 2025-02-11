@@ -23,7 +23,6 @@ namespace CLI
             
             LoggerUtility.WriteLog(LoggerUtility.Info, $"{language[13]} {string.Join(" ", args)}");
             int intType;
-            int r;
             if(args[0].Contains(";"))
             {
                 string[] listIds = args[0].Split(';');
@@ -31,9 +30,9 @@ namespace CLI
                 {
                     ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
                     {
-                        FileName = "ExecSaveJob.exe", // Programme à exécuter
+                        FileName = "..\\..\\..\\..\\ExecSaveJob\\bin\\Debug\\net8.0\\ExecSaveJob.exe", // Programme à exécuter
                         Arguments = id,           // Arguments optionnels
-                        UseShellExecute = true,    // Utiliser le shell Windows (obligatoire pour certaines applications)
+                        UseShellExecute = false,    // Utiliser le shell Windows (obligatoire pour certaines applications)
                         RedirectStandardOutput = true, // Capture la sortie standard
                         RedirectStandardError = true,  // Capture les erreurs
                         CreateNoWindow = true         // Évite d'afficher une fenêtre
@@ -74,9 +73,9 @@ namespace CLI
                 {
                     ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
                     {
-                        FileName = "ExecSaveJob.exe", // Programme à exécuter
+                        FileName = "..\\..\\..\\..\\ExecSaveJob\\bin\\Debug\\net8.0\\ExecSaveJob.exe", // Programme à exécuter
                         Arguments = i.ToString(),           // Arguments optionnels
-                        UseShellExecute = true,    // Utiliser le shell Windows (obligatoire pour certaines applications)
+                        UseShellExecute = false,    // Utiliser le shell Windows (obligatoire pour certaines applications)
                         RedirectStandardOutput = true, // Capture la sortie standard
                         RedirectStandardError = true,  // Capture les erreurs
                         CreateNoWindow = true         // Évite d'afficher une fenêtre
@@ -114,9 +113,9 @@ namespace CLI
             {
                 ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
                 {
-                    FileName = "ExecSaveJob.exe", // Programme à exécuter
+                    FileName = "..\\..\\..\\..\\ExecSaveJob\\bin\\Debug\\net8.0\\ExecSaveJob.exe", // Programme à exécuter
                     Arguments = string.Join(' ',args),           // Arguments optionnels
-                    UseShellExecute = true,    // Utiliser le shell Windows (obligatoire pour certaines applications)
+                    UseShellExecute = false,    // Utiliser le shell Windows (obligatoire pour certaines applications)
                     RedirectStandardOutput = true, // Capture la sortie standard
                     RedirectStandardError = true,  // Capture les erreurs
                     CreateNoWindow = true         // Évite d'afficher une fenêtre
