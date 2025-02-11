@@ -30,7 +30,7 @@ namespace CLI
                 {
                     if (c.IsCall("Help"))
                     {
-                        c.Run(args);
+                        c.Run(configuration, args);
                     }
                 } 
             }
@@ -40,7 +40,7 @@ namespace CLI
                 {
                     if (c.IsCall(args[0]))
                     {
-                        c.Run(args.Skip(1).ToArray());
+                        c.Run(configuration, args.Skip(1).ToArray());
                     }
                 }   
             }

@@ -7,7 +7,7 @@ namespace CLI
     {
         public CommandeHelp() : base("help", new string[] { "h", "?", "Help" }) { }
 
-        public override void Action(Configuration configuration, string[] args)
+        public override void Action(Configuration? configuration, string[] args)
         {
             Console.WriteLine("Help : ");
             Console.WriteLine("\tlHelp");

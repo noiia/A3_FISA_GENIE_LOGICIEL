@@ -1,12 +1,14 @@
-﻿using CLI.i18n;
-
-namespace CLI;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
+using CLI.i18n;
 using Config;
 using Logger;
 using Services;
+
+namespace CLI;
+
 
     public class CommandDeleteSaveJob : Commande
     {
@@ -16,21 +18,33 @@ using Services;
         {
             Func<List<string>> languageFunc = Translation.SelectLanguage(configuration.GetLanguage());
             List<string> language = languageFunc();
-            
-            LoggerUtility.WriteLog(LoggerUtility.Info, language[8]+string.Join(" ", args));
 
-            int id = 0;
-            try
+            LoggerUtility.WriteLog(LoggerUtility.Info, language[8] + string.Join(" ", args));
+            
+            ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
             {
-                id = int.Parse(args[0]);
-            }
-            catch (Exception ex)
+                FileName = "DeleteSaveJob.exe", // Programme à exécuter
+                Arguments = args[0],           // Arguments optionnels
+                UseShellExecute = true,    // Utiliser le shell Windows (obligatoire pour certaines applications)
+                RedirectStandardOutput = true, // Capture la sortie standard
+                RedirectStandardError = true,  // Capture les erreurs
+                CreateNoWindow = true         // Évite d'afficher une fenêtre
+            };
+            
+            Process processServiceAddSaveJob = new Process { StartInfo = serviceAddSaveJob };
+            processServiceAddSaveJob.Start();
+            string output = processServiceAddSaveJob.StandardOutput.ReadToEnd();
+            string error = processServiceAddSaveJob.StandardError.ReadToEnd();
+            processServiceAddSaveJob.WaitForExit();
+            Console.WriteLine("Output:");
+            Console.WriteLine(output);
+
+            if (!string.IsNullOrWhiteSpace(error))
             {
-                Console.WriteLine($"{language[9]}{args[0]})");
-                return;
+                Console.WriteLine("Error:");
+                Console.WriteLine(error);
             }
-            int r = ServiceDeleteSaveJob.Run(args, configuration);
-            switch (r)
+            switch (processServiceAddSaveJob.ExitCode)
             {
                 case ReturnCodes.OK:
                     Console.WriteLine($"{ConsoleColors.Green} {language[10]} {ConsoleColors.Reset}");

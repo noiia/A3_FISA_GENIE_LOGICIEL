@@ -1,7 +1,8 @@
 using System;
+using System.Diagnostics;
 using System.IO;
-using CLI.i18n;
 
+using CLI.i18n;
 using Config;
 using Logger;
 using Services;
@@ -28,9 +29,30 @@ namespace CLI
                 string[] listIds = args[0].Split(';');
                 foreach (var id in listIds)
                 {
-                    string[] arg = [id];
-                    r = ServiceExecSaveJob.Run(arg, configuration);
-                    switch (r)
+                    ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
+                    {
+                        FileName = "ExecSaveJob.exe", // Programme à exécuter
+                        Arguments = id,           // Arguments optionnels
+                        UseShellExecute = true,    // Utiliser le shell Windows (obligatoire pour certaines applications)
+                        RedirectStandardOutput = true, // Capture la sortie standard
+                        RedirectStandardError = true,  // Capture les erreurs
+                        CreateNoWindow = true         // Évite d'afficher une fenêtre
+                    };
+            
+                    Process processServiceAddSaveJob = new Process { StartInfo = serviceAddSaveJob };
+                    processServiceAddSaveJob.Start();
+                    string output = processServiceAddSaveJob.StandardOutput.ReadToEnd();
+                    string error = processServiceAddSaveJob.StandardError.ReadToEnd();
+                    processServiceAddSaveJob.WaitForExit();
+                    Console.WriteLine("Output:");
+                    Console.WriteLine(output);
+
+                    if (!string.IsNullOrWhiteSpace(error))
+                    {
+                        Console.WriteLine("Error:");
+                        Console.WriteLine(error);
+                    }
+                    switch (processServiceAddSaveJob.ExitCode)
                     {
                         case ReturnCodes.OK:
                             Console.WriteLine($"{ConsoleColors.Green} {language[14]} {ConsoleColors.Reset}");
@@ -50,9 +72,30 @@ namespace CLI
                 int max = int.Parse(args[1].Split(',')[1]);
                 for (int i = min; i <= max; i++)
                 {
-                    string[] arg = [i.ToString()];
-                    r = ServiceExecSaveJob.Run(args, configuration);
-                    switch (r)
+                    ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
+                    {
+                        FileName = "ExecSaveJob.exe", // Programme à exécuter
+                        Arguments = i.ToString(),           // Arguments optionnels
+                        UseShellExecute = true,    // Utiliser le shell Windows (obligatoire pour certaines applications)
+                        RedirectStandardOutput = true, // Capture la sortie standard
+                        RedirectStandardError = true,  // Capture les erreurs
+                        CreateNoWindow = true         // Évite d'afficher une fenêtre
+                    };
+            
+                    Process processServiceAddSaveJob = new Process { StartInfo = serviceAddSaveJob };
+                    processServiceAddSaveJob.Start();
+                    string output = processServiceAddSaveJob.StandardOutput.ReadToEnd();
+                    string error = processServiceAddSaveJob.StandardError.ReadToEnd();
+                    processServiceAddSaveJob.WaitForExit();
+                    Console.WriteLine("Output:");
+                    Console.WriteLine(output);
+
+                    if (!string.IsNullOrWhiteSpace(error))
+                    {
+                        Console.WriteLine("Error:");
+                        Console.WriteLine(error);
+                    }
+                    switch (processServiceAddSaveJob.ExitCode)
                     {
                         case ReturnCodes.OK:
                             Console.WriteLine($"{ConsoleColors.Green} {language[14]} {ConsoleColors.Reset}");
@@ -69,8 +112,30 @@ namespace CLI
             }
             else if(int.TryParse(args[0], out intType))
             {
-                r = ServiceExecSaveJob.Run(args, configuration);
-                switch (r)
+                ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
+                {
+                    FileName = "ExecSaveJob.exe", // Programme à exécuter
+                    Arguments = string.Join(' ',args),           // Arguments optionnels
+                    UseShellExecute = true,    // Utiliser le shell Windows (obligatoire pour certaines applications)
+                    RedirectStandardOutput = true, // Capture la sortie standard
+                    RedirectStandardError = true,  // Capture les erreurs
+                    CreateNoWindow = true         // Évite d'afficher une fenêtre
+                };
+            
+                Process processServiceAddSaveJob = new Process { StartInfo = serviceAddSaveJob };
+                processServiceAddSaveJob.Start();
+                string output = processServiceAddSaveJob.StandardOutput.ReadToEnd();
+                string error = processServiceAddSaveJob.StandardError.ReadToEnd();
+                processServiceAddSaveJob.WaitForExit();
+                Console.WriteLine("Output:");
+                Console.WriteLine(output);
+
+                if (!string.IsNullOrWhiteSpace(error))
+                {
+                    Console.WriteLine("Error:");
+                    Console.WriteLine(error);
+                }
+                switch (processServiceAddSaveJob.ExitCode)
                 {
                     case ReturnCodes.OK:
                         Console.WriteLine($"{ConsoleColors.Green} {language[14]} {ConsoleColors.Reset}");

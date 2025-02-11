@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using CLI.i18n;
 
@@ -17,8 +18,30 @@ namespace CLI
             List<string> language = languageFunc();
             
             LoggerUtility.WriteLog(LoggerUtility.Info, $"{language[26]} {string.Join(" ", args)}");
-            int r = ServiceAddSaveJob.Run(args, configuration);
-            switch (r)
+            ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
+            {
+                FileName = "ExecSaveJob.exe", // Programme à exécuter
+                Arguments = string.Join(' ',args),           // Arguments optionnels
+                UseShellExecute = true,    // Utiliser le shell Windows (obligatoire pour certaines applications)
+                RedirectStandardOutput = true, // Capture la sortie standard
+                RedirectStandardError = true,  // Capture les erreurs
+                CreateNoWindow = true         // Évite d'afficher une fenêtre
+            };
+            
+            Process processServiceAddSaveJob = new Process { StartInfo = serviceAddSaveJob };
+            processServiceAddSaveJob.Start();
+            string output = processServiceAddSaveJob.StandardOutput.ReadToEnd();
+            string error = processServiceAddSaveJob.StandardError.ReadToEnd();
+            processServiceAddSaveJob.WaitForExit();
+            Console.WriteLine("Output:");
+            Console.WriteLine(output);
+
+            if (!string.IsNullOrWhiteSpace(error))
+            {
+                Console.WriteLine("Error:");
+                Console.WriteLine(error);
+            }
+            switch (processServiceAddSaveJob.ExitCode)
             {
                 case SetLogPath.OK:
                     Console.WriteLine($"{ConsoleColors.Green} {language[27]} {ConsoleColors.Reset}");

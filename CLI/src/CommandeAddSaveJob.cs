@@ -12,14 +12,13 @@ namespace CLI
     {
         public CommandeAddSaveJob() : base("Add-SaveJob", new string[] { "asj", "a-sj" }) { }
 
-        public override void Action(string[] args)
+        public override void Action(Configuration configuration, string[] args)
         {
-            Configuration configuration = new Configuration( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
             Func<List<string>> languageFunc = Translation.SelectLanguage(configuration.GetLanguage());
             List<string> language = languageFunc();
             
             LoggerUtility.WriteLog(LoggerUtility.Info, $"{language[0]} {string.Join(" ", args)}");
-            ProcessStartInfo ServiceAddSaveJob = new ProcessStartInfo
+            ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
             {
                 FileName = "AddSaveJob.exe", // Programme à exécuter
                 Arguments = "",           // Arguments optionnels
@@ -28,7 +27,7 @@ namespace CLI
                 RedirectStandardError = true,  // Capture les erreurs
                 CreateNoWindow = true         // Évite d'afficher une fenêtre
             };
-            Process processServiceAddSaveJob = new Process { StartInfo = ServiceAddSaveJob };
+            Process processServiceAddSaveJob = new Process { StartInfo = serviceAddSaveJob };
             processServiceAddSaveJob.Start();
             string output = processServiceAddSaveJob.StandardOutput.ReadToEnd();
             string error = processServiceAddSaveJob.StandardError.ReadToEnd();
