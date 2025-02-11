@@ -8,7 +8,8 @@ namespace DeleteSaveJob
         public static void Main(string[] args)
         {
             Configuration config = new Configuration(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
-            config.GetSaveJob(args[0]);
+            // config.GetSaveJob(args[0]);
+            //#TODO faire en sorte que ça ne fonctionne pas qu'avec les id mais aussi les noms
             ServiceDeleteSaveJob.Run(args, config);
         }
     }

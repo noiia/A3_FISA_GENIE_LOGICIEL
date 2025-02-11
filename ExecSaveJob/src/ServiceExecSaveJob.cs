@@ -28,20 +28,19 @@ public class ServiceExecSaveJob
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            DirCopy dirCopy = new DirCopy();
-            dirCopy.CopyDir(saveJob.Source, saveJob.Destination);
+            // DirCopy dirCopy = new DirCopy();
+            // dirCopy.CopyDir(saveJob.Source, saveJob.Destination);
             
-            //#TODO mettre les instances backup à la place de dircopy
-            // if (saveJob.Type == "full")
-            // {
-                // CompleteBackup completeBackup = CompleteBackup.GetInstance(saveJob);
-                // completeBackup.Save();
-            // }
-            // else if (saveJob.Type == "diff")
-            // {
-                // DifferentialBackup differentialBackup = DifferentialBackup.GetInstance(saveJob);
-                // differentialBackup.Save();
-            // }
+            if (saveJob.Type == "full")
+            {
+                CompleteBackup completeBackup = CompleteBackup.GetInstance(saveJob);
+                completeBackup.Save();
+            }
+            else if (saveJob.Type == "diff")
+            {
+                DifferentialBackup differentialBackup = DifferentialBackup.GetInstance(saveJob);
+                differentialBackup.Save();
+            }
             
             stopwatch.Stop();
             LoggerUtility.WriteLog(LoggerUtility.Info, $"The savejob took {stopwatch.ElapsedMilliseconds} ms");
