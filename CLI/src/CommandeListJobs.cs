@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using CLI.i18n;
 using Config;
 
@@ -15,8 +16,9 @@ namespace CLI
             List<string> language = languageFunc();
             
             LoggerUtility.WriteLog(LoggerUtility.Info, $"{language[18]}{string.Join(" ", args)}");
-
-            SaveJob[] saveJobs = ServiceListSaveJob.Run(args, configuration);
+            
+            SaveJob[] saveJobs = configuration.GetSaveJobs();
+            
             if (saveJobs.Length == 0)
             {
                 LoggerUtility.WriteLog(LoggerUtility.Info, $"{language[19]}");

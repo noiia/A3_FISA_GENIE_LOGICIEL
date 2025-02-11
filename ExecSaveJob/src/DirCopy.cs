@@ -1,4 +1,6 @@
-﻿namespace ExecSaveJob;
+﻿using System.Diagnostics;
+
+namespace ExecSaveJob;
 public class DirCopy
 {
     private (List<string> Dirs, List<string> Files) GetFiles(string RootDir, List<string> Files)
@@ -119,7 +121,30 @@ public class DirCopy
 
         public void CopyDir(string RootDir, string ToDir)
         {
-            ServiceLogTreeStructure.WriteFile(RootDir, ToDir);
+            ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
+            {
+                FileName = "ExecSaveJob.exe", // Programme à exécuter
+                Arguments = string.Join(' ', [RootDir, ToDir]),           // Arguments optionnels
+                UseShellExecute = true,    // Utiliser le shell Windows (obligatoire pour certaines applications)
+                RedirectStandardOutput = true, // Capture la sortie standard
+                RedirectStandardError = true,  // Capture les erreurs
+                CreateNoWindow = true         // Évite d'afficher une fenêtre
+            };
+            
+            Process processServiceAddSaveJob = new Process { StartInfo = serviceAddSaveJob };
+            processServiceAddSaveJob.Start();
+            string output = processServiceAddSaveJob.StandardOutput.ReadToEnd();
+            string error = processServiceAddSaveJob.StandardError.ReadToEnd();
+            processServiceAddSaveJob.WaitForExit();
+            Console.WriteLine("Output:");
+            Console.WriteLine(output);
+
+            if (!string.IsNullOrWhiteSpace(error))
+            {
+                Console.WriteLine("Error:");
+                Console.WriteLine(error);
+            }
+            
             if (RootDir[RootDir.Length - 1] != '\\') RootDir += '\\';
             if (ToDir[ToDir.Length - 1] != '\\') ToDir += '\\';
             
