@@ -2,8 +2,7 @@
 using System.IO;
 using System.Text.Json;
 
-namespace Logger
-{
+namespace Logger;
     public class LogStructure
     {
         public DateTime CreateDate { get; set; }
@@ -47,4 +46,3 @@ namespace Logger
             }
         }
     }
-}

@@ -9,10 +9,10 @@
 
   <ItemGroup>
     <Reference Include="Config">
-      <HintPath>..\Config\bin\Debug\Config.dll</HintPath>
+      <HintPath>..\Config\bin\Debug\net8.0\Config.dll</HintPath>
     </Reference>
     <Reference Include="Logger">
-      <HintPath>..\Logger\bin\Debug\Logger.dll</HintPath>
+      <HintPath>..\Logger\bin\Debug\net8.0\Logger.dll</HintPath>
     </Reference>
   </ItemGroup>
 

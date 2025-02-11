@@ -20,13 +20,13 @@ namespace CLI
             int r = ServiceAddSaveJob.Run(args, configuration);
             switch (r)
             {
-                case ServiceSetLogPath.OK:
+                case SetLogPath.OK:
                     Console.WriteLine($"{ConsoleColors.Green} {language[27]} {ConsoleColors.Reset}");
                     return;
-                case ServiceSetLogPath.NOT_A_DIR:
+                case SetLogPath.NOT_A_DIR:
                     Console.WriteLine($"{ConsoleColors.Red} \t{args[0]} {language[28]} {ConsoleColors.Reset}");
                     return;
-                case ServiceSetLogPath.BAD_ARGS:
+                case SetLogPath.BAD_ARGS:
                     Console.WriteLine($"{ConsoleColors.Red} {language[29]} {ConsoleColors.Reset}");
                     return;
             }
