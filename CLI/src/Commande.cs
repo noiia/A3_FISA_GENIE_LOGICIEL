@@ -13,9 +13,9 @@ namespace CLI
             _CommandeAlias = commandeAlias;
         }
 
-        public void Run(Configuration configuration, string[] args)
+        public void Run(string[] args)
         {
-            this.Action(configuration, args);
+            this.Action(args);
         }
 
         public bool IsCall(string commandeName)
@@ -37,7 +37,7 @@ namespace CLI
             }
         }
 
-        public virtual void Action(Configuration configuration, string[] args)
+        public virtual void Action(string[] args)
         {}
     }
 }

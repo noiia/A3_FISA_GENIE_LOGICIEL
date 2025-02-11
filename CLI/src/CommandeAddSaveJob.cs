@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Transactions;
 using CLI.i18n;
+using Config;
 using Logger;
 
 namespace CLI
@@ -10,31 +12,53 @@ namespace CLI
     {
         public CommandeAddSaveJob() : base("Add-SaveJob", new string[] { "asj", "a-sj" }) { }
 
-        public override void Action(Configuration configuration, string[] args)
+        public override void Action(string[] args)
         {
+            Configuration configuration = new Configuration( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
             Func<List<string>> languageFunc = Translation.SelectLanguage(configuration.GetLanguage());
             List<string> language = languageFunc();
             
             LoggerUtility.WriteLog(LoggerUtility.Info, $"{language[0]} {string.Join(" ", args)}");
-            int r = ServiceAddSaveJob.Run(args, configuration);
-            switch (r)
+            ProcessStartInfo ServiceAddSaveJob = new ProcessStartInfo
             {
-                case ServiceAddSaveJob.OK:
+                FileName = "AddSaveJob.exe", // Programme à exécuter
+                Arguments = "",           // Arguments optionnels
+                UseShellExecute = true,    // Utiliser le shell Windows (obligatoire pour certaines applications)
+                RedirectStandardOutput = true, // Capture la sortie standard
+                RedirectStandardError = true,  // Capture les erreurs
+                CreateNoWindow = true         // Évite d'afficher une fenêtre
+            };
+            Process processServiceAddSaveJob = new Process { StartInfo = ServiceAddSaveJob };
+            processServiceAddSaveJob.Start();
+            string output = processServiceAddSaveJob.StandardOutput.ReadToEnd();
+            string error = processServiceAddSaveJob.StandardError.ReadToEnd();
+            processServiceAddSaveJob.WaitForExit();
+            Console.WriteLine("Output:");
+            Console.WriteLine(output);
+
+            if (!string.IsNullOrWhiteSpace(error))
+            {
+                Console.WriteLine("Error:");
+                Console.WriteLine(error);
+            }
+            switch (processServiceAddSaveJob.ExitCode)
+            {
+                case 1:
                     Console.WriteLine($"{ConsoleColors.Green} {language[1]} {ConsoleColors.Reset}");
                     return;
-                case ServiceAddSaveJob.BAD_ARGS:
+                case 2:
                     Console.WriteLine($"{ConsoleColors.Red} {language[2]} {ConsoleColors.Reset}");
                     return;
-                case ServiceAddSaveJob.NAME_ALREADY_USE:
+                case 3:
                     Console.WriteLine($"{ConsoleColors.Red} {language[3]} ({args[0]}) {ConsoleColors.Reset}");
                     return;
-                case ServiceAddSaveJob.SOURCE_DOES_NOT_EXIST:
+                case 4:
                     Console.WriteLine($"{ConsoleColors.Red} {language[4]} ({args[1]}) {ConsoleColors.Reset}");
                     return;
-                case ServiceAddSaveJob.DESTINANTION_DOES_NOT_EXIST:
+                case 5:
                     Console.WriteLine($"{ConsoleColors.Red} {language[5]} ({args[2]}) {ConsoleColors.Reset}");
                     return;
-                case ServiceAddSaveJob.TYPE_DOES_NOT_EXIST:
+                case 6:
                     Console.WriteLine($"{ConsoleColors.Red} {language[6]} ({args[3]}) {language[7]} {ConsoleColors.Reset}");
                     return;
 

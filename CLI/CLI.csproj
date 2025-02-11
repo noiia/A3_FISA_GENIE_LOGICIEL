@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="Config">
+      <HintPath>..\Config\bin\Debug\Config.dll</HintPath>
+    </Reference>
     <Reference Include="Logger">
       <HintPath>..\Logger\bin\Debug\Logger.dll</HintPath>
     </Reference>
