@@ -6,7 +6,7 @@ public class ListSaveJobs
 {
     public static SaveJob[] Run(string[] args, Configuration configuration)
     {
-        configuration.LoadConfiguration();
+        // configuration.LoadConfiguration();
         SaveJob[] saveJobs = configuration.GetSaveJobs();
         // foreach (SaveJob saveJob in saveJobs)
         // {

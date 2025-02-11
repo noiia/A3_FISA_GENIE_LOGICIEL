@@ -13,6 +13,7 @@ namespace Config
         public Configuration(string configPath)
         {
             this._configPath = configPath;
+            this.LoadConfiguration();
         }
 
         public void LoadConfiguration()
