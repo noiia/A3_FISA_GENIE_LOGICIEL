@@ -1,4 +1,4 @@
-﻿namespace Services;
+﻿namespace ExecSaveJob;
 public class DirCopy
 {
     private (List<string> Dirs, List<string> Files) GetFiles(string RootDir, List<string> Files)

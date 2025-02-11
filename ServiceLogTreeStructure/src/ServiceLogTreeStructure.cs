@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 
-namespace Services
+namespace ServiceLogTreeStructure
 {
     // Ajout d'une méthode pour stocker les infos dans des variables
     public class DirAttribute

@@ -3,6 +3,8 @@
 namespace CLI;
 using System;
 using System.Collections.Generic;
+
+using Config;
 using Logger;
 
     public class CommandDeleteSaveJob : Commande
