@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Linq;
-
 using Config;
 
 namespace CLI
 {
     public class CLI
     {
-        private static readonly string[] processList = { "list-SaveJob", "add-SaveJob", "delete-SaveJob", "exec-SaveJob", "help" };
-        
         private static Commande[] _commandes;
         
         public CLI()
@@ -33,7 +30,7 @@ namespace CLI
                 {
                     if (c.IsCall("Help"))
                     {
-                        c.Run(configuration, args);
+                        c.Run(args);
                     }
                 } 
             }
@@ -43,7 +40,7 @@ namespace CLI
                 {
                     if (c.IsCall(args[0]))
                     {
-                        c.Run(configuration, args.Skip(1).ToArray());
+                        c.Run(args.Skip(1).ToArray());
                     }
                 }   
             }
