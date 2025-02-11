@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Linq;
 using System.Text.Json;
 
 namespace Config
@@ -30,12 +33,12 @@ namespace Config
             File.WriteAllText(this._configPath, json);
         }
 
-        public SaveJob? GetSaveJob(int id)
+        public SaveJob GetSaveJob(int id)
         {
             return _configFile.SaveJobs.FirstOrDefault(job => job.Id == id);
         }
 
-        public SaveJob? GetSaveJob(string name)
+        public SaveJob GetSaveJob(string name)
         {
             return _configFile.SaveJobs.FirstOrDefault(job => job.Name == name);
         }

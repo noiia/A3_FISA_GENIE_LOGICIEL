@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System;
+﻿using System;
+using System.IO;
 using System.Text.Json;
 
 namespace Logger
@@ -7,8 +7,8 @@ namespace Logger
     public class LogStructure
     {
         public DateTime CreateDate { get; set; }
-        public string? LogType { get; set; }
-        public string? Message { get; set; }
+        public string LogType { get; set; }
+        public string Message { get; set; }
     }
 
     public static class LoggerUtility

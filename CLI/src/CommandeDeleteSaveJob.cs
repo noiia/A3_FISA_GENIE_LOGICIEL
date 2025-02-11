@@ -1,6 +1,4 @@
 ﻿using CLI.i18n;
-using Config;
-using Services;
 
 namespace CLI;
 using System;
