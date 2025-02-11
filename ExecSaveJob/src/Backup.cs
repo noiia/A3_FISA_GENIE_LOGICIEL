@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
-using Config;
-using Services;
 
-namespace Services;
+using Config;
+using Logger;
+
+namespace ExecSaveJob;
 
 public abstract class Backup
 {
@@ -146,18 +147,15 @@ public abstract class Backup
     protected virtual List<string> GetFiles(string rootDir, List<string> files)
     {
         string stateFileName = "statefile.log";
-        Counters counters = new Counters();
         
         DirectoryInfo directoryInfo = new DirectoryInfo(rootDir);
         
-        counters.DataCount = directoryInfo.GetFiles().Length;
-        counters.FileCount = directoryInfo.GetFiles().Count();
-        counters.IsActive = true;
-        
+        Counters counters = new Counters(directoryInfo.GetFiles().Length, directoryInfo.GetFiles().Count(), true);
+        RealTimeState.AddCounter(counters);
         foreach (string file in Directory.GetFiles(rootDir))
         {
-            var fileInfo = new FileInfo(file);
-            RealTimeState.WriteState(this.SaveJob.Name, counters.IsActive , counters, fileInfo, SavesDir, stateFileName, "");
+            FileInfo fileInfo = new FileInfo(file);
+            RealTimeState.WriteState(this.SaveJob.Name, counters, fileInfo, SavesDir, stateFileName, "");
             files.Add(file);
         }
 

@@ -1,7 +1,7 @@
 ﻿using Config;
 using Logger;
 
-namespace Services;
+namespace AddSaveJob;
 
 public class ServiceAddSaveJob
 {

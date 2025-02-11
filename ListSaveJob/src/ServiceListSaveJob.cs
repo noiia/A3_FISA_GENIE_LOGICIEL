@@ -1,6 +1,6 @@
 ﻿using Config;
 
-namespace Services;
+namespace ListSaveJobs;
 
 public class ServiceListSaveJob
 {

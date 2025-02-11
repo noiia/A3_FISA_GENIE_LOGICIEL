@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Config;
+
 namespace CLI
 {
     public class Commande

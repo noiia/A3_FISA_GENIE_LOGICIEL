@@ -5,6 +5,13 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>ListSaveJobs</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Config">
+      <HintPath>..\Config\bin\Debug\Config.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 </Project>
