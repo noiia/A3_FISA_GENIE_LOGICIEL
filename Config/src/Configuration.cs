@@ -35,11 +35,19 @@ namespace Config
 
         public SaveJob GetSaveJob(int id)
         {
+            if (_configFile == null || _configFile.SaveJobs == null)
+            {
+                return null;
+            }
             return _configFile.SaveJobs.FirstOrDefault(job => job.Id == id);
         }
 
         public SaveJob GetSaveJob(string name)
         {
+            if (_configFile == null || _configFile.SaveJobs == null)
+            {
+                return null;
+            }
             return _configFile.SaveJobs.FirstOrDefault(job => job.Name == name);
         }
 

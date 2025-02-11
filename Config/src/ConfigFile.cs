@@ -17,7 +17,7 @@ namespace Config
 
         public SaveJob[] SaveJobs
         {
-            get => _saveJobs;
+            get => _saveJobs != null ? _saveJobs : Array.Empty<SaveJob>();
             set => _saveJobs = value;
         }
 
