@@ -1,14 +1,11 @@
 ﻿using Config;
 using Logger;
+using Services;
 
 namespace DeleteSaveJob;
 
 public class ServiceDeleteSaveJob
 {
-    public const int OK = 1;
-    public const int BAD_ARGS = 2;
-    public const int JOB_DOES_NOT_EXIST = 3;
-
     public static int Run(string[] args, Configuration configuration)
     {
         if (args.Length == 1)
@@ -18,16 +15,16 @@ public class ServiceDeleteSaveJob
             if (saveJob == null)
             {
                 LoggerUtility.WriteLog(LoggerUtility.Warning, "SaveJob does not exist ("+args[0]+")");
-                return JOB_DOES_NOT_EXIST;
+                return ReturnCodes.JOB_DOES_NOT_EXIST;
             }
             configuration.DeleteSaveJob(id);
             LoggerUtility.WriteLog(LoggerUtility.Info, "SaveJob has been deleted id: "+args[0]);
-            return OK;
+            return ReturnCodes.OK;
         }
         else
         {
             LoggerUtility.WriteLog(LoggerUtility.Warning, "Some args are missing or incorect");
-            return BAD_ARGS;
+            return ReturnCodes.BAD_ARGS;
         }
     }
 }

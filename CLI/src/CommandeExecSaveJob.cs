@@ -4,6 +4,7 @@ using CLI.i18n;
 
 using Config;
 using Logger;
+using Services;
 
 
 namespace CLI
@@ -31,13 +32,13 @@ namespace CLI
                     r = ServiceExecSaveJob.Run(arg, configuration);
                     switch (r)
                     {
-                        case ServiceExecSaveJob.OK:
+                        case ReturnCodes.OK:
                             Console.WriteLine($"{ConsoleColors.Green} {language[14]} {ConsoleColors.Reset}");
                             return;
-                        case ServiceExecSaveJob.BAD_ARGS:
+                        case ReturnCodes.BAD_ARGS:
                             Console.WriteLine($"{ConsoleColors.Red} {language[15]} {ConsoleColors.Reset}");
                             return;
-                        case ServiceExecSaveJob.JOB_DOES_NOT_EXIST:
+                        case ReturnCodes.JOB_DOES_NOT_EXIST:
                             Console.WriteLine($"{ConsoleColors.Red} {language[16]} {ConsoleColors.Reset}");
                             return;
                     }
@@ -53,13 +54,13 @@ namespace CLI
                     r = ServiceExecSaveJob.Run(args, configuration);
                     switch (r)
                     {
-                        case ServiceExecSaveJob.OK:
+                        case ReturnCodes.OK:
                             Console.WriteLine($"{ConsoleColors.Green} {language[14]} {ConsoleColors.Reset}");
                             return;
-                        case ServiceExecSaveJob.BAD_ARGS:
+                        case ReturnCodes.BAD_ARGS:
                             Console.WriteLine($"{ConsoleColors.Red} {language[15]} {ConsoleColors.Reset}");
                             return;
-                        case ServiceExecSaveJob.JOB_DOES_NOT_EXIST:
+                        case ReturnCodes.JOB_DOES_NOT_EXIST:
                             Console.WriteLine($"{ConsoleColors.Red} {language[16]} {ConsoleColors.Reset}");
                             return;
                     } 
@@ -71,13 +72,13 @@ namespace CLI
                 r = ServiceExecSaveJob.Run(args, configuration);
                 switch (r)
                 {
-                    case ServiceExecSaveJob.OK:
+                    case ReturnCodes.OK:
                         Console.WriteLine($"{ConsoleColors.Green} {language[14]} {ConsoleColors.Reset}");
                         return;
-                    case ServiceExecSaveJob.BAD_ARGS:
+                    case ReturnCodes.BAD_ARGS:
                         Console.WriteLine($"{ConsoleColors.Red} {language[15]} {ConsoleColors.Reset}");
                         return;
-                    case ServiceExecSaveJob.JOB_DOES_NOT_EXIST:
+                    case ReturnCodes.JOB_DOES_NOT_EXIST:
                         Console.WriteLine($"{ConsoleColors.Red} {language[16]} {ConsoleColors.Reset}");
                         return;
                 }   

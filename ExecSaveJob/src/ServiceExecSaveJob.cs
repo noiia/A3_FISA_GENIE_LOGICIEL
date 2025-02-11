@@ -3,15 +3,12 @@ using System.Diagnostics;
 
 using Config;
 using Logger;
+using Services;
 
 namespace ExecSaveJob;
 
 public class ServiceExecSaveJob
 {
-    public const int OK = 1;
-    public const int BAD_ARGS = 2;
-    public const int JOB_DOES_NOT_EXIST = 3;
-
     public static int Run(string[] args, Configuration configuration)
     {
         if (args.Length == 1)
@@ -21,7 +18,7 @@ public class ServiceExecSaveJob
             if (saveJob == null)
             {
                 LoggerUtility.WriteLog(LoggerUtility.Warning, $"Can't found SaveJob with id: {args[0].ToString()}");
-                return JOB_DOES_NOT_EXIST;
+                return ReturnCodes.JOB_DOES_NOT_EXIST;
             }
             else
             {
@@ -37,12 +34,12 @@ public class ServiceExecSaveJob
             stopwatch.Stop();
             LoggerUtility.WriteLog(LoggerUtility.Info, $"The savejob took {stopwatch.ElapsedMilliseconds} ms");
             LoggerUtility.WriteLog(LoggerUtility.Info, $"Save : id: {id.ToString()}, name : {saveJob.Name} from ({saveJob.Source}) to ({saveJob.Destination}) is save");
-            return OK;
+            return ReturnCodes.OK;
         }
         else
         {
             LoggerUtility.WriteLog(LoggerUtility.Warning, "Some args are missing or incorrect");
-            return BAD_ARGS;
+            return ReturnCodes.BAD_ARGS;
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 using Config;
 using Logger;
+using Services;
 
     public class CommandDeleteSaveJob : Commande
     {
@@ -31,13 +32,13 @@ using Logger;
             int r = ServiceDeleteSaveJob.Run(args, configuration);
             switch (r)
             {
-                case ServiceAddSaveJob.OK:
+                case ReturnCodes.OK:
                     Console.WriteLine($"{ConsoleColors.Green} {language[10]} {ConsoleColors.Reset}");
                     return;
-                case ServiceDeleteSaveJob.BAD_ARGS:
+                case ReturnCodes.BAD_ARGS:
                     Console.WriteLine($"{ConsoleColors.Red} {language[11]} {ConsoleColors.Reset}");
                     return;
-                case ServiceDeleteSaveJob.JOB_DOES_NOT_EXIST:
+                case ReturnCodes.JOB_DOES_NOT_EXIST:
                     Console.WriteLine($"{ConsoleColors.Red} {language[12]}{args[0]}) {ConsoleColors.Reset}");
                     return;
             }
