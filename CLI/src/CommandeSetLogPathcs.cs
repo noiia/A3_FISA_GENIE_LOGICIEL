@@ -33,8 +33,6 @@ namespace CLI
             string output = processServiceAddSaveJob.StandardOutput.ReadToEnd();
             string error = processServiceAddSaveJob.StandardError.ReadToEnd();
             processServiceAddSaveJob.WaitForExit();
-            Console.WriteLine("Output:");
-            Console.WriteLine(output);
 
             if (!string.IsNullOrWhiteSpace(error))
             {

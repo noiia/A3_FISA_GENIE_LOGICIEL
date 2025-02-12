@@ -10,14 +10,22 @@ public class ServiceDeleteSaveJob
     {
         if (args.Length == 1)
         {
-            int id = int.Parse(args[0]);
-            SaveJob saveJob = configuration.GetSaveJob(id);
+            int id;
+            SaveJob? saveJob = null;
+            if (int.TryParse(args[0], out id))
+            {
+                saveJob = configuration.GetSaveJob(id);   
+            }
+            else
+            {
+                saveJob = configuration.GetSaveJob(args[0]);
+            }
             if (saveJob == null)
             {
                 LoggerUtility.WriteLog(LoggerUtility.Warning, "SaveJob does not exist ("+args[0]+")");
                 return ReturnCodes.JOB_DOES_NOT_EXIST;
             }
-            configuration.DeleteSaveJob(id);
+            configuration.DeleteSaveJob(saveJob);
             LoggerUtility.WriteLog(LoggerUtility.Info, "SaveJob has been deleted id: "+args[0]);
             return ReturnCodes.OK;
         }
