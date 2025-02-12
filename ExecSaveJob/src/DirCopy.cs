@@ -123,7 +123,7 @@ public class DirCopy
         {
             ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
             {
-                FileName = "ExecSaveJob.exe", // Programme à exécuter
+                FileName = "..\\..\\..\\..\\ExecSaveJob\\bin\\Debug\\net8.0\\ExecSaveJob.exe", // Programme à exécuter
                 Arguments = string.Join(' ', [RootDir, ToDir]),           // Arguments optionnels
                 UseShellExecute = false,    // Utiliser le shell Windows (obligatoire pour certaines applications)
                 RedirectStandardOutput = true, // Capture la sortie standard
