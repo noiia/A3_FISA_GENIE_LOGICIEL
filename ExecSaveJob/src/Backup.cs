@@ -180,6 +180,18 @@ public abstract class Backup
         // Définir les nouveaux attributs du fichier
         File.SetAttributes(filePath, attributes);
     }
+    protected void turnArchiveBitFalse(string filePath)
+    {
+        // Récupérer les attributs actuels du fichier
+        FileAttributes attributes = File.GetAttributes(filePath);
+
+        // Désactiver le bit d'archive
+        attributes &= ~FileAttributes.Archive;
+
+        // Définir les nouveaux attributs du fichier
+        File.SetAttributes(filePath, attributes);
+    }
+
     
 
     protected void CopyDir()
@@ -188,7 +200,7 @@ public abstract class Backup
         Files = GetFiles(RootDir, Files);
         foreach (string File in Files)
         {
-            turnArchiveBitTrue(File);
+            turnArchiveBitFalse(File);
             CopyPasteFile(File, File.Replace(RootDir, SaveDir));
         }
     }
