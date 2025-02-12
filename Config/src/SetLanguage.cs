@@ -1,6 +1,4 @@
-﻿using Logger;
-
-namespace Config
+﻿namespace Config
 {
     public class SetLanguage
     {
