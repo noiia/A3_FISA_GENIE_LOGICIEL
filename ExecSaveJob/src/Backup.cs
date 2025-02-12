@@ -116,9 +116,7 @@ public abstract class Backup
                         {
                             Directory.CreateDirectory(to);
                             // Directory.CreateDirectory(Path.GetFullPath(to));
-                            Console.WriteLine("pep");
                             CopyPasteFile(RootFile, ToFile, 2);
-                            Console.WriteLine("pasta");
                         }
                         break;
                     case nameof(FileNotFoundException):
