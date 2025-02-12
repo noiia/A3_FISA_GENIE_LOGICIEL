@@ -17,7 +17,7 @@ public class ServiceExecSaveJob
             SaveJob? saveJob = configuration.GetSaveJob(id);
             if (saveJob == null)
             {
-                LoggerUtility.WriteLog(LoggerUtility.Warning, $"Can't found SaveJob with id: {args[0].ToString()}");
+                LoggerUtility.WriteLog(LoggerUtility.Warning, $"Can't find SaveJob with id: {args[0].ToString()}");
                 return ReturnCodes.JOB_DOES_NOT_EXIST;
             }
             else

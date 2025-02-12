@@ -10,7 +10,7 @@ namespace CLI
         public override void Action(Configuration? configuration, string[] args)
         {
             Console.WriteLine("Help : ");
-            Console.WriteLine("\tlHelp");
+            Console.WriteLine("\tHelp");
             Console.WriteLine("\tList-Jobs");
             Console.WriteLine("\tAdd-SaveJob <name> <source> <destination>");
             Console.WriteLine("\tDelete-SaveJob <id>|<name>");

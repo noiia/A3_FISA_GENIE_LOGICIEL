@@ -19,6 +19,7 @@ namespace CLI
             
             SaveJob[] saveJobs = configuration.GetSaveJobs();
             
+            
             if (saveJobs.Length == 0)
             {
                 LoggerUtility.WriteLog(LoggerUtility.Info, $"{language[19]}");
@@ -26,12 +27,12 @@ namespace CLI
             }
             foreach (var saveJob in saveJobs)
             {
-                Console.WriteLine($"{ConsoleColors.Bold} {ConsoleColors.Yellow} {language[20]} {saveJob.Name} {ConsoleColors.Reset}");
-                Console.WriteLine($"{ConsoleColors.Red} {language[21]} {saveJob.Id}");
-                Console.WriteLine($"{ConsoleColors.Blue} {language[22]} {saveJob.LastSave}");
-                Console.WriteLine($"{ConsoleColors.Cyan} {language[23]} {saveJob.Source}");
-                Console.WriteLine($"{ConsoleColors.Cyan} {language[24]} {saveJob.Destination}");
-                Console.WriteLine($"{ConsoleColors.Magenta} {language[25]} {saveJob.Created}");
+                Console.WriteLine($"{ConsoleColors.Bold} {ConsoleColors.Yellow} {language[19]} {saveJob.Name} {ConsoleColors.Reset}");
+                Console.WriteLine($"{ConsoleColors.Red} {language[20]} {saveJob.Id}");
+                Console.WriteLine($"{ConsoleColors.Blue} {language[21]} {saveJob.LastSave}");
+                Console.WriteLine($"{ConsoleColors.Cyan} {language[22]} {saveJob.Source}");
+                Console.WriteLine($"{ConsoleColors.Cyan} {language[23]} {saveJob.Destination}");
+                Console.WriteLine($"{ConsoleColors.Magenta} {language[24]} {saveJob.Created}");
                 Console.WriteLine(ConsoleColors.Reset);
             }
         }
