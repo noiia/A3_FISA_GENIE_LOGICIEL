@@ -122,9 +122,9 @@ namespace CLI
             
                 Process processServiceAddSaveJob = new Process { StartInfo = serviceAddSaveJob };
                 processServiceAddSaveJob.Start();
+                processServiceAddSaveJob.WaitForExit();
                 string output = processServiceAddSaveJob.StandardOutput.ReadToEnd();
                 string error = processServiceAddSaveJob.StandardError.ReadToEnd();
-                processServiceAddSaveJob.WaitForExit();
                 Console.WriteLine("Output:");
                 Console.WriteLine(output);
 
@@ -148,7 +148,39 @@ namespace CLI
             }
             else
             {
-                Console.WriteLine($"{ConsoleColors.Red} {language[15]} {ConsoleColors.Reset}");
+                ProcessStartInfo serviceExecSaveJob = new ProcessStartInfo
+                {
+                    FileName = "..\\..\\..\\..\\ExecSaveJob\\bin\\Debug\\net8.0\\ExecSaveJob.exe",
+                    Arguments = string.Join(' ', args),
+                    UseShellExecute = false,  // Changed from true to false
+                    RedirectStandardOutput = true, // Added to capture output
+                    RedirectStandardError = true,  // Added to capture errors
+                    CreateNoWindow = true
+                };
+                Process processServiceExecSaveJob = new Process { StartInfo = serviceExecSaveJob };
+                processServiceExecSaveJob.Start();
+                processServiceExecSaveJob.WaitForExit();
+                string output = processServiceExecSaveJob.StandardOutput.ReadToEnd();
+                string error = processServiceExecSaveJob.StandardError.ReadToEnd();
+                Console.WriteLine("Output:");
+                Console.WriteLine(output);
+                if (!string.IsNullOrWhiteSpace(error))
+                {
+                    Console.WriteLine("Error:");
+                    Console.WriteLine(error);
+                }
+                switch (processServiceExecSaveJob.ExitCode)
+                {
+                    case ReturnCodes.OK:
+                        Console.WriteLine($"{ConsoleColors.Green} {language[14]} {ConsoleColors.Reset}");
+                        return;
+                    case ReturnCodes.BAD_ARGS:
+                        Console.WriteLine($"{ConsoleColors.Red} {language[15]} {ConsoleColors.Reset}");
+                        return;
+                    case ReturnCodes.JOB_DOES_NOT_EXIST:
+                        Console.WriteLine($"{ConsoleColors.Red} {language[16]} {ConsoleColors.Reset}");
+                        return;
+                }   
             }
         }
 

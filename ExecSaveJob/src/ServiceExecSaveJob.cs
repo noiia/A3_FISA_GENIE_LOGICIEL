@@ -13,8 +13,16 @@ public class ServiceExecSaveJob
     {
         if (args.Length == 1)
         {
-            int id = int.Parse(args[0]);
-            SaveJob? saveJob = configuration.GetSaveJob(id);
+            int id;
+            SaveJob? saveJob = null;
+            if (int.TryParse(args[0], out id))
+            {
+                saveJob = configuration.GetSaveJob(id);   
+            }
+            else
+            {
+                saveJob = configuration.GetSaveJob(args[0]);
+            }
             if (saveJob == null)
             {
                 LoggerUtility.WriteLog(LoggerUtility.Warning, $"Can't find SaveJob with id: {args[0].ToString()}");
