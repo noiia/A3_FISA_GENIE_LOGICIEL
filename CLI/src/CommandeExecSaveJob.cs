@@ -115,9 +115,10 @@ namespace CLI
                 {
                     FileName = "..\\..\\..\\..\\ExecSaveJob\\bin\\Debug\\net8.0\\ExecSaveJob.exe", // Programme à exécuter
                     Arguments = string.Join(' ',args),           // Arguments optionnels
-                    UseShellExecute = true,
-                    Verb = "runas",
-                    CreateNoWindow = true
+                    UseShellExecute = false,    // Utiliser le shell Windows (obligatoire pour certaines applications)
+                    RedirectStandardOutput = true, // Capture la sortie standard
+                    RedirectStandardError = true,  // Capture les erreurs
+                    CreateNoWindow = true         // Évite d'afficher une fenêtre
                 };
             
                 Process processServiceAddSaveJob = new Process { StartInfo = serviceAddSaveJob };

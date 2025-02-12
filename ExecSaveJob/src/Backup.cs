@@ -111,12 +111,14 @@ public abstract class Backup
                     case nameof(DirectoryNotFoundException):
                         // Console.WriteLine($"Directory not found: From {RootFile} To {ToFile}");
                         HandleErrorLoop(Err, 2);
-                        string To = Directory.GetParent(ToFile).FullName;
-                        if (!Directory.Exists(To))
+                        string to = (Directory.GetParent(ToFile).FullName+"\\");
+                        if (!Directory.Exists(to))
                         {
-                            // Console.WriteLine("Create directory: " + To);
-                            Directory.CreateDirectory(To);
+                            Directory.CreateDirectory(to);
+                            // Directory.CreateDirectory(Path.GetFullPath(to));
+                            Console.WriteLine("pep");
                             CopyPasteFile(RootFile, ToFile, 2);
+                            Console.WriteLine("pasta");
                         }
                         break;
                     case nameof(FileNotFoundException):
@@ -171,25 +173,31 @@ public abstract class Backup
     
     protected void turnArchiveBitTrue (string filePath)
     {
+        if (filePath.Contains("Feedback") || Path.GetFileName(filePath).ToLower() == "desktop.ini")
+        {
+            return;
+        }
         // Console.WriteLine($"Archiving {filePath}");
         FileAttributes attributes = File.GetAttributes(filePath);
 
         // Activer le bit d'archive
         attributes |= FileAttributes.Archive;
-
-        // Définir les nouveaux attributs du fichier
-        File.SetAttributes(filePath, attributes);
+        
+        if ((attributes & FileAttributes.System) != FileAttributes.System)
+        {
+            File.SetAttributes(filePath, FileAttributes.Archive);
+        }
     }
     
 
     protected void CopyDir()
     {
-        List<string> Files = new List<string>();
-        Files = GetFiles(RootDir, Files);
-        foreach (string File in Files)
+        List<string> files = new List<string>();
+        files = GetFiles(RootDir, files);
+        foreach (string file in files)
         {
-            turnArchiveBitTrue(File);
-            CopyPasteFile(File, File.Replace(RootDir, SaveDir));
+            turnArchiveBitTrue(file);
+            CopyPasteFile(file, file.Replace(RootDir, SaveDir));
         }
     }
 
