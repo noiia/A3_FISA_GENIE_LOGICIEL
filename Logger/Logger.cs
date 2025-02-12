@@ -2,6 +2,8 @@
 using System.IO;
 using System.Text.Json;
 
+using Config;
+
 namespace Logger;
     public class LogStructure
     {
@@ -28,11 +30,19 @@ namespace Logger;
             var message = new LogStructure { CreateDate = DateTime.Now, LogType = type, Message = msg };
             var fileName = "log_" + DateTime.Now.Date.ToString("dd-MM-yyyy") + ".log";
 
-            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                folderName, fileName);
+            Configuration config =
+                new Configuration(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                                  "\\EasySave\\" + "config.json");
+            
+            if (config.GetLogPath() == null)
+            {
+                config.SetLogPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName));
+            }    
+                
+            var filePath = Path.Combine(config.GetLogPath(), fileName);
 
-            Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                folderName));
+            Directory.CreateDirectory(config.GetLogPath());
+
 
             if (!File.Exists(filePath))
                 using (File.Create(filePath))

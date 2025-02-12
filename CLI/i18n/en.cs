@@ -24,8 +24,8 @@ public class en
         enTranslate.Add("Exec-SaveJob : is call with args :");
         
         // CommandeExecSaveJob
-        enTranslate.Add("\t Save Job has been created ");
-        enTranslate.Add("\t Bad arguments, require Exec-Savejob <id> ou <id>;<id>;<id> ou <id>,<id> ");
+        enTranslate.Add("\t Save Job done successfully");
+        enTranslate.Add("\t Bad arguments, require Exec-Savejob <id>|<name> or <id>;<id>;<id> or <id>,<id> ");
         enTranslate.Add("\t This job does not exist ");
         
         // CommandeListJobs
@@ -44,7 +44,10 @@ public class en
         enTranslate.Add("is not a valid path");
         enTranslate.Add("\t Bad arguments, require Set-LogPath <logPath>");
 
-        
+        // CommandeSetLanguage
+        enTranslate.Add("Language changed to : ");
+        enTranslate.Add(" this language is not supported, require en or fr");
+        enTranslate.Add("Bad arguments, require en or fr : ");
         
         return enTranslate;
     }

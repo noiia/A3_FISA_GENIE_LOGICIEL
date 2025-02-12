@@ -17,6 +17,7 @@ namespace CLI
             _commandes = _commandes.Append(new CommandDeleteSaveJob()).ToArray();
             _commandes = _commandes.Append(new CommandeExecSaveJob()).ToArray();
             _commandes = _commandes.Append(new CommandeSetLogPath()).ToArray();
+            _commandes = _commandes.Append(new CommandeSetLanguage()).ToArray();
         }
 
         public void Run(string[] args)

@@ -125,7 +125,7 @@ namespace Config
             return -1;
         }
         
-        public string GetLogPath(){
+        public string? GetLogPath(){
             return this._configFile.LogPath;
         }
         

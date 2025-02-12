@@ -21,10 +21,11 @@ public class fr
         frTranslate.Add("\t Le travail a été supprimé");
         frTranslate.Add("\t Mauvais arguments fournis, la commande se formule comme suivant : Delete-SaveJob <id>");
         frTranslate.Add("\t Le travail demandé n'existe pas (");
+        frTranslate.Add("Exec-SaveJob : est appelé avec les arguments de commande :");
         
         // CommandeExecSaveJob
-        frTranslate.Add("\t Le travail de sauvegarde a été créé ");
-        frTranslate.Add("\t Mauvais arguments, la commande nécessite Exec-Savejob <id> ou <id>;<id>;<id> ou <id>,<id> ");
+        frTranslate.Add("\t Le travail de sauvegarde s'est déroulé sans encombre");
+        frTranslate.Add("\t Mauvais arguments, la commande nécessite Exec-Savejob <id>|<nom> ou <id>;<id>;<id> ou <id>,<id> ");
         frTranslate.Add("\t Ce travail n'existe pas ");
         
         // CommandeListJobs
@@ -42,6 +43,12 @@ public class fr
         frTranslate.Add("\tLogPath a été mis à jour : ");
         frTranslate.Add(" n'est pas un chemin valide");
         frTranslate.Add("\t Mauvais arguments, la commande nécessite Set-LogPath <logPath>");
+        
+        // CommandeSetLanguage
+        frTranslate.Add("Langue modifiée au profit de la nouvelle langue : ");
+        frTranslate.Add(" n'est pas un language supporté par le système");
+        frTranslate.Add("Mauvais arguments fournis : ");
+
         
         return frTranslate;
     }
