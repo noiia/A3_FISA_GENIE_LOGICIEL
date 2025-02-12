@@ -23,7 +23,7 @@ public class DifferentialBackup : Backup
     {
         foreach (string File in Directory.GetFiles(RootDir))
         {
-            if (!isArchived(File))
+            if (isArchived(File))
             {
                 Files.Add(File);
             }
@@ -82,6 +82,22 @@ public class DifferentialBackup : Backup
         string verify = path.Replace(RootDir, SaveDir).Replace((lastBackupNumber + 1).ToString(), (lastBackupNumber).ToString());
         Console.WriteLine(verify);
 
+        
+        
+        FileInfo fileInfo = new FileInfo(path);
+        
+        if ((fileInfo.Attributes & FileAttributes.Archive) == FileAttributes.Archive)
+        {
+            Console.WriteLine($"{ConsoleColor.Blue} Le bit d'archive est défini. ");
+            return true;
+        }
+        else
+        {
+            Console.WriteLine($"{ConsoleColor.Red}Le bit d'archive n'est pas défini -------------------------------------------------------------.");
+            return false;
+        }
+        
+        
         if (AreFilesEqual(path, verify))
         {
             Console.WriteLine($"Same file {path} {verify}");
@@ -92,6 +108,8 @@ public class DifferentialBackup : Backup
             Console.WriteLine($"Different file {path} {verify}");
             return false;
         }
+        
+        
         
         
         // FileAttributes attributes = File.GetAttributes(path);
