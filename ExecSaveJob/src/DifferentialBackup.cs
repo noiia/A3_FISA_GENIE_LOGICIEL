@@ -78,9 +78,9 @@ public class DifferentialBackup : Backup
             }
         }
         int lastBackupNumber = this.getLastBackupNumber(SavesDir);
-        Console.WriteLine(lastBackupNumber);
+        // Console.WriteLine(lastBackupNumber);
         string verify = path.Replace(RootDir, SaveDir).Replace((lastBackupNumber + 1).ToString(), (lastBackupNumber).ToString());
-        Console.WriteLine(verify);
+        // Console.WriteLine(verify);
 
         
         
@@ -88,12 +88,12 @@ public class DifferentialBackup : Backup
         
         if ((fileInfo.Attributes & FileAttributes.Archive) == FileAttributes.Archive)
         {
-            Console.WriteLine($"{ConsoleColor.Blue} Le bit d'archive est défini. ");
+            // Console.WriteLine($"{ConsoleColor.Blue} Le bit d'archive est défini. ");
             return true;
         }
         else
         {
-            Console.WriteLine($"{ConsoleColor.Red}Le bit d'archive n'est pas défini -------------------------------------------------------------.");
+            // Console.WriteLine($"{ConsoleColor.Red}Le bit d'archive n'est pas défini -------------------------------------------------------------.");
             return false;
         }
         
