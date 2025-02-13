@@ -23,7 +23,7 @@ namespace CLI;
             
             ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
             {
-                FileName = "..\\..\\..\\..\\DeleteSaveJob\\bin\\Debug\\net8.0\\DeleteSaveJob.exe", // Programme à exécuter
+                FileName = "DeleteSaveJob.exe", // Programme à exécuter
                 Arguments = args[0],           // Arguments optionnels
                 UseShellExecute = false,    // Utiliser le shell Windows (obligatoire pour certaines applications)
                 RedirectStandardOutput = true, // Capture la sortie standard
