@@ -29,14 +29,24 @@
                             <DataGridTemplateColumn Header="Execute" Width="100">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="Click" Command="{Binding YourCommand}" CommandParameter="{Binding Id}"/>
+                                        <Button Command="{Binding ExeSaveJob}" CommandParameter="{Binding Id}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <!-- <Image Source="avares://Assets/checked-svgrepo-com.svg" Width="20" Height="20"/> -->
+                                                <TextBlock Text="Exécute" Margin="5,0,0,0"/>
+                                            </StackPanel>
+                                        </Button>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>   
                             <DataGridTemplateColumn Header="Delete" Width="100">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="Click" Command="{Binding YourCommand}" CommandParameter="{Binding Id}"/>
+                                        <Button Command="{Binding DelSaveJob}" CommandParameter="{Binding Id}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <!-- <Image Source="avares://Assets/trash-alt-svgrepo-com.svg" Width="20" Height="20"/> -->
+                                                <TextBlock Text="Supprimer" Margin="5,0,0,0"/>
+                                            </StackPanel>
+                                        </Button>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>                        

@@ -19,12 +19,12 @@ public class TableDataModel
     public required DateTime LastExec { get; set; }
     public required string Status { get; set; }
     public required string Type { get; set; }
+    public required ICommand ExeSaveJob { get; set; }
+    public required ICommand DelSaveJob { get; set; }
 }
 
 public partial class HomeViewModel : ReactiveObject
 {
-    public ICommand ExeSaveJob { get; }
-    public ICommand DelSaveJob { get; }
     private string _title;
     public string Title
     {
@@ -104,11 +104,11 @@ public partial class HomeViewModel : ReactiveObject
                 LastExec = saveJob.LastSave, 
                 Status = "en cours", 
                 Type = saveJob.Type,
+                ExeSaveJob = new RelayCommand<object>(ExecuteSaveJob),
+                DelSaveJob = new RelayCommand<object>(DeleteSaveJob)
             });
         }
 
         Notification = "Welcome back on EasySave !";
-        ExeSaveJob = new RelayCommand<object>(ExecuteSaveJob);
-        DelSaveJob = new RelayCommand<object>(DeleteSaveJob);
     }
 }

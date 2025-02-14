@@ -46,4 +46,9 @@
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\checked-svgrepo-com.svg" />
+    <AvaloniaResource Include="Assets\trash-alt-svgrepo-com.svg" />
+  </ItemGroup>
 </Project>
