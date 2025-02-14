@@ -14,29 +14,40 @@
         <Grid Margin="16">
             <StackPanel Spacing="16">
                 <TextBlock Text="Settings" FontSize="24" Margin="0,0,0,20"/>
-                <ComboBox PlaceholderText="Select Language" Width="300"
+                <TextBlock Text="Select Language" FontSize="18" Margin="0,0,0,10"/>
+                <ComboBox PlaceholderText="Select Language" Width="500"
                           SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
                     <system:String>English</system:String>
                     <system:String>French</system:String>
                 </ComboBox>
-                <ComboBox PlaceholderText="Select Log Type" Width="300"
+                <TextBlock Text="Select Log Type" FontSize="18" Margin="0,0,0,10"/>
+                <ComboBox PlaceholderText="Select Log Type" Width="500"
                           SelectedItem="{Binding SelectedLogType, Mode=TwoWay}">
                     <system:String>XML</system:String>
                     <system:String>JSON</system:String>
                 </ComboBox>
-
+                <TextBlock Text="Set Log Path" FontSize="18" Margin="0,0,0,10"/>
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBox Watermark="Set Log Path" Width="300"
+                    <TextBox Watermark="Set Log Path" Width="500"
                              Text="{Binding LogPath, Mode=TwoWay}"/>
                     <Button Content="Browse..." Width="100" Click="OnBrowseButtonClicked"/>
                     <Button Content="Reset" Width="100" Click="OnResetButtonClicked"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBox Watermark="File Type to Encrypt" Width="300"
-                             Text="{Binding FileTypeToEncrypt, Mode=TwoWay}"/>
+                
+                <StackPanel Orientation="Vertical" Spacing="10">
+                    <TextBlock Text="File Types to Encrypt" FontSize="18" Margin="0,0,0,10"/>
+                    <ListBox HorizontalAlignment="Left" ItemsSource="{Binding FileTypesToEncrypt}" Width="500" Height="120" Name="FileTypesListBox"/>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBox Watermark="Add File Type" Width="350" Text="{Binding NewFileTypeToEncrypt, Mode=TwoWay}"/>
+                        <Button Content="Add" Width="100" Click="OnAddFileTypeButtonClicked"/>
+                        <Button Content="Remove Selected" Width="200" Click="OnRemoveFileTypeButtonClicked"/>
+                    </StackPanel>
+                    
                 </StackPanel>
+
+
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBox Watermark="Business Applications Blocking SJ" Width="300"
+                    <TextBox Watermark="Business Applications Blocking SJ" Width="500"
                              Text="{Binding BusinessApplicationsBlockingSj, Mode=TwoWay}"/>
                 </StackPanel>
             </StackPanel>

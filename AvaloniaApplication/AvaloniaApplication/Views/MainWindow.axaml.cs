@@ -8,6 +8,6 @@ namespace AvaloniaApplication.Views
         public MainWindow()
         {
             InitializeComponent();
-        }
+            WindowState = WindowState.Maximized;        }
     }
 }

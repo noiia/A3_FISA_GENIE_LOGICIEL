@@ -20,30 +20,44 @@ namespace AvaloniaApplication.Views
 
         private async void OnBrowseButtonClicked(object sender, RoutedEventArgs e)
         {
-            // Créer une instance de OpenFolderDialog
             var dialog = new OpenFolderDialog();
-
-            // Afficher la boîte de dialogue et attendre la sélection de l'utilisateur
             string result = await dialog.ShowAsync(this.VisualRoot as Window);
 
             if (!string.IsNullOrEmpty(result))
             {
-                // Mettre à jour la propriété LogPath dans le ViewModel avec le chemin sélectionné
                 if (this.DataContext is SettingsViewModel viewModel)
                 {
                     viewModel.LogPath = result;
                 }
             }
         }
-        
+
         private void OnResetButtonClicked(object sender, RoutedEventArgs e)
         {
-            // Réinitialiser le chemin du fichier de log à un chemin spécifique
             string defaultLogPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\";
 
             if (this.DataContext is SettingsViewModel viewModel)
             {
                 viewModel.LogPath = defaultLogPath;
+            }
+        }
+
+        private void OnAddFileTypeButtonClicked(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is SettingsViewModel viewModel)
+            {
+                viewModel.AddFileTypeToEncrypt();
+            }
+        }
+
+        private void OnRemoveFileTypeButtonClicked(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is SettingsViewModel viewModel && this.FindControl<ListBox>("FileTypesListBox") is ListBox listBox)
+            {
+                if (listBox.SelectedItem is string selectedFileType)
+                {
+                    viewModel.RemoveFileTypeToEncrypt(selectedFileType);
+                }
             }
         }
     }
