@@ -1,19 +1,23 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using AvaloniaApplication.Views;
+using System.Collections.ObjectModel;
+
 
 namespace AvaloniaApplication.ViewModels
 {
     public class SettingsViewModel : INotifyPropertyChanged
     {
         ConfigSingleton config;
-        
+
         public SettingsViewModel()
         {
             config = ConfigSingleton.Instance;
             LoadDefaultSettings();
-            
+            FileTypesToEncrypt = new ObservableCollection<string>(config.Configuration.GetCryptExtention());
+
         }
 
         private string _selectedLanguage;
@@ -21,16 +25,14 @@ namespace AvaloniaApplication.ViewModels
         {
             get
             {
-                // Obtenir la langue actuelle à partir de la configuration
                 string currentLanguageCode = config.Configuration.GetLanguage();
                 Console.WriteLine($"Current Language Code: {currentLanguageCode}");
 
-                // Retourner la langue en fonction du code
                 return currentLanguageCode switch
                 {
                     "en" => "English",
                     "fr" => "French",
-                    _ => string.Empty // Retourne une chaîne vide si la valeur ne correspond ni à "en" ni à "fr"
+                    _ => string.Empty
                 };
             }
             set
@@ -41,7 +43,6 @@ namespace AvaloniaApplication.ViewModels
                 {
                     _selectedLanguage = value;
 
-                    // Mettre à jour la configuration en fonction de la nouvelle valeur
                     switch (value)
                     {
                         case "English":
@@ -57,22 +58,19 @@ namespace AvaloniaApplication.ViewModels
             }
         }
 
-
         private string _selectedLogType;
         public string SelectedLogType
         {
             get
             {
-                // Obtenir le type de log actuel à partir de la configuration
                 string currentLogType = config.Configuration.GetLogType();
                 Console.WriteLine($"Current Log Type: {currentLogType}");
 
-                // Retourner le type de log en fonction du code
                 return currentLogType switch
                 {
                     "xml" => "XML",
                     "json" => "JSON",
-                    _ => string.Empty // Retourne une chaîne vide si la valeur ne correspond ni à "xml" ni à "json"
+                    _ => string.Empty
                 };
             }
             set
@@ -83,7 +81,6 @@ namespace AvaloniaApplication.ViewModels
                 {
                     _selectedLogType = value;
 
-                    // Mettre à jour la configuration en fonction de la nouvelle valeur
                     switch (value)
                     {
                         case "XML":
@@ -99,17 +96,14 @@ namespace AvaloniaApplication.ViewModels
             }
         }
 
-
         private string _logPath;
         public string LogPath
         {
             get
             {
-                // Obtenir le chemin actuel à partir de la configuration
                 string currentLogPath = config.Configuration.GetLogPath();
                 Console.WriteLine($"Current Log Path: {currentLogPath}");
 
-                // Retourner le chemin
                 return currentLogPath;
             }
             set
@@ -119,24 +113,36 @@ namespace AvaloniaApplication.ViewModels
                 if (_logPath != value)
                 {
                     _logPath = value;
-
-                    // Mettre à jour la configuration avec le nouveau chemin
                     config.Configuration.SetLogPath(value);
-
                     OnPropertyChanged();
                 }
             }
         }
 
-        private string _fileTypeToEncrypt;
-        public string FileTypeToEncrypt
+        private ObservableCollection<string> _fileTypesToEncrypt;
+        public ObservableCollection<string> FileTypesToEncrypt
         {
-            get => _fileTypeToEncrypt;
+            get => _fileTypesToEncrypt;
             set
             {
-                if (_fileTypeToEncrypt != value)
+                if (_fileTypesToEncrypt != value)
                 {
-                    _fileTypeToEncrypt = value;
+                    _fileTypesToEncrypt = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
+        private string _newFileTypeToEncrypt;
+        public string NewFileTypeToEncrypt
+        {
+            get => _newFileTypeToEncrypt;
+            set
+            {
+                if (_newFileTypeToEncrypt != value)
+                {
+                    _newFileTypeToEncrypt = value;
                     OnPropertyChanged();
                 }
             }
@@ -175,13 +181,32 @@ namespace AvaloniaApplication.ViewModels
                     SelectedLanguage = "French";
                     break;
                 default:
-                    SelectedLanguage = string.Empty; // Retourne une chaîne vide si la valeur ne correspond ni à "en" ni à "fr"
+                    SelectedLanguage = string.Empty;
                     break;
             }
             SelectedLogType = "XML";
             LogPath = config.Configuration.GetLogPath();
-            FileTypeToEncrypt = ".txt";
+            FileTypesToEncrypt = new ObservableCollection<string>(config.Configuration.GetCryptExtention());
             BusinessApplicationsBlockingSj = "exampleApp";
+        }
+
+        public void AddFileTypeToEncrypt()
+        {
+            if (!string.IsNullOrEmpty(NewFileTypeToEncrypt))
+            {
+                FileTypesToEncrypt.Add(NewFileTypeToEncrypt);
+                config.Configuration.AddCryptExtention(NewFileTypeToEncrypt);
+                NewFileTypeToEncrypt = string.Empty;
+            }
+        }
+
+        public void RemoveFileTypeToEncrypt(string fileType)
+        {
+            if (FileTypesToEncrypt.Contains(fileType))
+            {
+                FileTypesToEncrypt.Remove(fileType);
+                config.Configuration.RemoveCryptExtention(fileType);
+            }
         }
     }
 }
