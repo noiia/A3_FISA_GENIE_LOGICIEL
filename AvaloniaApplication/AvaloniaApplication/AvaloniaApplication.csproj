@@ -28,4 +28,8 @@
       <HintPath>..\..\Config\bin\Release\net8.0\Config.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Config\Config.csproj" />
+  </ItemGroup>
 </Project>
