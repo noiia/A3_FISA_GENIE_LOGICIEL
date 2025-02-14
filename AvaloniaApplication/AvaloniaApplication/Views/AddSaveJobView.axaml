@@ -1,9 +1,17 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="AvaloniaApplication.Views.AddSaveJobView">
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AvaloniaApplication.ViewModels"
+             xmlns:avaloniaApplication="clr-namespace:AvaloniaApplication"
+             xmlns:views="clr-namespace:AvaloniaApplication.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AvaloniaApplication.Views.AddSaveJobView"
+             x:DataType="vm:AddSaveJobViewModel">
     <Grid Margin="16">
         <StackPanel Spacing="16">
             <TextBlock Text="Add Savejob" FontSize="24" Margin="0,0,0,20"/>
+            <TextBlock Text="{Binding Name}" FontSize="24" Margin="0,0,0,20"/>
             <StackPanel Orientation="Horizontal" Spacing="10">
                 <TextBox Watermark="Name" Width="300"/>
             </StackPanel>
