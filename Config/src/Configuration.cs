@@ -115,7 +115,7 @@ namespace Config
 
         public int FindFirstFreeId()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 2147483647; i++)
             {
                 if (this.GetSaveJob(i) == null)
                 {
