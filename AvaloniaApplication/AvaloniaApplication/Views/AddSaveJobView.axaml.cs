@@ -10,4 +10,8 @@ public partial class AddSaveJobView : UserControl
     {
         InitializeComponent();
     }
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
 }

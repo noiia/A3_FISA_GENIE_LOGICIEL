@@ -25,17 +25,17 @@ namespace AvaloniaApplication
                 DisableAvaloniaDataAnnotationValidation();
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainViewModel()
+                    DataContext = new HomeViewModel()
                 };
             }
             else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
             {
-                singleViewPlatform.MainView = new MainView
+                singleViewPlatform.MainView = new HomeView
                 {
-                    DataContext = new MainViewModel()
+                    DataContext = new HomeViewModel()
                 };
             }
-
+        
             base.OnFrameworkInitializationCompleted();
         }
 

@@ -2,7 +2,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="AvaloniaApplication.Views.SettingsView">
     <StackPanel>
-        <TextBlock Text="Settings View"/>
-        <!-- Ajoutez ici votre interface utilisateur pour les paramètres -->
+        <Grid Margin="16">
+            <StackPanel Spacing="16">
+                <TextBlock Text="Settings" FontSize="24" Margin="0,0,0,20"/>
+                <ComboBox PlaceholderText="Select Language" Width="300">
+                    <ComboBoxItem Content="English"/>
+                    <ComboBoxItem Content="French"/>
+                </ComboBox>
+                <ComboBox PlaceholderText="Select Log Type" Width="300">
+                    <ComboBoxItem Content="XML"/>
+                    <ComboBoxItem Content="JSON"/>
+                </ComboBox>
+
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBox Watermark="Set Log Path" Width="300"/>
+                    <Button Content="Browse..." Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+
+                    <TextBox Watermark="File Type to Encrypt" Width="300"/>
+
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBox Watermark="Business Applications Blocking SJ" Width="300"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
     </StackPanel>
 </UserControl>

@@ -2,7 +2,47 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AvaloniaApplication.ViewModels"
+             xmlns:avaloniaApplication="clr-namespace:AvaloniaApplication"
+             xmlns:views="clr-namespace:AvaloniaApplication.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="AvaloniaApplication.Views.HomeView">
-    Welcome to Avalonia!
+             x:Class="AvaloniaApplication.Views.HomeView"
+             x:DataType="vm:HomeViewModel">
+     <Grid Margin="0,0,0,50">
+        <TextBlock Text="EasySave" FontSize="30" Margin="32,24,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+        <TabControl Margin="32,80,32,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TabItem Header="Savejobs">
+                <Grid Margin="16">
+                    <TextBlock Text="Savejob" FontSize="24" Margin="0,0,0,20"/>
+                    <ScrollViewer Margin="32,40,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
+                        <DataGrid ItemsSource="{Binding TableData}"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  Height="250" 
+                                  Margin="10">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50" />
+                                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="50"/>
+                                <DataGridTextColumn Header="Last Execution" Binding="{Binding LastExec}" Width="50"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="50"/>
+                                <DataGridCheckBoxColumn Header="Exec" Binding="{Binding Exec}" Width="50"/>
+                                <DataGridCheckBoxColumn Header="Delete" Binding="{Binding Delete}" Width="50"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Add Savejob">
+               <views:AddSaveJobView/>
+            </TabItem>
+            <TabItem Header="Settings">
+                <views:SettingsView />
+            </TabItem>
+        </TabControl>
+
+        <Border Margin="32,128,32,32" BorderThickness="1">
+            <!-- Additional content can be added here -->
+        </Border>
+    </Grid>
 </UserControl>

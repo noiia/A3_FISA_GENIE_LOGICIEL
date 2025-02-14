@@ -30,7 +30,7 @@ namespace CLI
                 {
                     ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
                     {
-                        FileName = "..\\..\\..\\..\\ExecSaveJob\\bin\\Debug\\net8.0\\ExecSaveJob.exe", // Programme à exécuter
+                        FileName = "ExecSaveJob.exe", // Programme à exécuter
                         Arguments = id,           // Arguments optionnels
                         UseShellExecute = false,    // Utiliser le shell Windows (obligatoire pour certaines applications)
                         RedirectStandardOutput = true, // Capture la sortie standard
@@ -73,7 +73,7 @@ namespace CLI
                 {
                     ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
                     {
-                        FileName = "..\\..\\..\\..\\ExecSaveJob\\bin\\Debug\\net8.0\\ExecSaveJob.exe", // Programme à exécuter
+                        FileName = "ExecSaveJob.exe", // Programme à exécuter
                         Arguments = i.ToString(),           // Arguments optionnels
                         UseShellExecute = false,    // Utiliser le shell Windows (obligatoire pour certaines applications)
                         RedirectStandardOutput = true, // Capture la sortie standard
@@ -113,7 +113,7 @@ namespace CLI
             {
                 ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
                 {
-                    FileName = "..\\..\\..\\..\\ExecSaveJob\\bin\\Debug\\net8.0\\ExecSaveJob.exe", // Programme à exécuter
+                    FileName = "ExecSaveJob.exe", // Programme à exécuter
                     Arguments = string.Join(' ',args),           // Arguments optionnels
                     UseShellExecute = false,    // Utiliser le shell Windows (obligatoire pour certaines applications)
                     RedirectStandardOutput = true, // Capture la sortie standard
@@ -151,7 +151,7 @@ namespace CLI
             {
                 ProcessStartInfo serviceExecSaveJob = new ProcessStartInfo
                 {
-                    FileName = "..\\..\\..\\..\\ExecSaveJob\\bin\\Debug\\net8.0\\ExecSaveJob.exe",
+                    FileName = "ExecSaveJob.exe",
                     Arguments = string.Join(' ', args),
                     UseShellExecute = false,  // Changed from true to false
                     RedirectStandardOutput = true, // Added to capture output
