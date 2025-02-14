@@ -6,6 +6,8 @@ using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
 
+using Config;
+
 namespace AvaloniaApplication.ViewModels;
 
 public class TableDataModel
@@ -30,14 +32,14 @@ public partial class HomeViewModel : ReactiveObject
     public HomeViewModel()
     {
         TableData = new ObservableCollection<TableDataModel>();
-        TableData.Add(new TableDataModel 
-        { 
-            Id = 0, 
-            Name = "Test", 
-            LastExec = DateTime.Now, 
-            Status = "en cours d'exécution", 
-            Exec = false, 
-            Delete = false 
-        });
+            TableData.Add(new TableDataModel 
+            { 
+                Id = 0, 
+                Name = "Test", 
+                LastExec = DateTime.Now, 
+                Status = "en cours d'exécution", 
+                Exec = false, 
+                Delete = false 
+            });
     }
 }

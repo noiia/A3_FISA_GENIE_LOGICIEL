@@ -10,27 +10,27 @@
              x:DataType="vm:HomeViewModel">
      <Grid Margin="0,0,0,50">
         <TextBlock Text="EasySave" FontSize="30" Margin="32,24,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-
         <TabControl Margin="32,80,32,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <TabItem Header="Savejobs">
                 <Grid Margin="16">
                     <TextBlock Text="Savejob" FontSize="24" Margin="0,0,0,20"/>
-                    <ScrollViewer Margin="32,40,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
-                        <DataGrid ItemsSource="{Binding TableData}"
-                                  AutoGenerateColumns="False"
-                                  IsReadOnly="True"
-                                  Height="250" 
-                                  Margin="10">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50" />
-                                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="50"/>
-                                <DataGridTextColumn Header="Last Execution" Binding="{Binding LastExec}" Width="50"/>
-                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="50"/>
-                                <DataGridCheckBoxColumn Header="Exec" Binding="{Binding Exec}" Width="50"/>
-                                <DataGridCheckBoxColumn Header="Delete" Binding="{Binding Delete}" Width="50"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </ScrollViewer>
+                    <DataGrid ItemsSource="{Binding TableData}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="False"
+                              Height="250" 
+                              Margin="10"
+                              GridLinesVisibility="All"
+                              BorderThickness="1" 
+                              BorderBrush="Gray">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="100" />
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="300"/>
+                            <DataGridTextColumn Header="Last Execution" Binding="{Binding LastExec}" Width="200"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="200"/>
+                            <DataGridCheckBoxColumn Header="Exec" Binding="{Binding Exec}" Width="100"/>
+                            <DataGridCheckBoxColumn Header="Delete" Binding="{Binding Delete}" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
             </TabItem>
             <TabItem Header="Add Savejob">
@@ -42,7 +42,6 @@
         </TabControl>
 
         <Border Margin="32,128,32,32" BorderThickness="1">
-            <!-- Additional content can be added here -->
         </Border>
     </Grid>
 </UserControl>
