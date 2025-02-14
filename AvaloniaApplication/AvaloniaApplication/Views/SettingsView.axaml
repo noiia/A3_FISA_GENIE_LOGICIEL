@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:AvaloniaApplication.ViewModels"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d"
              x:Class="AvaloniaApplication.Views.SettingsView"
              x:DataType="vm:SettingsViewModel">
@@ -15,19 +16,20 @@
                 <TextBlock Text="Settings" FontSize="24" Margin="0,0,0,20"/>
                 <ComboBox PlaceholderText="Select Language" Width="300"
                           SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
-                    <ComboBoxItem Content="English"/>
-                    <ComboBoxItem Content="French"/>
+                    <system:String>English</system:String>
+                    <system:String>French</system:String>
                 </ComboBox>
                 <ComboBox PlaceholderText="Select Log Type" Width="300"
                           SelectedItem="{Binding SelectedLogType, Mode=TwoWay}">
-                    <ComboBoxItem Content="XML"/>
-                    <ComboBoxItem Content="JSON"/>
+                    <system:String>XML</system:String>
+                    <system:String>JSON</system:String>
                 </ComboBox>
 
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <TextBox Watermark="Set Log Path" Width="300"
                              Text="{Binding LogPath, Mode=TwoWay}"/>
-                    <Button Content="Browse..." Width="100"/>
+                    <Button Content="Browse..." Width="100" Click="OnBrowseButtonClicked"/>
+                    <Button Content="Reset" Width="100" Click="OnResetButtonClicked"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <TextBox Watermark="File Type to Encrypt" Width="300"
@@ -35,7 +37,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <TextBox Watermark="Business Applications Blocking SJ" Width="300"
-                             Text="{Binding BusinessApplicationsBlockingSJ, Mode=TwoWay}"/>
+                             Text="{Binding BusinessApplicationsBlockingSj, Mode=TwoWay}"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
