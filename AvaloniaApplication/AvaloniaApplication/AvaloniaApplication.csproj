@@ -22,4 +22,10 @@
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="ReactiveUI" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Config">
+      <HintPath>..\..\Config\bin\Release\net8.0\Config.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
