@@ -1,5 +1,10 @@
 using System;
 using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
+using Avalonia.Markup.Xaml.Styling;
+using Avalonia.Media;
+using AvaloniaApplication.ViewModels;
+using SkiaSharp;
 
 namespace AvaloniaApplication.Views
 {
@@ -8,6 +13,11 @@ namespace AvaloniaApplication.Views
         public MainWindow()
         {
             InitializeComponent();
-            WindowState = WindowState.Maximized;        }
+        }
+
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
+        }
     }
 }

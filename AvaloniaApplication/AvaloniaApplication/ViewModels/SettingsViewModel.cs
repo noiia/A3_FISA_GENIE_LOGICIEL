@@ -12,13 +12,12 @@ namespace AvaloniaApplication.ViewModels
     public class SettingsViewModel : INotifyPropertyChanged
     {
         ConfigSingleton config;
-
+        
         public SettingsViewModel()
         {
             config = ConfigSingleton.Instance;
             LoadDefaultSettings();
             FileTypesToEncrypt = new ObservableCollection<string>(config.Configuration.GetCryptExtension() ?? Array.Empty<string>());
-
         }
 
         private string _selectedLanguage;
@@ -150,6 +149,7 @@ namespace AvaloniaApplication.ViewModels
         }
 
         private string _businessApplicationsBlockingSj;
+
         public string BusinessApplicationsBlockingSj
         {
             get => _businessApplicationsBlockingSj;

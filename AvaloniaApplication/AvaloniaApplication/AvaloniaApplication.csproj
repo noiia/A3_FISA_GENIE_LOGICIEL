@@ -21,17 +21,12 @@
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="ReactiveUI" />
+    <PackageReference Include="SkiaSharp" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Config">
       <HintPath>..\..\Config\bin\Debug\net8.0\Config.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Config">
-        <HintPath>..\..\Config\bin\Debug\net8.0\Config.dll</HintPath>
     </Reference>
   </ItemGroup>
 
@@ -45,10 +40,5 @@
       <DependentUpon>AddSaveJobView.axaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <AvaloniaResource Include="Assets\checked-svgrepo-com.svg" />
-    <AvaloniaResource Include="Assets\trash-alt-svgrepo-com.svg" />
   </ItemGroup>
 </Project>
