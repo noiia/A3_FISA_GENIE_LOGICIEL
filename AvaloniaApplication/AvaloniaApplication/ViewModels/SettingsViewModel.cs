@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -16,7 +17,7 @@ namespace AvaloniaApplication.ViewModels
         {
             config = ConfigSingleton.Instance;
             LoadDefaultSettings();
-            FileTypesToEncrypt = new ObservableCollection<string>(config.Configuration.GetCryptExtention());
+            FileTypesToEncrypt = new ObservableCollection<string>(config.Configuration.GetCryptExtension() ?? Array.Empty<string>());
 
         }
 
@@ -120,7 +121,7 @@ namespace AvaloniaApplication.ViewModels
         }
 
         private ObservableCollection<string> _fileTypesToEncrypt;
-        public ObservableCollection<string> FileTypesToEncrypt
+        public ObservableCollection<string>? FileTypesToEncrypt
         {
             get => _fileTypesToEncrypt;
             set
@@ -186,7 +187,7 @@ namespace AvaloniaApplication.ViewModels
             }
             SelectedLogType = "XML";
             LogPath = config.Configuration.GetLogPath();
-            FileTypesToEncrypt = new ObservableCollection<string>(config.Configuration.GetCryptExtention());
+            FileTypesToEncrypt = new ObservableCollection<string>(config.Configuration.GetCryptExtension() ?? Array.Empty<string>());
             BusinessApplicationsBlockingSj = "exampleApp";
         }
 
@@ -195,7 +196,7 @@ namespace AvaloniaApplication.ViewModels
             if (!string.IsNullOrEmpty(NewFileTypeToEncrypt))
             {
                 FileTypesToEncrypt.Add(NewFileTypeToEncrypt);
-                config.Configuration.AddCryptExtention(NewFileTypeToEncrypt);
+                config.Configuration.AddCryptExtension(NewFileTypeToEncrypt);
                 NewFileTypeToEncrypt = string.Empty;
             }
         }
@@ -205,7 +206,7 @@ namespace AvaloniaApplication.ViewModels
             if (FileTypesToEncrypt.Contains(fileType))
             {
                 FileTypesToEncrypt.Remove(fileType);
-                config.Configuration.RemoveCryptExtention(fileType);
+                config.Configuration.RemoveCryptExtension(fileType);
             }
         }
     }

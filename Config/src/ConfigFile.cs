@@ -8,16 +8,16 @@ namespace Config
         private string _logPath;
         private string _language; //fr || en
         private string _logType; //json || xml
-        private string[] _cryptExtention;
+        private string[] _cryptExtension;
         private string[] _buisnessApp;
 
-        public ConfigFile(SaveJob[] saveJobs, string logPath, string language, string logType, string[] cryptExtention, string[] buisnessApp)
+        public ConfigFile(SaveJob[] saveJobs, string logPath, string language, string logType, string[] cryptExtension, string[] buisnessApp)
         {
             _saveJobs = saveJobs;
             _logPath = logPath;
             _language = language;
             _logType = logType;
-            _cryptExtention = cryptExtention;
+            _cryptExtension = cryptExtension;
             _buisnessApp = buisnessApp;
         }
 
@@ -45,10 +45,10 @@ namespace Config
             set => _logType = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        public string[] CryptExtention
+        public string[] CryptExtension
         {
-            get => _cryptExtention;
-            set => _cryptExtention = value ?? throw new ArgumentNullException(nameof(value));
+            get => _cryptExtension;
+            set => _cryptExtension = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         public string[] BuisnessApp

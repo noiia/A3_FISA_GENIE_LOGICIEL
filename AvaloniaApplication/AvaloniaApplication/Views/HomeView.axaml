@@ -29,10 +29,10 @@
                             <DataGridTemplateColumn Header="Execute" Width="100">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Command="{Binding ExeSaveJob}" CommandParameter="{Binding Id}">
+                                        <Button Command="{Binding ExeSaveJob}" CommandParameter="{Binding Id}"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center">
                                             <StackPanel Orientation="Horizontal">
-                                                <!-- <Image Source="avares://Assets/checked-svgrepo-com.svg" Width="20" Height="20"/> -->
-                                                <TextBlock Text="Exécute" Margin="5,0,0,0"/>
+                                                <Image Source="avares://AvaloniaApplication/Assets/gear.png" Width="20" Height="20"/>
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>
@@ -41,10 +41,10 @@
                             <DataGridTemplateColumn Header="Delete" Width="100">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Command="{Binding DelSaveJob}" CommandParameter="{Binding Id}">
+                                        <Button Command="{Binding DelSaveJob}" CommandParameter="{Binding Id}" 
+                                                HorizontalAlignment="Center" VerticalAlignment="Center">
                                             <StackPanel Orientation="Horizontal">
-                                                <!-- <Image Source="avares://Assets/trash-alt-svgrepo-com.svg" Width="20" Height="20"/> -->
-                                                <TextBlock Text="Supprimer" Margin="5,0,0,0"/>
+                                                <Image Source="avares://AvaloniaApplication/Assets/trash.png" Width="20" Height="20"/>
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>

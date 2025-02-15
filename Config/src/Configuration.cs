@@ -163,31 +163,31 @@ namespace Config
             return this._configFile.LogType;
         }
 
-        public void SetCryptExtention(string[] cryptExtention)
+        public void SetCryptExtension(string[] cryptExtension)
         {
-            this._configFile.CryptExtention = cryptExtention;
+            this._configFile.CryptExtension = cryptExtension;
             this.SaveConfiguration();
         }
 
-        public string[] GetCryptExtention()
+        public string[] GetCryptExtension()
         {
-            return this._configFile.CryptExtention;
+            return this._configFile.CryptExtension;
         }
 
-        public void AddCryptExtention(string cryptExtention)
+        public void AddCryptExtension(string cryptExtension)
         {
-            if (!this._configFile.CryptExtention.Contains(cryptExtention))
+            if (!this._configFile.CryptExtension.Contains(cryptExtension))
             {
-                this._configFile.CryptExtention = this._configFile.CryptExtention.Append(cryptExtention).ToArray();
+                this._configFile.CryptExtension = this._configFile.CryptExtension.Append(cryptExtension).ToArray();
                 this.SaveConfiguration();
             }
         }
 
-        public void RemoveCryptExtention(string cryptExtention)
+        public void RemoveCryptExtension(string cryptExtension)
         {
-            if (this._configFile.CryptExtention.Contains(cryptExtention))
+            if (this._configFile.CryptExtension.Contains(cryptExtension))
             {
-                this._configFile.CryptExtention = this._configFile.CryptExtention.Where(ext => ext != cryptExtention).ToArray();
+                this._configFile.CryptExtension = this._configFile.CryptExtension.Where(ext => ext != cryptExtension).ToArray();
                 this.SaveConfiguration();
             }
         }
