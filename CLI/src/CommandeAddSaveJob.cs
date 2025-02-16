@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Transactions;
-using CLI.i18n;
+using Config.i18n;
 using Config;
 using Logger;
 

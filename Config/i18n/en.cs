@@ -1,4 +1,4 @@
-﻿namespace CLI.i18n;
+﻿namespace Config.i18n;
 
 public class en
 {
