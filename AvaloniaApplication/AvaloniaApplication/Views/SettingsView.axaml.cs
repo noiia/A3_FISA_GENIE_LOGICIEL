@@ -60,5 +60,24 @@ namespace AvaloniaApplication.Views
                 }
             }
         }
+        
+        private void OnAddBusinessAppButtonClicked(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is SettingsViewModel viewModel)
+            {
+                viewModel.AddBusinessApp();
+            }
+        }
+
+        private void OnRemoveBusinessAppButtonClicked(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is SettingsViewModel viewModel && this.FindControl<ListBox>("BusinessAppListBox") is ListBox listBox)
+            {
+                if (listBox.SelectedItem is string selectedFileType)
+                {
+                    viewModel.RemoveBusinessApp(selectedFileType);
+                }
+            }
+        }
     }
 }
