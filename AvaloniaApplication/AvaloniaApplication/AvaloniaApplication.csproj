@@ -37,7 +37,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Config\Config.csproj" />
-    <ProjectReference Include="..\..\Services\Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

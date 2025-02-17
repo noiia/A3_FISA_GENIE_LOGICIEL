@@ -2,7 +2,7 @@
 using Logger;
 using Services;
 
-namespace AddSaveJob;
+namespace Services;
 
 public class ServiceAddSaveJob
 {
