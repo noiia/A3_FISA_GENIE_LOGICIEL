@@ -3,29 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySave", "EasySave.csproj", "{BCCEC182-56A1-4BF3-B670-CA42EC13AD21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLI", "CLI\CLI.csproj", "{F86F7B7A-0E1D-4690-A224-441868050DC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLI", "..\CLI\CLI.csproj", "{F86F7B7A-0E1D-4690-A224-441868050DC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeleteSaveJob", "DeleteSaveJob\DeleteSaveJob.csproj", "{B6725431-5EBC-47B8-A27C-7DED1676EF07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeleteSaveJob", "..\DeleteSaveJob\DeleteSaveJob.csproj", "{B6725431-5EBC-47B8-A27C-7DED1676EF07}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExecSaveJob", "ExecSaveJob\ExecSaveJob.csproj", "{F0D5542E-6195-4E10-8447-9C5C643E2015}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExecSaveJob", "..\ExecSaveJob\ExecSaveJob.csproj", "{F0D5542E-6195-4E10-8447-9C5C643E2015}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddSaveJob", "AddSaveJob\AddSaveJob.csproj", "{5463D10A-65EB-44BB-8F9F-0946D71DD37D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddSaveJob", "..\AddSaveJob\AddSaveJob.csproj", "{5463D10A-65EB-44BB-8F9F-0946D71DD37D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{58D1BA0A-0B8D-4B3B-B726-489E8B62648C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "..\Services\Services.csproj", "{58D1BA0A-0B8D-4B3B-B726-489E8B62648C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Config", "Config\Config.csproj", "{2732CE04-6EB5-4FC6-864F-F77DB298B663}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Config", "..\Config\Config.csproj", "{2732CE04-6EB5-4FC6-864F-F77DB298B663}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "Logger\Logger.csproj", "{B0D2E2F4-EDEC-42D6-BAC4-AED577C9E764}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "..\Logger\Logger.csproj", "{B0D2E2F4-EDEC-42D6-BAC4-AED577C9E764}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaApplication", "AvaloniaApplication\AvaloniaApplication\AvaloniaApplication.csproj", "{D2B314E0-EBAC-4148-9E01-521C512AE0F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaApplication", "..\AvaloniaApplication\AvaloniaApplication\AvaloniaApplication.csproj", "{D2B314E0-EBAC-4148-9E01-521C512AE0F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaApplication.Desktop", "AvaloniaApplication\AvaloniaApplication.Desktop\AvaloniaApplication.Desktop.csproj", "{5DE7CBED-55C2-4E59-887F-6AC7BBF0640A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaApplication.Desktop", "..\AvaloniaApplication\AvaloniaApplication.Desktop\AvaloniaApplication.Desktop.csproj", "{5DE7CBED-55C2-4E59-887F-6AC7BBF0640A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaApplication.Browser", "AvaloniaApplication\AvaloniaApplication.Browser\AvaloniaApplication.Browser.csproj", "{B0A47B91-A093-41B6-8382-B1DEFBAB808D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaApplication.Browser", "..\AvaloniaApplication\AvaloniaApplication.Browser\AvaloniaApplication.Browser.csproj", "{B0A47B91-A093-41B6-8382-B1DEFBAB808D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controller", "Controller\Controller.csproj", "{2887B98E-7ABB-4567-B820-B10926EE228D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controller", "..\Controller\Controller.csproj", "{2887B98E-7ABB-4567-B820-B10926EE228D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Job", "Job\Job.csproj", "{6D8865AD-B7F3-4A94-A045-1F8CCD07F909}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +33,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BCCEC182-56A1-4BF3-B670-CA42EC13AD21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BCCEC182-56A1-4BF3-B670-CA42EC13AD21}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BCCEC182-56A1-4BF3-B670-CA42EC13AD21}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BCCEC182-56A1-4BF3-B670-CA42EC13AD21}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F86F7B7A-0E1D-4690-A224-441868050DC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F86F7B7A-0E1D-4690-A224-441868050DC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F86F7B7A-0E1D-4690-A224-441868050DC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -81,6 +77,10 @@ Global
 		{2887B98E-7ABB-4567-B820-B10926EE228D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2887B98E-7ABB-4567-B820-B10926EE228D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2887B98E-7ABB-4567-B820-B10926EE228D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D8865AD-B7F3-4A94-A045-1F8CCD07F909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D8865AD-B7F3-4A94-A045-1F8CCD07F909}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D8865AD-B7F3-4A94-A045-1F8CCD07F909}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D8865AD-B7F3-4A94-A045-1F8CCD07F909}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
