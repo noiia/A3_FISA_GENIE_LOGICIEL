@@ -4,10 +4,14 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ReactiveUI;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Threading;
 using Config;
 using Services;
 
@@ -24,14 +28,10 @@ public class TableDataModel
     public required ICommand DelSaveJob { get; set; }
 }
 
-public partial class HomeViewModel : ReactiveObject
+public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
 {
-    private string _title;
-    public string Title
-    {
-        get => _title;
-        set => this.RaiseAndSetIfChanged(ref _title, value);
-    }
+    public event PropertyChangedEventHandler PropertyChanged;
+    public string Title { get; set; }
     
     private string _notification;
     public string Notification
@@ -44,17 +44,23 @@ public partial class HomeViewModel : ReactiveObject
     public ObservableCollection<TableDataModel> TableData
     {
         get => _tableData;
-        set => this.RaiseAndSetIfChanged(ref _tableData, value);
+        set  {
+            if (_tableData != value)
+            {
+            _tableData = value;
+            OnPropertyChanged();
+            }
+        }
     }
     
     private void ExecuteSaveJob(object args)
     {
-        string[] id = [Convert.ToString(args) ?? string.Empty];
+        string[] ids = [Convert.ToString(args) ?? string.Empty];
         
         ConfigSingleton config = ConfigSingleton.Instance;
         config.Configuration.LoadConfiguration();
         
-        Notification = Controller.ExecuteSaveJob.Execute(config.Configuration, id);
+        Notification = Controller.ExecuteSaveJob.Execute(config.Configuration, ids);
     }
     private void DeleteSaveJob(object args)
     {
@@ -65,17 +71,23 @@ public partial class HomeViewModel : ReactiveObject
         
         Notification = Controller.DeleteSaveJob.Execute(config.Configuration, id);     
     }
-    
-    public HomeViewModel()
+
+    public void AddItem(TableDataModel item)
     {
-        Title = "Save job list";
+        Dispatcher.UIThread.InvokeAsync(() => TableData.Add(item));
+    }
+    
+    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public void LoadSaveJob(Configuration config)
+    {
         TableData = new ObservableCollection<TableDataModel>();
-        ConfigSingleton config = ConfigSingleton.Instance;
-        
-        config.Configuration.LoadConfiguration();
-        foreach (SaveJob saveJob in config.Configuration.GetSaveJobs())
+        foreach (SaveJob saveJob in config.GetSaveJobs())
         {
-            TableData.Add(new TableDataModel 
+            AddItem(new TableDataModel 
             { 
                 Id = saveJob.Id, 
                 Name = saveJob.Name, 
@@ -86,6 +98,15 @@ public partial class HomeViewModel : ReactiveObject
                 DelSaveJob = new RelayCommand<object>(DeleteSaveJob)
             });
         }
+    }
+    public HomeViewModel()
+    {
+        Title = "Save job list";
+        TableData = new ObservableCollection<TableDataModel>();
+        ConfigSingleton config = ConfigSingleton.Instance;
+        
+        config.Configuration.LoadConfiguration();
+        LoadSaveJob(config.Configuration);
 
         Notification = "Welcome back on EasySave !";
     }
