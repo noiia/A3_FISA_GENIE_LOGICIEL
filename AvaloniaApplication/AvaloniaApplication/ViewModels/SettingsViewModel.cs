@@ -10,14 +10,14 @@ namespace AvaloniaApplication.ViewModels
 {
     public class SettingsViewModel : INotifyPropertyChanged
     {
-        ConfigSingleton config;
+        Config.Configuration config;
 
         public SettingsViewModel()
         {
-            config = ConfigSingleton.Instance;
+            config = ConfigSingleton.Instance();
             LoadDefaultSettings();
-            FileTypesToEncrypt = new ObservableCollection<string>(config.Configuration.GetCryptExtension() ?? Array.Empty<string>());
-            BusinessApp = new ObservableCollection<string>(config.Configuration.GetBuisnessApp() ?? Array.Empty<string>());
+            FileTypesToEncrypt = new ObservableCollection<string>(config.GetCryptExtension() ?? Array.Empty<string>());
+            BusinessApp = new ObservableCollection<string>(config.GetBuisnessApp() ?? Array.Empty<string>());
         }
 
         private string _selectedLanguage;
@@ -25,7 +25,7 @@ namespace AvaloniaApplication.ViewModels
         {
             get
             {
-                string currentLanguageCode = config.Configuration.GetLanguage();
+                string currentLanguageCode = config.GetLanguage();
                 Console.WriteLine($"Current Language Code: {currentLanguageCode}");
 
                 return currentLanguageCode switch
@@ -46,10 +46,10 @@ namespace AvaloniaApplication.ViewModels
                     switch (value)
                     {
                         case "English":
-                            config.Configuration.SetLanguage("en");
+                            config.SetLanguage("en");
                             break;
                         case "French":
-                            config.Configuration.SetLanguage("fr");
+                            config.SetLanguage("fr");
                             break;
                     }
 
@@ -63,7 +63,7 @@ namespace AvaloniaApplication.ViewModels
         {
             get
             {
-                string currentLogType = config.Configuration.GetLogType();
+                string currentLogType = config.GetLogType();
                 Console.WriteLine($"Current Log Type: {currentLogType}");
 
                 return currentLogType switch
@@ -84,10 +84,10 @@ namespace AvaloniaApplication.ViewModels
                     switch (value)
                     {
                         case "XML":
-                            config.Configuration.SetLogType("xml");
+                            config.SetLogType("xml");
                             break;
                         case "JSON":
-                            config.Configuration.SetLogType("json");
+                            config.SetLogType("json");
                             break;
                     }
 
@@ -101,7 +101,7 @@ namespace AvaloniaApplication.ViewModels
         {
             get
             {
-                string currentLogPath = config.Configuration.GetLogPath();
+                string currentLogPath = config.GetLogPath();
                 Console.WriteLine($"Current Log Path: {currentLogPath}");
 
                 return currentLogPath;
@@ -113,7 +113,7 @@ namespace AvaloniaApplication.ViewModels
                 if (_logPath != value)
                 {
                     _logPath = value;
-                    config.Configuration.SetLogPath(value);
+                    config.SetLogPath(value);
                     OnPropertyChanged();
                 }
             }
@@ -184,8 +184,8 @@ namespace AvaloniaApplication.ViewModels
 
         public void LoadDefaultSettings()
         {
-            Console.WriteLine(config.Configuration.GetLanguage());
-            switch (config.Configuration.GetLanguage())
+            Console.WriteLine(config.GetLanguage() as string);
+            switch (config.GetLanguage())
             {
                 case "en":
                     SelectedLanguage = "English";
@@ -198,9 +198,9 @@ namespace AvaloniaApplication.ViewModels
                     break;
             }
             SelectedLogType = "XML";
-            LogPath = config.Configuration.GetLogPath();
-            FileTypesToEncrypt = new ObservableCollection<string>(config.Configuration.GetCryptExtension() ?? Array.Empty<string>());
-            BusinessApp = new ObservableCollection<string>(config.Configuration.GetBuisnessApp() ?? Array.Empty<string>());
+            LogPath = config.GetLogPath();
+            FileTypesToEncrypt = new ObservableCollection<string>(config.GetCryptExtension() ?? Array.Empty<string>());
+            BusinessApp = new ObservableCollection<string>(config.GetBuisnessApp() ?? Array.Empty<string>());
         }
 
         public void AddFileTypeToEncrypt()
@@ -208,7 +208,7 @@ namespace AvaloniaApplication.ViewModels
             if (!string.IsNullOrEmpty(NewFileTypeToEncrypt))
             {
                 FileTypesToEncrypt.Add(NewFileTypeToEncrypt);
-                config.Configuration.AddCryptExtension(NewFileTypeToEncrypt);
+                config.AddCryptExtension(NewFileTypeToEncrypt);
                 NewFileTypeToEncrypt = string.Empty;
             }
         }
@@ -218,7 +218,7 @@ namespace AvaloniaApplication.ViewModels
             if (FileTypesToEncrypt.Contains(fileType))
             {
                 FileTypesToEncrypt.Remove(fileType);
-                config.Configuration.RemoveCryptExtension(fileType);
+                config.RemoveCryptExtension(fileType);
             }
         }
 
@@ -227,7 +227,7 @@ namespace AvaloniaApplication.ViewModels
             if (!string.IsNullOrEmpty(NewBusinessApp))
             {
                 BusinessApp.Add(NewBusinessApp);
-                config.Configuration.AddBuisnessApp(NewBusinessApp);
+                config.AddBuisnessApp(NewBusinessApp);
                 NewBusinessApp = string.Empty;
             }
         }
@@ -237,7 +237,7 @@ namespace AvaloniaApplication.ViewModels
             if (BusinessApp.Contains(businessApp))
             {
                 BusinessApp.Remove(businessApp);
-                config.Configuration.RemoveBuisnessApp(businessApp);
+                config.RemoveBuisnessApp(businessApp);
             }
         }
     }
