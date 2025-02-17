@@ -2,6 +2,7 @@
 using Job.Services;
 using Logger;
 using Services;
+using Configuration = Job.Services.Configuration;
 
 namespace Services;
 
@@ -26,7 +27,7 @@ public class ServiceAddSaveJob
 
             if (!Directory.Exists(args[2]))
             {
-                LoggerUtility.WriteLog(LoggerUtility.Warning, "Destiantion folder does not exist (" + args[2] + ")");
+                LoggerUtility.WriteLog(LoggerUtility.Warning, "Destination folder does not exist (" + args[2] + ")");
                 return 1;
             }
 

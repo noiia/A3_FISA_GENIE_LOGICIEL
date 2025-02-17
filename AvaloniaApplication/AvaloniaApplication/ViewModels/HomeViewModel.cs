@@ -56,19 +56,19 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     {
         string[] ids = [Convert.ToString(args) ?? string.Empty];
         
-        ConfigSingleton config = ConfigSingleton.Instance;
-        config.Configuration.LoadConfiguration();
+        Config.Configuration config = ConfigSingleton.Instance();
+        config.LoadConfiguration();
         
-        Notification = Controller.ExecuteSaveJob.Execute(config.Configuration, ids);
+        Notification = Controller.ExecuteSaveJob.Execute(config, ids);
     }
     private void DeleteSaveJob(object args)
     {
         string[] id = [Convert.ToString(args) ?? string.Empty];
         
-        ConfigSingleton config = ConfigSingleton.Instance;
-        config.Configuration.LoadConfiguration();
+        Config.Configuration config = ConfigSingleton.Instance();
+        config.LoadConfiguration();
         
-        Notification = Controller.DeleteSaveJob.Execute(config.Configuration, id);     
+        Notification = Controller.DeleteSaveJob.Execute(config, id);     
     }
 
     public void AddItem(TableDataModel item)
@@ -102,10 +102,10 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     {
         Title = "Save job list";
         TableData = new ObservableCollection<TableDataModel>();
-        ConfigSingleton config = ConfigSingleton.Instance;
+        Config.Configuration config = ConfigSingleton.Instance();
         
-        config.Configuration.LoadConfiguration();
-        LoadSaveJob(config.Configuration);
+        config.LoadConfiguration();
+        LoadSaveJob(config);
 
         Notification = "Welcome back on EasySave !";
     }
