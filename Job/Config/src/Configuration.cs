@@ -1,9 +1,7 @@
-using System;
-using System.IO;
-using System.Linq;
 using System.Text.Json;
+using Config;
 
-namespace Config
+namespace Job.Config
 {
     public class Configuration
     {
