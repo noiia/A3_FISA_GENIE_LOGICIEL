@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-
+using Job.Config;
 using Logger;
 
 namespace ExecSaveJob;
@@ -10,7 +10,7 @@ public abstract class Backup
     public string RootDir { get; set; }
     public string SavesDir { get; protected set; }
     
-    public Config.SaveJob SaveJob { get; set; }
+    public SaveJob SaveJob { get; set; }
 
     public void setSavesDir(string savesDir)
     {
@@ -38,12 +38,12 @@ public abstract class Backup
     
     protected Backup BackupInstance { get; set; }
 
-    public static void GetInstance(Config.SaveJob saveJob)
+    public static void GetInstance(SaveJob saveJob)
     {
         throw new NotImplementedException();
     }
 
-    protected Backup(Config.SaveJob saveJob)
+    protected Backup(SaveJob saveJob)
     {
         if (Directory.Exists(saveJob.Source))
         {

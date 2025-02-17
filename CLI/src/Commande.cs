@@ -1,5 +1,6 @@
 ﻿using System;
 using Config;
+using Job.Config;
 
 namespace CLI
 {

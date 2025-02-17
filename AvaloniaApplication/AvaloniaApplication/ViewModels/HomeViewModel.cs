@@ -13,6 +13,7 @@ using System.Windows.Input;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using Config;
+using Job.Config;
 
 namespace AvaloniaApplication.ViewModels;
 
@@ -56,7 +57,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     {
         string[] ids = [Convert.ToString(args) ?? string.Empty];
         
-        Config.Configuration config = ConfigSingleton.Instance();
+        Configuration config = ConfigSingleton.Instance();
         config.LoadConfiguration();
         
         Notification = Controller.ExecuteSaveJob.Execute(config, ids);
@@ -65,7 +66,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     {
         string[] id = [Convert.ToString(args) ?? string.Empty];
         
-        Config.Configuration config = ConfigSingleton.Instance();
+        Configuration config = ConfigSingleton.Instance();
         config.LoadConfiguration();
         
         Notification = Controller.DeleteSaveJob.Execute(config, id);     

@@ -2,6 +2,7 @@
 
 using Config;
 using Config.i18n;
+using Job.Config;
 using Logger;
 
 namespace Controller;
