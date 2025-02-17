@@ -36,10 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Config\Config.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Views\AddSaveJobView.axaml.cs">
       <DependentUpon>AddSaveJobView.axaml</DependentUpon>
       <SubType>Code</SubType>
