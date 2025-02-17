@@ -1,6 +1,7 @@
 ﻿using Config;
 using Job.Services;
 using Logger;
+using Configuration = Job.Services.Configuration;
 
 namespace Job.Services;
 

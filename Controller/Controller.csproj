@@ -11,4 +11,8 @@
       <ProjectReference Include="..\Logger\Logger.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="src\" />
+    </ItemGroup>
+
 </Project>

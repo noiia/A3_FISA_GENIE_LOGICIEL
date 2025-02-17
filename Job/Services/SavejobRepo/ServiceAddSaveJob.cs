@@ -1,5 +1,7 @@
 ﻿using Config;
+using Job.Services;
 using Logger;
+using Configuration = Job.Services.Configuration;
 
 namespace Job.Services;
 
@@ -27,7 +29,7 @@ public class ServiceAddSaveJob
 
         if (!Directory.Exists(destinationPath))
         {
-            LoggerUtility.WriteLog(LoggerUtility.Warning, "Destiantion folder does not exist (" + destinationPath + ")");
+            LoggerUtility.WriteLog(LoggerUtility.Warning, "Destination folder does not exist (" + destinationPath + ")");
             return 1;
         }
 
@@ -50,6 +52,6 @@ public class ServiceAddSaveJob
                 "SaveJob is created : {" + "id: " + nextId.ToString() + ", source: " + name + ", destination: " +
                 sourcePath + ", type: " + saveType + "}");
             return 1;
-        // }
+        //}
     }
 }
