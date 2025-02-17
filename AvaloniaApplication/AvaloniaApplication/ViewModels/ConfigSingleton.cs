@@ -1,5 +1,7 @@
 ﻿using System;
 using Config;
+using Job.Config;
+
 //
 // public class ConfigSingleton
 // {

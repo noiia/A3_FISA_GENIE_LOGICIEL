@@ -103,7 +103,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     {
         Title = "Save job list";
         TableData = new ObservableCollection<TableDataModel>();
-        Config.Configuration config = ConfigSingleton.Instance();
+        Configuration config = ConfigSingleton.Instance();
         
         config.LoadConfiguration();
         LoadSaveJob(config);
