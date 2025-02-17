@@ -8,10 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Controller\" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <Reference Include="Config">
+        <HintPath>..\Config\obj\Debug\net8.0\Config.dll</HintPath>
+      </Reference>
       <Reference Include="Logger">
         <HintPath>..\Logger\bin\Debug\net8.0\Logger.dll</HintPath>
       </Reference>

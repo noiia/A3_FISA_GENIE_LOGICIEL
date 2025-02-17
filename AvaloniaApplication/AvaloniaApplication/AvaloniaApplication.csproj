@@ -33,6 +33,9 @@
     <Reference Include="Controller">
       <HintPath>..\..\Controller\bin\Debug\net8.0\Controller.dll</HintPath>
     </Reference>
+    <Reference Include="Job">
+      <HintPath>..\..\Job\bin\Debug\net8.0\Job.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
