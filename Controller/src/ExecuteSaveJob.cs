@@ -3,7 +3,6 @@
 using Config;
 using Config.i18n;
 using Logger;
-using Services;
 
 namespace Controller;
 
@@ -45,11 +44,11 @@ public class ExecuteSaveJob
                 
                 switch (processServiceAddSaveJob.ExitCode)
                 {
-                    case ReturnCodes.OK:
+                    case 1:
                         return language[14];
-                    case ReturnCodes.BAD_ARGS:
+                    case 2:
                         return language[15];
-                    case ReturnCodes.JOB_DOES_NOT_EXIST:
+                    case 3:
                         return language[16];
                     default:
                         return String.Empty;
@@ -86,11 +85,11 @@ public class ExecuteSaveJob
                 
                 switch (processServiceAddSaveJob.ExitCode)
                 {
-                    case ReturnCodes.OK:
+                    case 1:
                         return language[14];
-                    case ReturnCodes.BAD_ARGS:
+                    case 2:
                         return language[15];
-                    case ReturnCodes.JOB_DOES_NOT_EXIST:
+                    case 3:
                         return language[16];
                     default:
                         return String.Empty;
@@ -124,11 +123,11 @@ public class ExecuteSaveJob
             
             switch (processServiceAddSaveJob.ExitCode)
             {
-                case ReturnCodes.OK:
+                case 1:
                     return language[14];
-                case ReturnCodes.BAD_ARGS:
+                case 2:
                     return language[15];
-                case ReturnCodes.JOB_DOES_NOT_EXIST:
+                case 3:
                     return language[16];
                 default:
                     return String.Empty;
@@ -159,11 +158,11 @@ public class ExecuteSaveJob
             
             switch (processServiceExecSaveJob.ExitCode)
             {
-                case ReturnCodes.OK:
+                case 1:
                     return language[14];
-                case ReturnCodes.BAD_ARGS:
+                case 2:
                     return language[15];
-                case ReturnCodes.JOB_DOES_NOT_EXIST:
+                case 3:
                     return language[16];
                 default:
                     return String.Empty;

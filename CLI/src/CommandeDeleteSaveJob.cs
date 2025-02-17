@@ -5,7 +5,6 @@ using System.Diagnostics;
 using Config.i18n;
 using Config;
 using Logger;
-using Services;
 
 namespace CLI;
 
@@ -44,13 +43,13 @@ namespace CLI;
             }
             switch (processServiceAddSaveJob.ExitCode)
             {
-                case ReturnCodes.OK:
+                case 1:
                     Console.WriteLine($"{ConsoleColors.Green} {language[10]} {ConsoleColors.Reset}");
                     return;
-                case ReturnCodes.BAD_ARGS:
+                case 2:
                     Console.WriteLine($"{ConsoleColors.Red} {language[11]} {ConsoleColors.Reset}");
                     return;
-                case ReturnCodes.JOB_DOES_NOT_EXIST:
+                case 3:
                     Console.WriteLine($"{ConsoleColors.Red} {language[12]}{args[0]}) {ConsoleColors.Reset}");
                     return;
             }
