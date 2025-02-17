@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CLI\CLI.csproj" />
+      <ProjectReference Include="..\Logger\Logger.csproj" />
+      <ProjectReference Include="..\Services\Services.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Config">
+        <HintPath>..\Config\bin\Debug\net8.0\Config.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

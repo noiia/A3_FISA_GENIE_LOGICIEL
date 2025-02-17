@@ -21,7 +21,12 @@ namespace Config
             if (!File.Exists(this._configPath))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(this._configPath));
-                File.WriteAllText(this._configPath, "{\n\"saveJobs\":[],\n\"logPath\":\""+ (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\Logs\\").Replace("\\", "/")+"\",\n\"language\":\"en\"\n}");
+                string defaultLogPath =
+                    (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\Logs\\")
+                    .Replace("\\", "/");
+                ConfigFile tempConfigFile = new ConfigFile([], defaultLogPath, "en", "json", [],[]);
+                string json = JsonSerializer.Serialize(tempConfigFile);
+                File.WriteAllText(this._configPath, json);
             }
 
             string fileContent = File.ReadAllText(this._configPath);
@@ -67,11 +72,11 @@ namespace Config
             {
                 if (this.GetSaveJob(saveJob.Id) != null)
                 {
-                    throw new Exception("A SaveJob already exists with the same ID");   
+                    throw new Exception("A SaveJob already exists with the same ID");
                 }
                 else
                 {
-                    throw new Exception("A SaveJob already exists with the same Name"); 
+                    throw new Exception("A SaveJob already exists with the same Name");
                 }
             }
         }
@@ -105,7 +110,7 @@ namespace Config
             if (this.GetSaveJob(name) != null)
             {
                 _configFile.SaveJobs = _configFile.SaveJobs.Where(job => job.Name != name).ToArray();
-                this.SaveConfiguration();   
+                this.SaveConfiguration();
             }
             else
             {
@@ -124,14 +129,14 @@ namespace Config
             }
             return -1;
         }
-        
+
         public string? GetLogPath(){
             return this._configFile.LogPath;
         }
-        
+
         public void SetLogPath(string logPath){
             this._configFile.LogPath = logPath;
-            this.SaveConfiguration(); 
+            this.SaveConfiguration();
             return;
         }
 
@@ -145,6 +150,75 @@ namespace Config
         public string GetLanguage()
         {
             return this._configFile.Language;
+        }
+
+        public void SetLogType(string logType)
+        {
+            this._configFile.LogType = logType;
+            this.SaveConfiguration();
+        }
+
+        public string GetLogType()
+        {
+            return this._configFile.LogType;
+        }
+
+        public void SetCryptExtension(string[] cryptExtension)
+        {
+            this._configFile.CryptExtension = cryptExtension;
+            this.SaveConfiguration();
+        }
+
+        public string[] GetCryptExtension()
+        {
+            return this._configFile.CryptExtension;
+        }
+
+        public void AddCryptExtension(string cryptExtension)
+        {
+            if (!this._configFile.CryptExtension.Contains(cryptExtension))
+            {
+                this._configFile.CryptExtension = this._configFile.CryptExtension.Append(cryptExtension).ToArray();
+                this.SaveConfiguration();
+            }
+        }
+
+        public void RemoveCryptExtension(string cryptExtension)
+        {
+            if (this._configFile.CryptExtension.Contains(cryptExtension))
+            {
+                this._configFile.CryptExtension = this._configFile.CryptExtension.Where(ext => ext != cryptExtension).ToArray();
+                this.SaveConfiguration();
+            }
+        }
+
+        public void SetBuisnessApp(string[] buisnessApp)
+        {
+            this._configFile.BuisnessApp = buisnessApp;
+            this.SaveConfiguration();
+        }
+
+        public string[] GetBuisnessApp()
+        {
+            return this._configFile.BuisnessApp;
+        }
+
+        public void AddBuisnessApp(string buisnessApp)
+        {
+            if (!this._configFile.BuisnessApp.Contains(buisnessApp))
+            {
+                this._configFile.BuisnessApp = this._configFile.BuisnessApp.Append(buisnessApp).ToArray();
+                this.SaveConfiguration();
+            }
+        }
+
+        public void RemoveBuisnessApp(string buisnessApp)
+        {
+            if (this._configFile.BuisnessApp.Contains(buisnessApp))
+            {
+                this._configFile.BuisnessApp = this._configFile.BuisnessApp.Where(app => app != buisnessApp).ToArray();
+                this.SaveConfiguration();
+            }
         }
     }
 }

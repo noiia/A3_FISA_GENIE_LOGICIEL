@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;$(SolutionDir)..\AddSaveJob\bin\Debug\net8.0\AddSaveJob.*&quot; &quot;$(SolutionDir)..\CLI\bin\Debug\net8.0\&quot; /Y" />
+    <Exec Command="xcopy &quot;$(SolutionDir)..\AddSaveJob\bin\Debug\net8.0\AddSaveJob.*&quot; &quot;$(SolutionDir)..\CLI\bin\Debug\net8.0\&quot; /Y&#xA;xcopy &quot;$(SolutionDir)..\AddSaveJob\bin\Debug\net8.0\AddSaveJob.*&quot; &quot;$(SolutionDir)..\AvaloniaApplication\AvaloniaApplication.Desktop\bin\Debug\net8.0\&quot; /Y" />
   </Target>
 
 </Project>

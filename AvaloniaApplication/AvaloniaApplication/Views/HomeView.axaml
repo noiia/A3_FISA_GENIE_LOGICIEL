@@ -1,0 +1,68 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AvaloniaApplication.ViewModels"
+             xmlns:avaloniaApplication="clr-namespace:AvaloniaApplication"
+             xmlns:views="clr-namespace:AvaloniaApplication.Views"
+             x:Class="AvaloniaApplication.Views.HomeView"
+             x:DataType="vm:HomeViewModel">
+     <Grid Margin="0,0,0,50">
+        <TextBlock Text="EasySave" FontSize="30" Margin="32,24,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TabControl Margin="32,80,32,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TabItem Header="Savejobs">
+                <Grid Margin="16">
+                    <TextBlock Text="{Binding Title}" FontSize="24" Margin="0,0,0,0"/>
+                    <DataGrid ItemsSource="{Binding TableData}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="False"
+                              Height="300" 
+                              GridLinesVisibility="All"
+                              BorderThickness="1" 
+                              BorderBrush="Gray">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="100" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="300" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Last Execution" Binding="{Binding LastExec}" Width="200" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="200" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="100" IsReadOnly="True"/>
+                            <DataGridTemplateColumn Header="Execute" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Command="{Binding ExeSaveJob}" CommandParameter="{Binding Id}"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="avares://AvaloniaApplication/Assets/gear.png" Width="20" Height="20"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>   
+                            <DataGridTemplateColumn Header="Delete" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Command="{Binding DelSaveJob}" CommandParameter="{Binding Id}" 
+                                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="avares://AvaloniaApplication/Assets/trash.png" Width="20" Height="20"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>                        
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Add Savejob">
+               <views:AddSaveJobView/>
+            </TabItem>
+            <TabItem Header="Settings">
+                <views:SettingsView />
+            </TabItem>
+        </TabControl>
+
+        <Border Margin="32,128,32,32" BorderThickness="1">
+        </Border>
+    </Grid>
+</UserControl>

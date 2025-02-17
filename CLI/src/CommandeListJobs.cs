@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using CLI.i18n;
+using Config.i18n;
 using Config;
 
 using Logger;
