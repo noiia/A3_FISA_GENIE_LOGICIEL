@@ -1,9 +1,8 @@
 ﻿using Config;
 using Job.Services;
 using Logger;
-using Services;
 
-namespace DeleteSaveJob;
+namespace Job.Services;
 
 public class ServiceDeleteSaveJob
 {

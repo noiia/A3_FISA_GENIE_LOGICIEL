@@ -1,60 +1,55 @@
 ﻿using Config;
-using Job.Services;
 using Logger;
-using Services;
 
-namespace Services;
+namespace Job.Services;
 
 public class ServiceAddSaveJob
 {
-    public static int Run(string[] args, Configuration configuration)
+    public static int Run(Configuration configuration, string name, string sourcePath, string destinationPath, string saveType)
     {
-        if (args.Length == 4)
+        if (name == String.Empty || sourcePath == String.Empty || destinationPath == String.Empty || saveType == String.Empty)
         {
-            SaveJob saveJob = configuration.GetSaveJob(args[0]);
-            if (saveJob != null)
-            {
-                LoggerUtility.WriteLog(LoggerUtility.Warning, "SaveJob name is already use (" + args[0] + ")");
-                return 1;
-            }
-
-            if (!Directory.Exists(args[1]))
-            {
-                LoggerUtility.WriteLog(LoggerUtility.Warning, "Source folder does not exist (" + args[1] + ")");
-                return 1;
-            }
-
-            if (!Directory.Exists(args[2]))
-            {
-                LoggerUtility.WriteLog(LoggerUtility.Warning, "Destiantion folder does not exist (" + args[2] + ")");
-                return 1;
-            }
-
-            if (!(args[3].ToLower() == "diff" || args[3].ToLower() == "full"))
-            {
-                LoggerUtility.WriteLog(LoggerUtility.Warning, "Type args inst correct (" + args[3] + ")");
-                return 1;
-            }
-
-            int nextId = configuration.FindFirstFreeId();
-            // if (nextId == -1)
-            // {
-            //     LoggerUtility.WriteLog(LoggerUtility.Info, "Cant add more than 5 SaveJob");
-            //     return ReturnCodes.MORE_THAN_5_SAVEJOB;
-            // }
-            // else
-            // {
-                configuration.AddSaveJob(nextId, args[0], args[1], args[2], DateTime.Now, DateTime.Now, args[3]);
-                LoggerUtility.WriteLog(LoggerUtility.Info,
-                    "SaveJob is created : {" + "id: " + nextId.ToString() + ", source: " + args[0] + ", destination: " +
-                    args[1] + ", type: " + args[3] + "}");
-                return 1;
-            // }
+            return 4;
         }
-        else
+        
+        SaveJob saveJob = configuration.GetSaveJob(name);
+        if (saveJob != null)
         {
-            LoggerUtility.WriteLog(LoggerUtility.Warning, "Some args are missing or incorrect");
+            LoggerUtility.WriteLog(LoggerUtility.Warning, "SaveJob name is already use (" + name + ")");
             return 1;
         }
+
+        if (!Directory.Exists(sourcePath))
+        {
+            LoggerUtility.WriteLog(LoggerUtility.Warning, "Source folder does not exist (" + sourcePath + ")");
+            return 1;
+        }
+
+        if (!Directory.Exists(destinationPath))
+        {
+            LoggerUtility.WriteLog(LoggerUtility.Warning, "Destiantion folder does not exist (" + destinationPath + ")");
+            return 1;
+        }
+
+        if (!(saveType.ToLower() == "diff" || saveType.ToLower() == "full"))
+        {
+            LoggerUtility.WriteLog(LoggerUtility.Warning, "Type args inst correct (" + saveType + ")");
+            return 1;
+        }
+
+        int nextId = configuration.FindFirstFreeId();
+        // if (nextId == -1)
+        // {
+        //     LoggerUtility.WriteLog(LoggerUtility.Info, "Cant add more than 5 SaveJob");
+        //     return ReturnCodes.MORE_THAN_5_SAVEJOB;
+        // }
+        // else
+        // {
+            configuration.AddSaveJob(nextId, name, sourcePath, destinationPath, DateTime.Now, DateTime.Now, saveType);
+            LoggerUtility.WriteLog(LoggerUtility.Info,
+                "SaveJob is created : {" + "id: " + nextId.ToString() + ", source: " + name + ", destination: " +
+                sourcePath + ", type: " + saveType + "}");
+            return 1;
+        // }
     }
 }
