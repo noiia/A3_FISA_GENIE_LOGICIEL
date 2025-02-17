@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Services\" />
+      <Folder Include="Controller\" />
     </ItemGroup>
 
     <ItemGroup>
