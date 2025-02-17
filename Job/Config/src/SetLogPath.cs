@@ -1,22 +1,25 @@
-﻿namespace Config
+﻿using System.IO;
+
+namespace Job.Config
 {
-    public class SetLanguage
+
+    public class SetLogPath
     {
         public const int OK = 1;
-        public const int NOT_A_LANGUAGE = 2;
+        public const int NOT_A_DIR = 2;
         public const int BAD_ARGS = 3;
 
         public static int Run(string[] args, Configuration configuration)
         {
             if (args.Length == 1)
             {
-                if (!(args[0] == "fr" || args[0] == "en"))
+                if (!Directory.Exists(args[0]))
                 {
-                    return NOT_A_LANGUAGE;
+                    return NOT_A_DIR;
                 }
                 else
                 {
-                    configuration.SetLanguage(args[0]);
+                    configuration.SetLogPath(args[0]);
                     return OK;
                 }
             }
@@ -27,4 +30,3 @@
         }
     }
 }
-

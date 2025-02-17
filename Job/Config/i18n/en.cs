@@ -21,9 +21,9 @@ public class en
         enTranslate.Add("\t Save Job has been deleted");
         enTranslate.Add("\t Bad arguments, require Delete-SaveJob <id>");
         enTranslate.Add("\t Save Job does not exist (");
-        enTranslate.Add("Exec-SaveJob : is call with args :");
         
         // CommandeExecSaveJob
+        enTranslate.Add("Exec-SaveJob : is call with args :");
         enTranslate.Add("\t Save Job done successfully");
         enTranslate.Add("\t Bad arguments, require Exec-Savejob <id>|<name> or <id>;<id>;<id> or <id>,<id> ");
         enTranslate.Add("\t This job does not exist ");

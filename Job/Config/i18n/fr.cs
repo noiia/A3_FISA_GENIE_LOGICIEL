@@ -21,9 +21,9 @@ public class fr
         frTranslate.Add("\t Le travail a été supprimé");
         frTranslate.Add("\t Mauvais arguments fournis, la commande se formule comme suivant : Delete-SaveJob <id>");
         frTranslate.Add("\t Le travail demandé n'existe pas (");
-        frTranslate.Add("Exec-SaveJob : est appelé avec les arguments de commande :");
         
         // CommandeExecSaveJob
+        frTranslate.Add("Exec-SaveJob : est appelé avec les arguments de commande :");
         frTranslate.Add("\t Le travail de sauvegarde s'est déroulé sans encombre");
         frTranslate.Add("\t Mauvais arguments, la commande nécessite Exec-Savejob <id>|<nom> ou <id>;<id>;<id> ou <id>,<id> ");
         frTranslate.Add("\t Ce travail n'existe pas ");
