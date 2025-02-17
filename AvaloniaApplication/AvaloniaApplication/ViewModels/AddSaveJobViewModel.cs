@@ -38,11 +38,22 @@ public partial class AddSaveJobViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _status, value);
     }
     
+    public string SourceField
+    {
+        get => _status;
+        set => this.RaiseAndSetIfChanged(ref _status, value);
+    }
+    
+    public string DestinationField
+    {
+        get => _status;
+        set => this.RaiseAndSetIfChanged(ref _status, value);
+    }
+    
     public string Notification { get; set; }
     public string DestinationPath { get; set; }
     public string SourcePath { get; set; }
-    public string DestinationField { get; set; }
-    public string SourceField { get; set; }
+
     public string SaveType { get; set; }
     // public string Status { get; set; }
     
@@ -100,10 +111,22 @@ public partial class AddSaveJobViewModel : ReactiveObject
         // SourceField = "SourceField";
     }
     
-    [RelayCommand]
+    // private async void OnBrowseButtonClicked(object sender, RoutedEventArgs e)
+    // {
+    //     var dialog = new OpenFolderDialog();
+    //     string result = await dialog.ShowAsync(this.VisualRoot as Window);
+    //
+    //     if (!string.IsNullOrEmpty(result))
+    //     {
+    //         if (this.DataContext is SettingsViewModel viewModel)
+    //         {
+    //             viewModel.LogPath = result;
+    //         }
+    //     }
+    // }
+
     private void AddSaveJob(string args)
     {
-        
         // string[] id = [Convert.ToString(args) ?? string.Empty];
         ConfigSingleton config = ConfigSingleton.Instance;
         config.Configuration.LoadConfiguration();
