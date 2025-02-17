@@ -81,9 +81,9 @@ public partial class AddSaveJobViewModel : ReactiveObject
             }
             if (Directory.Exists(SourceField))
             {
-                Console.WriteLine($"{NameField} {SourceField}, {DestinationField} {SaveType}");
+                Console.WriteLine($"{NameField} {SourceField} {DestinationField} {SaveType}");
                 // AddSaveJob(new string[] { NameField, SourceField, DestinationField, SaveType });
-                AddSaveJob($"{NameField} {SourceField}, {DestinationField} {SaveType}" );
+                AddSaveJob($"{NameField} {SourceField} {DestinationField} {SaveType}" );
             }
             else
             {
@@ -105,53 +105,10 @@ public partial class AddSaveJobViewModel : ReactiveObject
     private void AddSaveJob(string args)
     {
         
-        // LoggerUtility.WriteLog(LoggerUtility.Info, $"{language[0]} {string.Join(" ", args)}");
-        // string[] args1 = new string[] {NameField, SourceField, DestinationField };
-        ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
-        {
-            FileName = "AddSaveJob.exe", // Programme à exécuter
-            // Arguments = string.Join(' ', args),           // Arguments optionnels
-            Arguments = args,
-            UseShellExecute = false,    // Utiliser le shell Windows (obligatoire pour certaines applications)
-            RedirectStandardOutput = true, // Capture la sortie standard
-            RedirectStandardError = true,  // Capture les erreurs
-            CreateNoWindow = true         // Évite d'afficher une fenêtre
-        };
-        Process processServiceAddSaveJob = new Process { StartInfo = serviceAddSaveJob };
-        processServiceAddSaveJob.Start();
-        string output = processServiceAddSaveJob.StandardOutput.ReadToEnd();
-        string error = processServiceAddSaveJob.StandardError.ReadToEnd();
-        processServiceAddSaveJob.WaitForExit();
-
-        if (!string.IsNullOrWhiteSpace(error))
-        {
-            Console.WriteLine("Error:");
-            Console.WriteLine(error);
-        }
-        // switch (processServiceAddSaveJob.ExitCode)
-        // {
-        //     case 1:
-        //         Console.WriteLine($"{ConsoleColors.Green} {language[1]} {ConsoleColors.Reset}");
-        //         return;
-        //     case 2:
-        //         Console.WriteLine($"{ConsoleColors.Red} {language[2]} {ConsoleColors.Reset}");
-        //         return;
-        //     case 3:
-        //         Console.WriteLine($"{ConsoleColors.Red} {language[3]} ({args[0]}) {ConsoleColors.Reset}");
-        //         return;
-        //     case 4:
-        //         Console.WriteLine($"{ConsoleColors.Red} {language[4]} ({args[1]}) {ConsoleColors.Reset}");
-        //         return;
-        //     case 5:
-        //         Console.WriteLine($"{ConsoleColors.Red} {language[5]} ({args[2]}) {ConsoleColors.Reset}");
-        //         return;
-        //     case 6:
-        //         Console.WriteLine($"{ConsoleColors.Red} {language[6]} ({args[3]}) {language[7]} {ConsoleColors.Reset}");
-        //         return;
-        //
-        // }
+        // string[] id = [Convert.ToString(args) ?? string.Empty];
+        ConfigSingleton config = ConfigSingleton.Instance;
+        config.Configuration.LoadConfiguration();
+        
+        Notification = Controller.AddSaveJob.Execute(config.Configuration, args.Split(" "));
     }
-    
-    
-    
 }
