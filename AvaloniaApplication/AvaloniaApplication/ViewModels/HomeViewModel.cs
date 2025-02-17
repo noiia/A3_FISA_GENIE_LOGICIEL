@@ -7,6 +7,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
+using Avalonia.Controls.ApplicationLifetimes;
 using Config;
 using Services;
 
@@ -48,44 +49,21 @@ public partial class HomeViewModel : ReactiveObject
     
     private void ExecuteSaveJob(object args)
     {
+        string[] id = [Convert.ToString(args) ?? string.Empty];
         
-        string? id = Convert.ToString(args);
-        ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
-        {
-            FileName = "ExecSaveJob.exe", // Programme à exécuter
-            Arguments = id,           // Arguments optionnels
-            UseShellExecute = false,    // Utiliser le shell Windows (obligatoire pour certaines applications)
-            RedirectStandardOutput = true, // Capture la sortie standard
-            RedirectStandardError = true,  // Capture les erreurs
-            CreateNoWindow = true         // Évite d'afficher une fenêtre
-        };
-
-        Process processServiceAddSaveJob = new Process { StartInfo = serviceAddSaveJob };
-        processServiceAddSaveJob.Start();
-        string output = processServiceAddSaveJob.StandardOutput.ReadToEnd();
-        string error = processServiceAddSaveJob.StandardError.ReadToEnd();
-        processServiceAddSaveJob.WaitForExit();
-        if (!string.IsNullOrWhiteSpace(error))
-        {
-            Console.WriteLine("Error:");
-            Console.WriteLine(error);
-        }
-        switch (processServiceAddSaveJob.ExitCode)
-        {
-            case ReturnCodes.OK:
-                Notification = "Save job launched successfully.";
-                return;
-            case ReturnCodes.BAD_ARGS:
-                Notification = $"";
-                return;
-            case ReturnCodes.JOB_DOES_NOT_EXIST:
-                Console.WriteLine($"");
-                return;
-        }        
+        ConfigSingleton config = ConfigSingleton.Instance;
+        config.Configuration.LoadConfiguration();
+        
+        Notification = Controller.ExecuteSaveJob.Execute(config.Configuration, id);
     }
     private void DeleteSaveJob(object args)
     {
-            
+        string[] id = [Convert.ToString(args) ?? string.Empty];
+        
+        ConfigSingleton config = ConfigSingleton.Instance;
+        config.Configuration.LoadConfiguration();
+        
+        Notification = Controller.DeleteSaveJob.Execute(config.Configuration, id);     
     }
     
     public HomeViewModel()

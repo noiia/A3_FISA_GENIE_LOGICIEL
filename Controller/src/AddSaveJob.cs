@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using Config.i18n;
 
 using Config;
+using Config.i18n;
 
 namespace Controller;
 

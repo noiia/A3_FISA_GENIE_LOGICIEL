@@ -28,6 +28,9 @@
     <Reference Include="Config">
       <HintPath>..\..\Config\bin\Debug\net8.0\Config.dll</HintPath>
     </Reference>
+    <Reference Include="Controller">
+      <HintPath>..\..\Controller\bin\Debug\net8.0\Controller.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
