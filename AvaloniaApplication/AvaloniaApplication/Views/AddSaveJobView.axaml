@@ -19,12 +19,12 @@
 
             <StackPanel Orientation="Horizontal" Spacing="10">
                 <TextBox Watermark="{Binding SourcePath}" Width="300" Text="{Binding SourceField, Mode=TwoWay}"/>
-                <Button Content="Browse..." Width="100"/>
+                <Button Content="Browse..." Width="100" Click="OnBrowseButtonClickedSource"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Spacing="10">
                 <TextBox Watermark="{Binding DestinationPath}" Width="300" Text="{Binding DestinationField, Mode=TwoWay}"/>
-                <Button Content="Browse..." Width="100"/>
+                <Button Content="Browse..." Width="100" Click="OnBrowseButtonClickedDestination"/>
             </StackPanel>
             
             <ComboBox PlaceholderText="Select Save Type" Width="300"

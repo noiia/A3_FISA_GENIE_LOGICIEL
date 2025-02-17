@@ -27,4 +27,32 @@ public partial class AddSaveJobView : UserControl
     {
         throw new System.NotImplementedException();
     }
+    
+    private async void OnBrowseButtonClickedSource(object sender, RoutedEventArgs e)
+    {
+        var dialog = new OpenFolderDialog();
+        string result = await dialog.ShowAsync(this.VisualRoot as Window);
+
+        if (!string.IsNullOrEmpty(result))
+        {
+            if (this.DataContext is AddSaveJobViewModel viewModel)
+            {
+                viewModel.SourceField = result;
+            }
+        }
+    }
+    
+    private async void OnBrowseButtonClickedDestination(object sender, RoutedEventArgs e)
+    {
+        var dialog = new OpenFolderDialog();
+        string result = await dialog.ShowAsync(this.VisualRoot as Window);
+
+        if (!string.IsNullOrEmpty(result))
+        {
+            if (this.DataContext is AddSaveJobViewModel viewModel)
+            {
+                viewModel.DestinationField = result;
+            }
+        }
+    }
 }
