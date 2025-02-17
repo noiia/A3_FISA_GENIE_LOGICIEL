@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
-
 using Config;
+using Job.Services;
 using Logger;
 using Services;
 
@@ -26,7 +26,7 @@ public class ServiceExecSaveJob
             if (saveJob == null)
             {
                 LoggerUtility.WriteLog(LoggerUtility.Warning, $"Can't find SaveJob with id: {args[0].ToString()}");
-                return ReturnCodes.JOB_DOES_NOT_EXIST;
+                return 1;
             }
             else
             {
@@ -53,12 +53,12 @@ public class ServiceExecSaveJob
             stopwatch.Stop();
             LoggerUtility.WriteLog(LoggerUtility.Info, $"The savejob took {stopwatch.ElapsedMilliseconds} ms");
             LoggerUtility.WriteLog(LoggerUtility.Info, $"Save : id: {id.ToString()}, name : {saveJob.Name} from ({saveJob.Source}) to ({saveJob.Destination}) is save");
-            return ReturnCodes.OK;
+            return 1;
         }
         else
         {
             LoggerUtility.WriteLog(LoggerUtility.Warning, "Some args are missing or incorrect");
-            return ReturnCodes.BAD_ARGS;
+            return 1;
         }
     }
 }

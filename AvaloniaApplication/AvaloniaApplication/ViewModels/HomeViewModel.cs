@@ -13,7 +13,6 @@ using System.Windows.Input;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using Config;
-using Services;
 
 namespace AvaloniaApplication.ViewModels;
 
