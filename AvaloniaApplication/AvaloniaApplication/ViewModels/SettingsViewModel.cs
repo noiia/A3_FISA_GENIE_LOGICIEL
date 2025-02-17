@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using AvaloniaApplication.Views;
-using System.Collections.ObjectModel;
-
 
 namespace AvaloniaApplication.ViewModels
 {
     public class SettingsViewModel : INotifyPropertyChanged
     {
         ConfigSingleton config;
-        
+
         public SettingsViewModel()
         {
             config = ConfigSingleton.Instance;
             LoadDefaultSettings();
             FileTypesToEncrypt = new ObservableCollection<string>(config.Configuration.GetCryptExtension() ?? Array.Empty<string>());
+            BusinessApp = new ObservableCollection<string>(config.Configuration.GetBuisnessApp() ?? Array.Empty<string>());
         }
 
         private string _selectedLanguage;
@@ -133,6 +133,19 @@ namespace AvaloniaApplication.ViewModels
             }
         }
 
+        private ObservableCollection<string> _businessApp;
+        public ObservableCollection<string>? BusinessApp
+        {
+            get => _businessApp;
+            set
+            {
+                if (_businessApp != value)
+                {
+                    _businessApp = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private string _newFileTypeToEncrypt;
         public string NewFileTypeToEncrypt
@@ -148,16 +161,15 @@ namespace AvaloniaApplication.ViewModels
             }
         }
 
-        private string _businessApplicationsBlockingSj;
-
-        public string BusinessApplicationsBlockingSj
+        private string _newBusinessApp;
+        public string NewBusinessApp
         {
-            get => _businessApplicationsBlockingSj;
+            get => _newBusinessApp;
             set
             {
-                if (_businessApplicationsBlockingSj != value)
+                if (_newBusinessApp != value)
                 {
-                    _businessApplicationsBlockingSj = value;
+                    _newBusinessApp = value;
                     OnPropertyChanged();
                 }
             }
@@ -188,7 +200,7 @@ namespace AvaloniaApplication.ViewModels
             SelectedLogType = "XML";
             LogPath = config.Configuration.GetLogPath();
             FileTypesToEncrypt = new ObservableCollection<string>(config.Configuration.GetCryptExtension() ?? Array.Empty<string>());
-            BusinessApplicationsBlockingSj = "exampleApp";
+            BusinessApp = new ObservableCollection<string>(config.Configuration.GetBuisnessApp() ?? Array.Empty<string>());
         }
 
         public void AddFileTypeToEncrypt()
@@ -207,6 +219,25 @@ namespace AvaloniaApplication.ViewModels
             {
                 FileTypesToEncrypt.Remove(fileType);
                 config.Configuration.RemoveCryptExtension(fileType);
+            }
+        }
+
+        public void AddBusinessApp()
+        {
+            if (!string.IsNullOrEmpty(NewBusinessApp))
+            {
+                BusinessApp.Add(NewBusinessApp);
+                config.Configuration.AddBuisnessApp(NewBusinessApp);
+                NewBusinessApp = string.Empty;
+            }
+        }
+
+        public void RemoveBusinessApp(string businessApp)
+        {
+            if (BusinessApp.Contains(businessApp))
+            {
+                BusinessApp.Remove(businessApp);
+                config.Configuration.RemoveBuisnessApp(businessApp);
             }
         }
     }

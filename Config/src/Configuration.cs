@@ -176,6 +176,8 @@ namespace Config
 
         public void AddCryptExtension(string cryptExtension)
         {
+            Console.WriteLine(cryptExtension);
+            Console.WriteLine(this._configFile.CryptExtension.ToString());
             if (!this._configFile.CryptExtension.Contains(cryptExtension))
             {
                 this._configFile.CryptExtension = this._configFile.CryptExtension.Append(cryptExtension).ToArray();

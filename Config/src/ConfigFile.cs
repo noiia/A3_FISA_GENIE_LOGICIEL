@@ -8,8 +8,8 @@ namespace Config
         private string _logPath;
         private string _language; //fr || en
         private string _logType; //json || xml
-        private string[] _cryptExtension;
-        private string[] _buisnessApp;
+        private string[]? _cryptExtension;
+        private string[]? _buisnessApp;
 
         public ConfigFile(SaveJob[] saveJobs, string logPath, string language, string logType, string[] cryptExtension, string[] buisnessApp)
         {
@@ -18,7 +18,15 @@ namespace Config
             _language = language;
             _logType = logType;
             _cryptExtension = cryptExtension;
+            if (_cryptExtension == null)
+            {
+                _cryptExtension = new string[0];
+            }
             _buisnessApp = buisnessApp;
+            if (_buisnessApp == null)
+            {
+                _buisnessApp = new string[0];
+            }
         }
 
         public SaveJob[] SaveJobs
