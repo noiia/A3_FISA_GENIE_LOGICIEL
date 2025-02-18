@@ -5,6 +5,7 @@ using System.Transactions;
 using Config;
 using Config.i18n;
 using Job.Config;
+using Job.Config.i18n;
 using Logger;
 
 namespace CLI
