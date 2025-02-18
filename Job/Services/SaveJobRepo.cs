@@ -34,7 +34,15 @@ public class SaveJobRepo
     
     public static (int,string) DeleteSaveJob(int id)
     {
-        var value = _pool.QueueTask(async () => { return ServiceDeleteSaveJob.Run(_configuration, id); });
+        string? name = "";
+        var value = _pool.QueueTask(async () => { return ServiceDeleteSaveJob.Run(_configuration, id, name); });
+        return (value.Result.Item1, value.Result.Item2);
+    }
+    
+    public static (int,string) DeleteSaveJob(string name)
+    {
+        int? id = null;
+        var value = _pool.QueueTask(async () => { return ServiceDeleteSaveJob.Run(_configuration, id, name); });
         return (value.Result.Item1, value.Result.Item2);
     }
 }

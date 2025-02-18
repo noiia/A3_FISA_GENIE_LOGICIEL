@@ -54,4 +54,14 @@ public class DeleteSaveJob
                 return (3, $"{Translation.Translator.GetString("SeparatorNotReco")} {separator}");
         }
     }
+
+    public static (int, string) Execute(string name)
+    {
+        (int returnCode, string message) = SaveJobRepo.DeleteSaveJob(name);
+        if (returnCode is 2)
+        {
+            return (returnCode, message);
+        }
+        return (1, $"{Translation.Translator.GetString("SjDelSuccesfully")} {name}");
+    }
 }
