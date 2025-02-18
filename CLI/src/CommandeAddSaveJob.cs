@@ -17,8 +17,10 @@ namespace CLI
 
         public override void Action(string[] args)
         {
-            Job.Controller.AddSaveJob.Execute(args[0], args[1], args[2], args[3]);
+            (int returnCode, string message) = Job.Controller.AddSaveJob.Execute(args[0], args[1], args[2], args[3]);
 
+            Console.WriteLine(message);
+            
             // Controller.AddSaveJob.Execute(args);
 
             // Func<List<string>> languageFunc = Translation.SelectLanguage(configuration.GetLanguage());

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 // using Job.Config.i18n;
 using Job.Config;
+using Job.Config.i18n;
 
 namespace CLI
 {
@@ -14,6 +15,7 @@ namespace CLI
         {
             CLI cli = new CLI();
             cli.Run(args);
+            // Console.WriteLine(Translation.Translator.GetString("NoSjToPrint"));
         }
     }
 }

@@ -20,7 +20,6 @@ public class SaveJobRepo
     
     public static (int, string) AddSaveJob(string name, string sourcePath, string destinationPath, string saveType)
     {
-        Console.WriteLine($"{_pool.ToString()}");
         var value = _pool.QueueTask(async () => { return ServiceAddSaveJob.Run(_configuration, name, sourcePath, destinationPath, saveType); });
         return (value.Result.Item1, value.Result.Item2);
     }

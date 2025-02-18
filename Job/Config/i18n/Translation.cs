@@ -13,7 +13,7 @@ public class Translation
         private set => _translator = value;
     }
 
-    public static Func<List<string>> SelectLanguage(string language)
+    public static void SelectLanguage(string language)
     {
         Thread.CurrentThread.CurrentUICulture = language switch
         {
@@ -22,6 +22,6 @@ public class Translation
             _ => new CultureInfo("en")
         };
         Translator = new ResourceManager("Config.i18n.Resources", typeof(Program).Assembly);
-        return () => new List<string>{"a", "b"};
+        // return () => new List<string>{"a", "b"};
     }
 }

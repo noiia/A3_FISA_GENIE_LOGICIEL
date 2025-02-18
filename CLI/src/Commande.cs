@@ -40,7 +40,7 @@ namespace CLI
             }
         }
 
-        public virtual void Action(Configuration config, string[] args)
-        {}
+        public virtual void Action(string[] args) {}
+        public virtual void Action(Configuration config, string[] args) {}
     }
 }
