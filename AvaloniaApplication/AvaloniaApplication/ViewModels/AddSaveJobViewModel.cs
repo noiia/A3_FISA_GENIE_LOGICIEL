@@ -15,7 +15,6 @@ using Job;
 using System.Diagnostics;
 using System.IO;
 using Job.Config;
-using Job.Services;
 
 namespace AvaloniaApplication.ViewModels;
 
@@ -96,7 +95,7 @@ public partial class AddSaveJobViewModel : ReactiveObject
             {
                 Console.WriteLine($"{NameField} {SourceField} {DestinationField} {SaveType}");
                 // AddSaveJob(new string[] { NameField, SourceField, DestinationField, SaveType });
-                AddSaveJob($"{NameField} {SourceField} {DestinationField} {SaveType}" );
+                AddSaveJob(NameField, SourceField, DestinationField, SaveType );
             }
             else
             {
@@ -127,17 +126,8 @@ public partial class AddSaveJobViewModel : ReactiveObject
     //         }
     //     }
     // }
-
-    private void AddSaveJob(string args)
+    private void AddSaveJob(string name, string srcPath, string destPath, string type)
     {
-        // string[] id = [Convert.ToString(args) ?? string.Empty];
-        Configuration config = ConfigSingleton.Instance();
-        SaveJobRepo saveJobRepo = new SaveJobRepo(config);
-        saveJobRepo.AddSaveJob(NameField, _sourceField, _destinationField, SaveType);
-        
-        
-        // Notification = Controller.AddSaveJob.Execute(config, args.Split(" "));
+        Notification = Controller.AddSaveJob.Execute(name, srcPath, destPath, type);
     }
-    
-    
 }

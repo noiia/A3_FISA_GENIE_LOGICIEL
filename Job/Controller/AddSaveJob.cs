@@ -3,15 +3,14 @@
 using Config;
 using Config.i18n;
 using Job.Config;
-using Job.Config.i18n;
 
 namespace Controller;
 
 public class AddSaveJob
 {
-    public static string Execute(int errorCode , string name, string srcPath, string destPath, string type)
+    public static string Execute(string name, string srcPath, string destPath, string type)
     {
-        switch (errorCode) // #TODO : mettre une valeur valable
+        switch ()
         {
             case 1:
                 return Translation.Translator.GetString("SjCreatedSuccesfully");

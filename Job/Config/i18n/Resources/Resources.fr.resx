@@ -111,4 +111,7 @@
     <data name="LanguageBadArgs" xml:space="preserve">
         <value>Mauvais arguments fournis : </value>
     </data>
+    <data name="BadArgsGiven" xml:space="preserve">
+        <value>Mauvais arguments donnés :</value>
+    </data>
 </root>

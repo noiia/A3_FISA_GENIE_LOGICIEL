@@ -1,28 +1,31 @@
-﻿using Config;
+﻿using System.Collections.Concurrent;
 using Job.Config;
 
 namespace Job.Services;
 
-public class SaveJobRepo(Configuration config)
+public class SaveJobRepo
 {
-    private Configuration _configuration = config;
-
-    public void AddSaveJob(string name, string sourcePath, string destinationPath, string saveType)
+    private Configuration _configuration;
+    private ThreadPoolManager _pool;
+    public SaveJobRepo(Configuration config, ThreadPoolManager pool)
     {
-        int returnCode;
-        returnCode = ServiceAddSaveJob.Run(_configuration, name, sourcePath, destinationPath, saveType);
-        Controller.AddSaveJob.Execute(returnCode, name, sourcePath, destinationPath, saveType);
+        _configuration = config;
+        _pool = pool;
     }
     
-    public static void ExecSaveJob()
+    public static void AddSaveJob()
     {
         
     }
-    
-    public void DeleteSaveJob(int id)
+
+    public (int,string) ExecuteSaveJob(string? name, int? id)
     {
-        int returnCode;
-        returnCode = ServiceDeleteSaveJob.Run(_configuration, id);
-        Controller.DeleteSaveJob.Execute(returnCode);
+        var value = _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
+        return (value.Result.Item1, value.Result.Item2);
+    }
+    
+    public static void DeleteSaveJob()
+    {
+        
     }
 }
