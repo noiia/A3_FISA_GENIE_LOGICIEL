@@ -152,9 +152,9 @@ namespace Config.i18n.Ressources {
         /// <summary>
         ///   Looks up a localized string similar to Id : .
         /// </summary>
-        internal static string Id___ {
+        internal static string Id {
             get {
-                return ResourceManager.GetString("Id : ", resourceCulture);
+                return ResourceManager.GetString("Id", resourceCulture);
             }
         }
         
@@ -168,7 +168,7 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type indisponible.
+        ///   Looks up a localized string similar to Type indisponible : .
         /// </summary>
         internal static string InvalidType {
             get {
@@ -236,6 +236,15 @@ namespace Config.i18n.Ressources {
         internal static string LogPathUpdatedSuccesfully {
             get {
                 return ResourceManager.GetString("LogPathUpdatedSuccesfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Arguments manquants :.
+        /// </summary>
+        internal static string MissingArgs {
+            get {
+                return ResourceManager.GetString("MissingArgs", resourceCulture);
             }
         }
         

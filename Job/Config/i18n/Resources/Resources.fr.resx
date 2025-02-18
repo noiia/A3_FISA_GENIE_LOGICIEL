@@ -37,7 +37,7 @@
         <value>Le répertoire destination n'existe pas</value>
     </data>
     <data name="InvalidType" xml:space="preserve">
-        <value>Type indisponible</value>
+        <value>Type indisponible : </value>
     </data>
     <data name="AddSJBadType" xml:space="preserve">
         <value> les types possibles sont : full, diff</value>
@@ -75,7 +75,7 @@
     <data name="Name" xml:space="preserve">
         <value>Nom :</value>
     </data>
-    <data name="Id : " xml:space="preserve">
+    <data name="Id" xml:space="preserve">
         <value>Id : </value>
     </data>
     <data name="LastSave" xml:space="preserve">
@@ -119,5 +119,8 @@
     </data>
     <data name="TooMuchIdWithoutSep" xml:space="preserve">
         <value>Trop d'identifiants ont été passés sans bénéficier de séparateurs :</value>
+    </data>
+    <data name="MissingArgs" xml:space="preserve">
+        <value>Arguments manquants :</value>
     </data>
 </root>
