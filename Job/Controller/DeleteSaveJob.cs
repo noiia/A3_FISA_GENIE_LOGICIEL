@@ -8,10 +8,10 @@ namespace Job.Controller;
 
 public class DeleteSaveJob
 {
-    public static (int, string) Execute(int[] ids, string separator)
+    public static (int, string) Execute(List<int>  ids, string separator)
     {
         LoggerUtility.WriteLog(LoggerUtility.Info, Translation.Translator.GetString("DelSjCallWithArgs") + string.Join(" ", ids));
-        if (ids.Length > 1 && separator is "" or " ")
+        if (ids.Count > 1 && separator is "" or " ")
         {
             return (3, $"{Translation.Translator.GetString("TooMuchIdWithoutSep")} {separator} {ids}");
         }

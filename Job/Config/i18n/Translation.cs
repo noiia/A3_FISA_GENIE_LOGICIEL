@@ -6,7 +6,7 @@ namespace Job.Config.i18n;
 
 public class Translation
 {
-    private static ResourceManager _translator = new ResourceManager("Config.i18n.Resources", typeof(Program).Assembly);
+    private static ResourceManager _translator = new ResourceManager("Job.Config.i18n.Resources.Resources", typeof(Translation).Assembly);
     public static ResourceManager Translator
     {
         get => _translator;
@@ -21,7 +21,7 @@ public class Translation
             "fr" => new CultureInfo("fr"),
             _ => new CultureInfo("en")
         };
-        Translator = new ResourceManager("Config.i18n.Resources", typeof(Program).Assembly);
+        Translator = new ResourceManager("Job.Config.i18n.Resources.Resources", typeof(Translation).Assembly);
         // return () => new List<string>{"a", "b"};
     }
 }

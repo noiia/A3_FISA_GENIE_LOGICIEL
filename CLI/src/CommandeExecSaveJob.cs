@@ -31,7 +31,7 @@ namespace CLI
             }
 
             string[] contentSplited = content.Split(separator);
-            int[] ids = contentSplited.Select(int.Parse).ToArray();
+            List<int>  ids = contentSplited.Select(int.Parse).ToList();
         
             (int returnCode, string message) = Job.Controller.ExecuteSaveJob.Execute(ids, separator);
             // Job.Controller.ExecuteSaveJob.Execute(args);

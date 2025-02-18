@@ -69,7 +69,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         }
 
         string[] contentSplited = content.Split(separator);
-        int[] ids = new int[]{};
+        List<int>  ids = new List<int>();
         foreach (string id in contentSplited)
         {
             ids.Add([int.Parse(id)]);
@@ -94,7 +94,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         }
         
         string[] contentSplited = content.Split(separator);
-        int[] ids = new int[]{};
+        List<int> ids = new List<int>();
         foreach (string id in contentSplited)
         {
             ids.Add([int.Parse(id)]);
