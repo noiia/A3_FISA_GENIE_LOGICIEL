@@ -9,11 +9,11 @@ namespace Controller;
 
 public class ExecuteSaveJob
 {
-    public static string Execute(string[] args)
+    public static string Execute(int[] ids, string separator)
     {
         LoggerUtility.WriteLog(LoggerUtility.Info, $"{Translation.Translator.GetString("SjExecWith")} {string.Join(" ", args)}");
         int intType;
-        if(args[0].Contains(";"))
+        if(separator == ";")
         {
             string[] listIds = args[0].Split(';');
             foreach (var id in listIds)

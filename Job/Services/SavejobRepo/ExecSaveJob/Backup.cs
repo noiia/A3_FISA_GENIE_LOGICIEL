@@ -197,8 +197,6 @@ public abstract class Backup
         File.SetAttributes(filePath, attributes);
     }
 
-    
-
     protected void CopyDir()
     {
         List<string> files = new List<string>();
@@ -214,6 +212,4 @@ public abstract class Backup
     {
         CopyDir();
     }
-    
-    
 }

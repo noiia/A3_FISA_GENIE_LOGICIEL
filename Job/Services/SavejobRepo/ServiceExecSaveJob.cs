@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Config;
+using Config.i18n;
 using Job.Config;
 using Job.Services;
 using Logger;
@@ -9,35 +10,24 @@ namespace ExecSaveJob;
 
 public class ServiceExecSaveJob
 {
-    public static int Run(string[] args, Configuration configuration)
+    public static (int, string) Run(Configuration configuration, int? id, string? name)
     {
-        if (args.Length == 1)
+        if (id is not null ^ name is not "")
         {
-            int id;
             SaveJob? saveJob = null;
-            if (int.TryParse(args[0], out id))
+            if (id is not null)
             {
-                saveJob = configuration.GetSaveJob(id);   
+                saveJob = configuration.GetSaveJob(id ?? -1);   
             }
             else
             {
-                saveJob = configuration.GetSaveJob(args[0]);
+                saveJob = configuration.GetSaveJob(name ?? string.Empty);
             }
-            if (saveJob == null)
-            {
-                LoggerUtility.WriteLog(LoggerUtility.Warning, $"Can't find SaveJob with id: {args[0].ToString()}");
-                return 1;
-            }
-            else
-            {
-                LoggerUtility.WriteLog(LoggerUtility.Info, $"Saving :  id: {id.ToString()} name : {saveJob.Name} from ({saveJob.Source}) to ({saveJob.Destination})");
 
-            }
+            LoggerUtility.WriteLog(LoggerUtility.Info, $"Saving : id: {id.ToString()} name : {saveJob.Name} from ({saveJob.Source}) to ({saveJob.Destination})");
+
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-
-            // DirCopy dirCopy = new DirCopy();
-            // dirCopy.CopyDir(saveJob.Source, saveJob.Destination);
             
             if (saveJob.Type == "full")
             {
@@ -51,14 +41,16 @@ public class ServiceExecSaveJob
             }
             
             stopwatch.Stop();
+            
             LoggerUtility.WriteLog(LoggerUtility.Info, $"The savejob took {stopwatch.ElapsedMilliseconds} ms");
             LoggerUtility.WriteLog(LoggerUtility.Info, $"Save : id: {id.ToString()}, name : {saveJob.Name} from ({saveJob.Source}) to ({saveJob.Destination}) is save");
-            return 1;
+            return (1, $"{Translation.Translator.GetString("SjCreatedSuccesfully") ?? String.Empty}");
         }
         else
         {
-            LoggerUtility.WriteLog(LoggerUtility.Warning, "Some args are missing or incorrect");
-            return 1;
+            string returnSentence = $"{Translation.Translator.GetString("BadArgsGiven") ?? String.Empty} {id} {name}";
+            LoggerUtility.WriteLog(LoggerUtility.Warning, returnSentence);
+            return (2, returnSentence);
         }
     }
 }
