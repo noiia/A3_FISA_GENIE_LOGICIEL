@@ -5,8 +5,8 @@ namespace Job.Services;
 
 public class SaveJobRepo
 {
-    private Configuration _configuration;
-    private ThreadPoolManager _pool;
+    private static Configuration _configuration;
+    private static ThreadPoolManager _pool;
     public SaveJobRepo(Configuration config, ThreadPoolManager pool)
     {
         _configuration = config;
@@ -18,8 +18,16 @@ public class SaveJobRepo
         
     }
 
-    public (int,string) ExecuteSaveJob(string? name, int? id)
+    
+    public static (int,string) ExecuteSaveJob(string? name)
     {
+        int? id = null;
+        var value = _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
+        return (value.Result.Item1, value.Result.Item2);
+    }
+    public static (int,string) ExecuteSaveJob(int? id)
+    {
+        string? name = "";
         var value = _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
         return (value.Result.Item1, value.Result.Item2);
     }

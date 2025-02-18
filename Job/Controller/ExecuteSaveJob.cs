@@ -3,7 +3,7 @@
 using Config;
 using Config.i18n;
 using Job.Config;
-using Job.Config.i18n;
+using Job.Services;
 using Logger;
 
 namespace Controller;
@@ -12,41 +12,34 @@ public class ExecuteSaveJob
 {
     public static string Execute(int[] ids, string separator)
     {
-        LoggerUtility.WriteLog(LoggerUtility.Info, $"{Translation.Translator.GetString("SjExecWith")} {string.Join(" ", args)}");
-        int intType;
-        if(separator == ";")
+        LoggerUtility.WriteLog(LoggerUtility.Info, $"{Translation.Translator.GetString("SjExecWith")} {string.Join(" ", ids, separator)}");
+        if (separator is ";")
         {
-            string[] listIds = args[0].Split(';');
-            foreach (var id in listIds)
+            foreach (var id in ids)
             {
-                
-                switch (1) // #TODO : mettre une valeur valable
+                (int returnCode, string message) = SaveJobRepo.ExecuteSaveJob(id);
+                switch (returnCode)
                 {
                     case 1:
                         return Translation.Translator.GetString("SjExecSuccesfully");
                     case 2:
-                        return Translation.Translator.GetString("ExecSjBadArgs");
-                    case 3:
-                        return $"{Translation.Translator.GetString("SjNotExist")} {id} )";
+                        return message;
                     default:
                         return String.Empty;
                 }
             }
         }
-        else if(args[0].Contains(","))
+        else if(separator is ",")
         {
-            int min = int.Parse(args[1].Split(',')[0]);
-            int max = int.Parse(args[1].Split(',')[1]);
-            for (int i = min; i <= max; i++)
+            for (int i = ids[0]; i <= ids[1]; i++)
             {
-                switch (1) // #TODO : mettre une valeur valable
+                (int returnCode, string message) = SaveJobRepo.ExecuteSaveJob(i);
+                switch (returnCode)
                 {
                     case 1:
                         return Translation.Translator.GetString("SjExecSuccesfully");
                     case 2:
-                        return Translation.Translator.GetString("ExecSjBadArgs");
-                    case 3:
-                        return $"{Translation.Translator.GetString("SjNotExist")} {i} )";
+                        return message;
                     default:
                         return String.Empty;
                 }
@@ -55,36 +48,17 @@ public class ExecuteSaveJob
         }
         else
         {
-            if(int.TryParse(args[0], out intType))
+            (int returnCode, string message) = SaveJobRepo.ExecuteSaveJob(ids[0]);
+            switch (returnCode)
             {
-                switch (1) // #TODO : mettre une valeur valable
-                {
-                    case 1:
-                        return Translation.Translator.GetString("SjExecSuccesfully");
-                    case 2:
-                        return Translation.Translator.GetString("ExecSjBadArgs");
-                    case 3:
-                        return $"{Translation.Translator.GetString("SjNotExist")} {string.Join(' ', args)} )";
-                    default:
-                        return String.Empty;
-                }   
-            }
-            else
-            {
-                switch (1) // #TODO : mettre une valeur valable
-                {
-                    case 1:
-                        return Translation.Translator.GetString("SjExecSuccesfully");
-                    case 2:
-                        return Translation.Translator.GetString("ExecSjBadArgs");
-                    case 3:
-                        return $"{Translation.Translator.GetString("SjNotExist")} {string.Join(' ', args)} )";
-                    default:
-                        return String.Empty;
-                }   
+                case 1:
+                    return Translation.Translator.GetString("SjExecSuccesfully");
+                case 2:
+                    return message;
+                default:
+                    return String.Empty;
             }
         }
-
         return String.Empty;
     }
 }
