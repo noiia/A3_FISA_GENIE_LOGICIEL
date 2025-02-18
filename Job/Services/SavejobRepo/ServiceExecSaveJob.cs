@@ -1,12 +1,10 @@
-﻿using System;
-using System.Diagnostics;
-using Config;
+﻿using System.Diagnostics;
 using Config.i18n;
+using ExecSaveJob;
 using Job.Config;
-using Job.Services;
 using Logger;
 
-namespace ExecSaveJob;
+namespace Job.Services;
 
 public class ServiceExecSaveJob
 {
