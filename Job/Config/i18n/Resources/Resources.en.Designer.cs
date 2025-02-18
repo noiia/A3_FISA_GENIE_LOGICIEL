@@ -38,7 +38,7 @@ namespace Config.i18n.Ressources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Config.i18n.Resources.Resources.en", typeof(Resources_en).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Job.Config.i18n.Resources.Resources.en", typeof(Resources_en).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -74,6 +74,15 @@ namespace Config.i18n.Ressources {
         internal static string AddSJBadType {
             get {
                 return ResourceManager.GetString("AddSJBadType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bad arguments given :.
+        /// </summary>
+        internal static string BadArgsGiven {
+            get {
+                return ResourceManager.GetString("BadArgsGiven", resourceCulture);
             }
         }
         

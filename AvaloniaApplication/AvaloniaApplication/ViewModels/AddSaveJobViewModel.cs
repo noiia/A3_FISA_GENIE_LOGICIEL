@@ -95,7 +95,7 @@ public partial class AddSaveJobViewModel : ReactiveObject
             {
                 Console.WriteLine($"{NameField} {SourceField} {DestinationField} {SaveType}");
                 // AddSaveJob(new string[] { NameField, SourceField, DestinationField, SaveType });
-                AddSaveJob($"{NameField} {SourceField} {DestinationField} {SaveType}" );
+                AddSaveJob(NameField, SourceField, DestinationField, SaveType );
             }
             else
             {
@@ -126,13 +126,8 @@ public partial class AddSaveJobViewModel : ReactiveObject
     //         }
     //     }
     // }
-
-    private void AddSaveJob(string args)
+    private void AddSaveJob(string name, string srcPath, string destPath, string type)
     {
-        // string[] id = [Convert.ToString(args) ?? string.Empty];
-        Configuration config = ConfigSingleton.Instance();
-        config.LoadConfiguration();
-        
-        Notification = Controller.AddSaveJob.Execute(config, args.Split(" "));
+        Notification = Controller.AddSaveJob.Execute(name, srcPath, destPath, type);
     }
 }
