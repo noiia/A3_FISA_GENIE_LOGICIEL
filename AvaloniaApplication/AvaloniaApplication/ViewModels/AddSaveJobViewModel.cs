@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Interactivity;
 using AvaloniaApplication.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -6,14 +7,11 @@ using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Avalonia.Interactivity;
-using Config;
-using Job;
-
-
-
 using System.Diagnostics;
 using System.IO;
+
+using Job;
+using Job.Controller;
 using Job.Config;
 
 namespace AvaloniaApplication.ViewModels;
@@ -128,6 +126,7 @@ public partial class AddSaveJobViewModel : ReactiveObject
     // }
     private void AddSaveJob(string name, string srcPath, string destPath, string type)
     {
-        Notification = Controller.AddSaveJob.Execute(name, srcPath, destPath, type);
+        (int returnCode, string message) = Job.Controller.AddSaveJob.Execute(name, srcPath, destPath, type);
+        Notification = message;
     }
 }
