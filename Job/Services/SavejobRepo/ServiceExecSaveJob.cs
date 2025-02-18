@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Config.i18n;
+using Job.Config.i18n;
 using ExecSaveJob;
 using Job.Config;
 using Logger;
