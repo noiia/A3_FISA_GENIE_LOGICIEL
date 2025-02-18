@@ -49,7 +49,7 @@
         <value>L'id doit être un nombre </value>
     </data>
     <data name="SjDelSuccesfully" xml:space="preserve">
-        <value>Le travail a été supprimé</value>
+        <value>Travaux de sauvegarde supprimés :</value>
     </data>
     <data name="DelSjBadArgs" xml:space="preserve">
         <value>Mauvais arguments fournis, la commande se formule comme suivant : Delete-SaveJob &lt;id&gt;</value>
@@ -113,5 +113,11 @@
     </data>
     <data name="BadArgsGiven" xml:space="preserve">
         <value>Mauvais arguments donnés :</value>
+    </data>
+    <data name="SeparatorNotReco" xml:space="preserve">
+        <value>Les séparateurs sont inconnus du système : </value>
+    </data>
+    <data name="TooMuchIdWithoutSep" xml:space="preserve">
+        <value>Trop d'identifiants ont été passés sans bénéficier de séparateurs :</value>
     </data>
 </root>

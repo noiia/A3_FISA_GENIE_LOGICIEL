@@ -3,26 +3,57 @@
 using Config;
 using Config.i18n;
 using Job.Config;
+using Job.Services;
 using Logger;
 
-namespace Controller;
+namespace Job.Controller;
 
 public class DeleteSaveJob
 {
-    public static string Execute(int[] id)
+    public static (int, string) Execute(int[] ids, string separator)
     {
-        LoggerUtility.WriteLog(LoggerUtility.Info, Translation.Translator.GetString("DelSjCallWithArgs") + string.Join(" ", id));
-        
-        switch ()
+        LoggerUtility.WriteLog(LoggerUtility.Info, Translation.Translator.GetString("DelSjCallWithArgs") + string.Join(" ", ids));
+        if (ids.Length > 1 && separator is "" or " ")
         {
-            case 1:
-                return Translation.Translator.GetString("SjDelSuccesfully");
-            case 2:
-                return Translation.Translator.GetString("DelSjBadArgs");
-            case 3:
-                return String.Join(Translation.Translator.GetString("SjNotExist"), id);
+            return (3, $"{Translation.Translator.GetString("TooMuchIdWithoutSep")} {separator} {ids}");
+        }
+        
+        int returnCode;
+        string message;
+        switch (separator)
+        {
+            case ";":
+                foreach (int id in ids)
+                {
+                    (returnCode, message) = SaveJobRepo.DeleteSaveJob(id);
+                    if (returnCode is 2)
+                    {
+                        return (returnCode, message);
+                    }
+                }
+                return (1, $"{Translation.Translator.GetString("SjDelSuccesfully")} {ids}");
+            
+            case ",":
+                for (int i = ids[0]; i <= ids[1]; i++)
+                {
+                    (returnCode, message) = SaveJobRepo.DeleteSaveJob(i);
+                    if (returnCode is 2)
+                    {
+                        return (returnCode, message);
+                    }
+                }
+                return (1, $"{Translation.Translator.GetString("SjDelSuccesfully")} {ids}");
+            
+            case "":
+                (returnCode, message) = SaveJobRepo.DeleteSaveJob(ids[0]);
+                if (returnCode is 2)
+                {
+                    return (returnCode, message);
+                }
+                return (1, $"{Translation.Translator.GetString("SjDelSuccesfully")} {ids[0]}");
+            
             default:
-                return String.Empty;
+                return (3, $"{Translation.Translator.GetString("SeparatorNotReco")} {separator}");
         }
     }
 }

@@ -6,59 +6,54 @@ using Job.Config;
 using Job.Services;
 using Logger;
 
-namespace Controller;
+namespace Job.Controller;
 
 public class ExecuteSaveJob
 {
-    public static string Execute(int[] ids, string separator)
+    public static (int, string) Execute(int[] ids, string separator)
     {
         LoggerUtility.WriteLog(LoggerUtility.Info, $"{Translation.Translator.GetString("SjExecWith")} {string.Join(" ", ids, separator)}");
-        if (separator is ";")
+        if (ids.Length > 1 && separator is "" or " ")
         {
-            foreach (var id in ids)
-            {
-                (int returnCode, string message) = SaveJobRepo.ExecuteSaveJob(id);
-                switch (returnCode)
+            return (3, $"{Translation.Translator.GetString("TooMuchIdWithoutSep")} {separator} {ids}");
+        }
+        
+        int returnCode;
+        string message;
+        switch (separator)
+        {
+            case ";":
+                foreach (var id in ids)
                 {
-                    case 1:
-                        return Translation.Translator.GetString("SjExecSuccesfully");
-                    case 2:
-                        return message;
-                    default:
-                        return String.Empty;
+                    (returnCode, message) = SaveJobRepo.ExecuteSaveJob(id);
+                    if (returnCode is 2)
+                    {
+                        return (returnCode, message);
+                    } 
                 }
-            }
-        }
-        else if(separator is ",")
-        {
-            for (int i = ids[0]; i <= ids[1]; i++)
-            {
-                (int returnCode, string message) = SaveJobRepo.ExecuteSaveJob(i);
-                switch (returnCode)
+                return (1, $"{Translation.Translator.GetString("SjExecSuccesfully")} {ids}");
+            
+            case  ",":
+                for (int i = ids[0]; i <= ids[1]; i++)
                 {
-                    case 1:
-                        return Translation.Translator.GetString("SjExecSuccesfully");
-                    case 2:
-                        return message;
-                    default:
-                        return String.Empty;
+                    (returnCode, message) = SaveJobRepo.ExecuteSaveJob(i);
+                    if (returnCode is 2)
+                    {
+                        return (returnCode, message);
+                    }
                 }
-            }
-
+                return (1, $"{Translation.Translator.GetString("SjExecSuccesfully")} {ids}");
+            
+            case "":
+                (returnCode, message) = SaveJobRepo.ExecuteSaveJob(ids[0]);
+                if (returnCode is 2)
+                {
+                    return (returnCode, message);
+                }
+                return (1, $"{Translation.Translator.GetString("SjExecSuccesfully")} {ids[0]}");
+            
+            default:
+                return (3, $"{Translation.Translator.GetString("SeparatorNotReco")} {separator}");
         }
-        else
-        {
-            (int returnCode, string message) = SaveJobRepo.ExecuteSaveJob(ids[0]);
-            switch (returnCode)
-            {
-                case 1:
-                    return Translation.Translator.GetString("SjExecSuccesfully");
-                case 2:
-                    return message;
-                default:
-                    return String.Empty;
-            }
-        }
-        return String.Empty;
     }
 }

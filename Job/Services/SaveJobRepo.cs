@@ -19,21 +19,22 @@ public class SaveJobRepo
     }
 
     
-    public static (int,string) ExecuteSaveJob(string? name)
+    public static (int,string) ExecuteSaveJob(string name)
     {
         int? id = null;
         var value = _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
         return (value.Result.Item1, value.Result.Item2);
     }
-    public static (int,string) ExecuteSaveJob(int? id)
+    public static (int,string) ExecuteSaveJob(int id)
     {
         string? name = "";
         var value = _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
         return (value.Result.Item1, value.Result.Item2);
     }
     
-    public static void DeleteSaveJob()
+    public static (int,string) DeleteSaveJob(int id)
     {
-        
+        var value = _pool.QueueTask(async () => { return ServiceDeleteSaveJob.Run(_configuration, id); });
+        return (value.Result.Item1, value.Result.Item2);
     }
 }

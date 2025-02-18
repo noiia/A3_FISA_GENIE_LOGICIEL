@@ -276,6 +276,15 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Les séparateurs sont inconnus du système : .
+        /// </summary>
+        internal static string SeparatorNotReco {
+            get {
+                return ResourceManager.GetString("SeparatorNotReco", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set-LogPath : est appelé avec les arguments : .
         /// </summary>
         internal static string SetLogPathCallWith {
@@ -294,7 +303,7 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Le travail a été supprimé.
+        ///   Looks up a localized string similar to Travaux de sauvegarde supprimés :.
         /// </summary>
         internal static string SjDelSuccesfully {
             get {
@@ -344,6 +353,15 @@ namespace Config.i18n.Ressources {
         internal static string SrcDirNotExists {
             get {
                 return ResourceManager.GetString("SrcDirNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trop d&apos;identifiants ont été passés sans bénéficier de séparateurs :.
+        /// </summary>
+        internal static string TooMuchIdWithoutSep {
+            get {
+                return ResourceManager.GetString("TooMuchIdWithoutSep", resourceCulture);
             }
         }
     }

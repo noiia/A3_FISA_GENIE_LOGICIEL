@@ -276,6 +276,15 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Separator not recognized : .
+        /// </summary>
+        internal static string SeparatorNotReco {
+            get {
+                return ResourceManager.GetString("SeparatorNotReco", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set-LogPath : is call with args : .
         /// </summary>
         internal static string SetLogPathCallWith {
@@ -294,7 +303,7 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save Job has been deleted.
+        ///   Looks up a localized string similar to Save Jobs deleted :.
         /// </summary>
         internal static string SjDelSuccesfully {
             get {
@@ -344,6 +353,15 @@ namespace Config.i18n.Ressources {
         internal static string SrcDirNotExists {
             get {
                 return ResourceManager.GetString("SrcDirNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Too much id given without separator :.
+        /// </summary>
+        internal static string TooMuchIdWithoutSep {
+            get {
+                return ResourceManager.GetString("TooMuchIdWithoutSep", resourceCulture);
             }
         }
     }

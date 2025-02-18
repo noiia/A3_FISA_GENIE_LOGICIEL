@@ -49,7 +49,7 @@
         <value>The id should be a number </value>
     </data>
     <data name="SjDelSuccesfully" xml:space="preserve">
-        <value>Save Job has been deleted</value>
+        <value>Save Jobs deleted :</value>
     </data>
     <data name="DelSjBadArgs" xml:space="preserve">
         <value>Bad arguments, require Delete-SaveJob &lt;id&gt;</value>
@@ -113,5 +113,11 @@
     </data>
     <data name="BadArgsGiven" xml:space="preserve">
         <value>Bad arguments given :</value>
+    </data>
+    <data name="SeparatorNotReco" xml:space="preserve">
+        <value>Separator not recognized : </value>
+    </data>
+    <data name="TooMuchIdWithoutSep" xml:space="preserve">
+        <value>Too much id given without separator :</value>
     </data>
 </root>
