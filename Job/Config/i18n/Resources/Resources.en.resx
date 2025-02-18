@@ -37,7 +37,7 @@
         <value>Destination directory does not exist</value>
     </data>
     <data name="InvalidType" xml:space="preserve">
-        <value>Invalid type</value>
+        <value>Invalid type : </value>
     </data>
     <data name="AddSJBadType" xml:space="preserve">
         <value>real type are full | diff</value>
@@ -75,7 +75,7 @@
     <data name="Name" xml:space="preserve">
         <value>Name :</value>
     </data>
-    <data name="Id : " xml:space="preserve">
+    <data name="Id" xml:space="preserve">
         <value>Id : </value>
     </data>
     <data name="LastSave" xml:space="preserve">
@@ -119,5 +119,8 @@
     </data>
     <data name="TooMuchIdWithoutSep" xml:space="preserve">
         <value>Too much id given without separator :</value>
+    </data>
+    <data name="MissingArgs" xml:space="preserve">
+        <value>Missing arguments  : </value>
     </data>
 </root>

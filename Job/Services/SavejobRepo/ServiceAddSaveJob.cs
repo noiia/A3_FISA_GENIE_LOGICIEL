@@ -1,4 +1,5 @@
 ﻿using Config;
+using Config.i18n;
 using Job.Config;
 using Job.Services;
 using Logger;
@@ -7,51 +8,50 @@ namespace Job.Services;
 
 public class ServiceAddSaveJob
 {
-    public static int Run(Configuration configuration, string name, string sourcePath, string destinationPath, string saveType)
+    public static (int, string) Run(Configuration configuration, string name, string sourcePath, string destinationPath, string saveType)
     {
-        if (name == String.Empty || sourcePath == String.Empty || destinationPath == String.Empty || saveType == String.Empty)
+        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(sourcePath) || string.IsNullOrEmpty(destinationPath) || string.IsNullOrEmpty(saveType))
         {
-            return 4;
+            return (4, $"{Translation.Translator.GetString("MissingArgs")} {name} {sourcePath} {destinationPath} {saveType}");
         }
-        
+
+        string returnSentence;
         SaveJob saveJob = configuration.GetSaveJob(name);
         if (saveJob != null)
         {
-            LoggerUtility.WriteLog(LoggerUtility.Warning, "SaveJob name is already use (" + name + ")");
-            return 1;
+            returnSentence = $"{Translation.Translator.GetString("MissingArgs")} ({name})";
+            LoggerUtility.WriteLog(LoggerUtility.Warning, returnSentence);
+            return (3, returnSentence);
         }
 
         if (!Directory.Exists(sourcePath))
         {
-            LoggerUtility.WriteLog(LoggerUtility.Warning, "Source folder does not exist (" + sourcePath + ")");
-            return 1;
+            returnSentence = $"{Translation.Translator.GetString("SrcDirNotExists")} ({sourcePath})";
+            LoggerUtility.WriteLog(LoggerUtility.Warning, returnSentence);
+            return (3, returnSentence);
         }
 
         if (!Directory.Exists(destinationPath))
         {
-            LoggerUtility.WriteLog(LoggerUtility.Warning, "Destination folder does not exist (" + destinationPath + ")");
-            return 1;
+            returnSentence = $"{Translation.Translator.GetString("DstDirNotExists")} ({destinationPath})";
+            LoggerUtility.WriteLog(LoggerUtility.Warning, returnSentence);
+            return (3, returnSentence);
         }
 
         if (!(saveType.ToLower() == "diff" || saveType.ToLower() == "full"))
         {
-            LoggerUtility.WriteLog(LoggerUtility.Warning, "Type args inst correct (" + saveType + ")");
-            return 1;
+            returnSentence = $"{Translation.Translator.GetString("InvalidType")} ({saveType})";
+            LoggerUtility.WriteLog(LoggerUtility.Warning, returnSentence);
+            return (3, returnSentence);
         }
 
         int nextId = configuration.FindFirstFreeId();
-        // if (nextId == -1)
-        // {
-        //     LoggerUtility.WriteLog(LoggerUtility.Info, "Cant add more than 5 SaveJob");
-        //     return ReturnCodes.MORE_THAN_5_SAVEJOB;
-        // }
-        // else
-        // {
-            configuration.AddSaveJob(nextId, name, sourcePath, destinationPath, DateTime.Now, DateTime.Now, saveType);
-            LoggerUtility.WriteLog(LoggerUtility.Info,
-                "SaveJob is created : {" + "id: " + nextId.ToString() + ", source: " + name + ", destination: " +
-                sourcePath + ", type: " + saveType + "}");
-            return 1;
-        //}
+
+        configuration.AddSaveJob(nextId, name, sourcePath, destinationPath, DateTime.Now, DateTime.Now, saveType);
+        returnSentence = $"{Translation.Translator.GetString("SjCreatedSuccesfully")} id : {nextId.ToString()} source : {sourcePath} destination : {destinationPath} save type : {saveType}";
+
+        LoggerUtility.WriteLog(LoggerUtility.Info,
+            $"SaveJob is created : {{ id: {nextId.ToString()}, source: {sourcePath}, destination: {destinationPath}, type: {saveType} }}");
+        return (1, returnSentence);
     }
 }
