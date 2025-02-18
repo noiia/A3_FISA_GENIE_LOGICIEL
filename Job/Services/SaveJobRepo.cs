@@ -1,10 +1,14 @@
-﻿namespace Job.Services;
+﻿using Config;
 
-public class SaveJobRepo
+namespace Job.Services;
+
+public class SaveJobRepo(Configuration config)
 {
-    public static void AddSaveJob()
+    private Configuration _configuration = config;
+
+    public void AddSaveJob(string name, string sourcePath, string destinationPath, string saveType)
     {
-        
+        ServiceAddSaveJob.Run(_configuration, name, sourcePath, destinationPath, saveType);
     }
     
     public static void ExecSaveJob()
