@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using Config;
+using Job.Config;
 using Job.Services;
 using Logger;
-using Configuration = Job.Services.Configuration;
 
 namespace ExecSaveJob;
 

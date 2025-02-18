@@ -14,7 +14,7 @@ using Job;
 
 using System.Diagnostics;
 using System.IO;
-using Configuration = Job.Services.Configuration;
+using Job.Config;
 
 namespace AvaloniaApplication.ViewModels;
 
@@ -66,7 +66,7 @@ public partial class AddSaveJobViewModel : ReactiveObject
     public string _destinationField;
     public string _sourceField;
     private string _notification;    
-    private Config.Configuration config = ConfigSingleton.Instance();
+    private Configuration config = ConfigSingleton.Instance();
     // public object ConfirmCommand { get; }
 
     public AddSaveJobViewModel()
@@ -130,7 +130,7 @@ public partial class AddSaveJobViewModel : ReactiveObject
     private void AddSaveJob(string args)
     {
         // string[] id = [Convert.ToString(args) ?? string.Empty];
-        Config.Configuration config = ConfigSingleton.Instance();
+        Configuration config = ConfigSingleton.Instance();
         config.LoadConfiguration();
         
         Notification = Controller.AddSaveJob.Execute(config, args.Split(" "));

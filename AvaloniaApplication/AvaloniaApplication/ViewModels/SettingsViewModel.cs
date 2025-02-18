@@ -5,12 +5,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using AvaloniaApplication.Views;
+using Job.Config;
 
 namespace AvaloniaApplication.ViewModels
 {
     public class SettingsViewModel : INotifyPropertyChanged
     {
-        Config.Configuration config;
+        Configuration config;
 
         public SettingsViewModel()
         {

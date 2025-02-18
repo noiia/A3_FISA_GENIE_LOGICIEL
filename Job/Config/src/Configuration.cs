@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Config;
+using Job.Model;
 
 namespace Job.Config
 {

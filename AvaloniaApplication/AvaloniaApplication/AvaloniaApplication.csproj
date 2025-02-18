@@ -32,4 +32,8 @@
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Job\Job.csproj" />
+  </ItemGroup>
 </Project>

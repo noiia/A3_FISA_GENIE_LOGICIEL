@@ -4,6 +4,7 @@ using System.Diagnostics;
 
 using Config.i18n;
 using Config;
+using Job.Config;
 using Logger;
 
 namespace CLI;

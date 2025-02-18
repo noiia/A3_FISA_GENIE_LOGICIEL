@@ -2,49 +2,28 @@
 
 using Config;
 using Config.i18n;
+using Job.Config;
 
 namespace Controller;
 
 public class AddSaveJob
 {
-    public static string Execute(Configuration configuration, string[] args)
+    public static string Execute(int id, string srcPath, string destPath, string type)
     {
-        Func<List<string>> languageFunc = Translation.SelectLanguage(configuration.GetLanguage());
-        List<string> language = languageFunc();
-        
-        ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
-        {
-            FileName = "AddSaveJob.exe", 
-            Arguments = string.Join(' ', args), 
-            UseShellExecute = false,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true, 
-            CreateNoWindow = true 
-        };
-        Process processServiceAddSaveJob = new Process { StartInfo = serviceAddSaveJob };
-        processServiceAddSaveJob.Start();
-        string output = processServiceAddSaveJob.StandardOutput.ReadToEnd();
-        string error = processServiceAddSaveJob.StandardError.ReadToEnd();
-        processServiceAddSaveJob.WaitForExit();
-
-        if (!string.IsNullOrWhiteSpace(error))
-        {
-            return String.Join("Error: ", error);
-        }
-        switch (processServiceAddSaveJob.ExitCode)
+        switch ()
         {
             case 1:
-                return language[1];
+                return Translation.Translator.GetString("SjCreatedSuccesfully");
             case 2:
-                return language[2];
+                return $"{Translation.Translator.GetString("AddSjBadArgs")} {id}";
             case 3:
-                return String.Join(language[3], args[0]);
+                return $"{Translation.Translator.GetString("SaveAlreadyExist")}";
             case 4:
-                return String.Join(language[4], args[1]);
+                return $"{Translation.Translator.GetString("SrcDirNotExists")} {srcPath}";
             case 5:
-                return String.Join(language[5], args[2]);
+                return $"{Translation.Translator.GetString("DstDirNotExist")} {destPath}";
             case 6:
-                return String.Join(language[6], args[3], language[7]);
+                return $"{Translation.Translator.GetString("InvalidType")} {type} {Translation.Translator.GetString("AddSJBadType")}";
             default:
                 return String.Empty;
         }
