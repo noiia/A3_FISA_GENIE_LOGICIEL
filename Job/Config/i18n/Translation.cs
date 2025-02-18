@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Resources;
 
-namespace Config.i18n;
+namespace Job.Config.i18n;
 
 public class Translation
 {

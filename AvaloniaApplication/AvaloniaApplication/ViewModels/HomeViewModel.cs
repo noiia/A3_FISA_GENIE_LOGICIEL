@@ -13,6 +13,7 @@ using System.Windows.Input;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using Config;
+using DynamicData;
 using Job.Config;
 using Job.Services;
 
@@ -56,36 +57,52 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     
     private void ExecuteSaveJob(object args)
     {
-        string[] ids = [Convert.ToString(args) ?? string.Empty];
+        string content = Convert.ToString(args) ?? string.Empty;
         
-        Configuration config = ConfigSingleton.Instance();
-        config.LoadConfiguration();
+        string separator;   
+        if (content.Contains(";")) {
+            separator = ";";
+        } else if (content.Contains(",")) {
+            separator = ",";
+        } else {
+            separator = "";
+        }
+
+        string[] contentSplited = content.Split(separator);
+        int[] ids = new int[]{};
+        foreach (string id in contentSplited)
+        {
+            ids.Add([int.Parse(id)]);
+        }
         
-        Notification = Controller.ExecuteSaveJob.Execute(config, ids);
+        (int returnCode, string message) = Job.Controller.ExecuteSaveJob.Execute(ids, separator);
+        
+        Notification = message; 
     }
+    
     private void DeleteSaveJob(object args)
     {
-        // string[] id = [Convert.ToString(args) ?? string.Empty];
-        int id;
-        if (int.TryParse((string?)args, out id))
-        {
-            Configuration config = ConfigSingleton.Instance();
-            SaveJobRepo saveJobRepo = new SaveJobRepo(config);
-            saveJobRepo.DeleteSaveJob(id);
-        }
-        else
-        {
-            Console.WriteLine("HomeViewModel DeleteSaveJob ne permet pas l'utilisation de int id : utiliser string[] id");
-            //#TODO Supprimer ce writeline si ça fonctionne
+        string content = Convert.ToString(args) ?? string.Empty;
+        
+        string separator;   
+        if (content.Contains(";")) {
+            separator = ";";
+        } else if (content.Contains(",")) {
+            separator = ",";
+        } else {
+            separator = "";
         }
         
-        //
-        // Configuration config = ConfigSingleton.Instance();
-        // config.LoadConfiguration();
-        //
-        // Notification = Controller.DeleteSaveJob.Execute(config, id);   
+        string[] contentSplited = content.Split(separator);
+        int[] ids = new int[]{};
+        foreach (string id in contentSplited)
+        {
+            ids.Add([int.Parse(id)]);
+        }
         
-
+        (int returnCode, string message) = Job.Controller.DeleteSaveJob.Execute(ids, separator);
+        
+        Notification = message;    
     }
 
     public void AddItem(TableDataModel item)
