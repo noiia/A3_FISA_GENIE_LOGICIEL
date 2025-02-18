@@ -2,7 +2,7 @@ using System.Diagnostics;
 using Config.i18n;
 using Config;
 using Job.Config;
-using Job.Config.i18n;
+// using Job.Config.i18n;
 using Logger;
 
 namespace CLI
@@ -13,6 +13,7 @@ namespace CLI
 
         public override void Action(Configuration configuration, string[] args)
         {
+            
             Func<List<string>> languageFunc = Translation.SelectLanguage(configuration.GetLanguage());
             List<string> language = languageFunc();
             
@@ -24,7 +25,7 @@ namespace CLI
             if (saveJobs.Length == 0)
             {
                 LoggerUtility.WriteLog(LoggerUtility.Info, $"{language[19]}");
-
+        
             }
             foreach (var saveJob in saveJobs)
             {
