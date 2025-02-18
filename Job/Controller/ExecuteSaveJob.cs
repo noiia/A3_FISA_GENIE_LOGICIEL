@@ -3,6 +3,7 @@
 using Config;
 using Config.i18n;
 using Job.Config;
+using Job.Config.i18n;
 using Logger;
 
 namespace Controller;
@@ -19,7 +20,7 @@ public class ExecuteSaveJob
             foreach (var id in listIds)
             {
                 
-                switch ()
+                switch (1) // #TODO : mettre une valeur valable
                 {
                     case 1:
                         return Translation.Translator.GetString("SjExecSuccesfully");
@@ -38,7 +39,7 @@ public class ExecuteSaveJob
             int max = int.Parse(args[1].Split(',')[1]);
             for (int i = min; i <= max; i++)
             {
-                switch ()
+                switch (1) // #TODO : mettre une valeur valable
                 {
                     case 1:
                         return Translation.Translator.GetString("SjExecSuccesfully");
@@ -56,7 +57,7 @@ public class ExecuteSaveJob
         {
             if(int.TryParse(args[0], out intType))
             {
-                switch ()
+                switch (1) // #TODO : mettre une valeur valable
                 {
                     case 1:
                         return Translation.Translator.GetString("SjExecSuccesfully");
@@ -70,7 +71,7 @@ public class ExecuteSaveJob
             }
             else
             {
-                switch ()
+                switch (1) // #TODO : mettre une valeur valable
                 {
                     case 1:
                         return Translation.Translator.GetString("SjExecSuccesfully");

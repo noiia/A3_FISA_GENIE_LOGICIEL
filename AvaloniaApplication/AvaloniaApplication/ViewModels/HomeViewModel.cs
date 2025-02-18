@@ -14,6 +14,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using Config;
 using Job.Config;
+using Job.Services;
 
 namespace AvaloniaApplication.ViewModels;
 
@@ -64,12 +65,27 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     }
     private void DeleteSaveJob(object args)
     {
-        string[] id = [Convert.ToString(args) ?? string.Empty];
+        // string[] id = [Convert.ToString(args) ?? string.Empty];
+        int id;
+        if (int.TryParse((string?)args, out id))
+        {
+            Configuration config = ConfigSingleton.Instance();
+            SaveJobRepo saveJobRepo = new SaveJobRepo(config);
+            saveJobRepo.DeleteSaveJob(id);
+        }
+        else
+        {
+            Console.WriteLine("HomeViewModel DeleteSaveJob ne permet pas l'utilisation de int id : utiliser string[] id");
+            //#TODO Supprimer ce writeline si ça fonctionne
+        }
         
-        Configuration config = ConfigSingleton.Instance();
-        config.LoadConfiguration();
+        //
+        // Configuration config = ConfigSingleton.Instance();
+        // config.LoadConfiguration();
+        //
+        // Notification = Controller.DeleteSaveJob.Execute(config, id);   
         
-        Notification = Controller.DeleteSaveJob.Execute(config, id);     
+
     }
 
     public void AddItem(TableDataModel item)

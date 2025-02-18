@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Config.i18n;
 using Config;
 using Job.Config;
+using Job.Config.i18n;
 using Logger;
 
 namespace CLI

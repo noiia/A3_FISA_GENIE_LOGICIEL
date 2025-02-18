@@ -19,8 +19,10 @@ public class SaveJobRepo(Configuration config)
         
     }
     
-    public static void DeleteSaveJob()
+    public void DeleteSaveJob(int id)
     {
-        
+        int returnCode;
+        returnCode = ServiceDeleteSaveJob.Run(_configuration, id);
+        Controller.DeleteSaveJob.Execute(returnCode);
     }
 }
