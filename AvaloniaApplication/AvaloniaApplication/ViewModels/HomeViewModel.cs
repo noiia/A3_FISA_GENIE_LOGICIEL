@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -32,7 +33,13 @@ public class TableDataModel
 
 public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler PropertyChanged;
+    private readonly Configuration _config;
+    public new event PropertyChangedEventHandler? PropertyChanged;
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+    
     public string Title { get; set; }
     
     private string _notification;
@@ -50,12 +57,12 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             if (_tableData != value)
             {
             _tableData = value;
-            OnPropertyChanged();
+            OnPropertyChanged(nameof(TableData));
             }
         }
     }
     
-    private void ExecuteSaveJob(object args)
+    private void ExecuteSaveJob(object? args)
     {
         string content = Convert.ToString(args) ?? string.Empty;
         
@@ -80,7 +87,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         Notification = message; 
     }
     
-    private void DeleteSaveJob(object args)
+    private void DeleteSaveJob(object? args)
     {
         string content = Convert.ToString(args) ?? string.Empty;
         
@@ -101,23 +108,47 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         }
         
         (int returnCode, string message) = Job.Controller.DeleteSaveJob.Execute(ids, separator);
+
+        foreach (int id in ids)
+        {
+            var itemToRemove = TableData.FirstOrDefault(i => i.Id == id);
+            if (itemToRemove != null)
+            {
+                TableData.Remove(itemToRemove);
+            }
+        }
         
         Notification = message;    
     }
+    
 
     public void AddItem(TableDataModel item)
     {
         Dispatcher.UIThread.InvokeAsync(() => TableData.Add(item));
     }
     
-    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    private int _selectedTabIndex;
+    public int SelectedTabIndex
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        get => _selectedTabIndex;
+        set
+        {
+            _selectedTabIndex = value;
+            OnPropertyChanged(nameof(SelectedTabIndex));
+            
+            if (_selectedTabIndex == 0)
+            {
+                _config.LoadConfiguration();
+                LoadSaveJob(_config);
+            }
+        }
     }
+    
 
     public void LoadSaveJob(Configuration config)
     {
         TableData = new ObservableCollection<TableDataModel>();
+        int i = 0;
         foreach (SaveJob saveJob in config.GetSaveJobs())
         {
             AddItem(new TableDataModel 
@@ -132,15 +163,16 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             });
         }
     }
-    public HomeViewModel()
+
+    public HomeViewModel(Configuration config)
     {
         Title = "Save job list";
         TableData = new ObservableCollection<TableDataModel>();
-        Configuration config = ConfigSingleton.Instance();
         
         config.LoadConfiguration();
-        LoadSaveJob(config);
-
+        _config = config;
+        LoadSaveJob(_config);
+        
         Notification = "Welcome back on EasySave !";
     }
 }

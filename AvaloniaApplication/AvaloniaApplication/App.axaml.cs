@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
@@ -6,6 +7,8 @@ using Avalonia.Markup.Xaml;
 using AvaloniaApplication.ViewModels;
 using AvaloniaApplication.Views;
 using System.Linq;
+using Job.Config;
+using Job.Services;
 
 namespace AvaloniaApplication
 {
@@ -18,6 +21,8 @@ namespace AvaloniaApplication
 
         public override void OnFrameworkInitializationCompleted()
         {
+            Configuration configuration = new Configuration( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
+            SaveJobRepo _ = new SaveJobRepo(configuration, 5);
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
@@ -25,14 +30,14 @@ namespace AvaloniaApplication
                 DisableAvaloniaDataAnnotationValidation();
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new HomeViewModel()
+                    DataContext = new HomeViewModel(configuration)
                 };
             }
             else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
             {
                 singleViewPlatform.MainView = new HomeView
                 {
-                    DataContext = new HomeViewModel()
+                    DataContext = new HomeViewModel(configuration)
                 };
             }
         

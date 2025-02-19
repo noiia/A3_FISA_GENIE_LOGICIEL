@@ -9,8 +9,8 @@
              x:DataType="vm:HomeViewModel">
      <Grid Margin="0,0,0,50">
         <TextBlock Text="EasySave.exe" xml:space="preserve" FontSize="30" Margin="48,24,0,48" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TabControl Margin="32,124,32,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <TabItem Header="Savejobs">
+        <TabControl Margin="32,124,32,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
+            <TabItem Header="Home">
                 <Grid Margin="16">
                     <TextBlock Text="{Binding Title}" FontSize="24" Margin="0,0,0,0"/>
                     <DataGrid ItemsSource="{Binding TableData}"
