@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaApplication.Browser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Job", "Job\Job.csproj", "{6D8865AD-B7F3-4A94-A045-1F8CCD07F909}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSoft", "CryptoSoft\CryptoSoft.csproj", "{D86D542D-0B82-409E-BADC-351FED37BFCB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{6D8865AD-B7F3-4A94-A045-1F8CCD07F909}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D8865AD-B7F3-4A94-A045-1F8CCD07F909}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D8865AD-B7F3-4A94-A045-1F8CCD07F909}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D86D542D-0B82-409E-BADC-351FED37BFCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D86D542D-0B82-409E-BADC-351FED37BFCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D86D542D-0B82-409E-BADC-351FED37BFCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D86D542D-0B82-409E-BADC-351FED37BFCB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
