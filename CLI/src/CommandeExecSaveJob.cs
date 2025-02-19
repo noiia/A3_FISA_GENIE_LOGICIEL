@@ -19,7 +19,7 @@ namespace CLI
 
         public override void Action(string[] args)
         {
-            string content = Convert.ToString(args) ?? string.Empty;
+            string content = args[0];
         
             string separator;   
             if (content.Contains(";")) {
