@@ -33,5 +33,8 @@ namespace CLI;
         
             (int returnCode, string message) = Job.Controller.DeleteSaveJob.Execute(ids, separator);
             
+            Console.WriteLine(message);
+
+            
         }
     }
