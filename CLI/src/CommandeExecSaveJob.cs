@@ -19,7 +19,7 @@ namespace CLI
 
         public override void Action(string[] args)
         {
-            string content = Convert.ToString(args) ?? string.Empty;
+            string content = args[0];
         
             string separator;   
             if (content.Contains(";")) {
@@ -34,7 +34,9 @@ namespace CLI
             List<int>  ids = contentSplited.Select(int.Parse).ToList();
         
             (int returnCode, string message) = Job.Controller.ExecuteSaveJob.Execute(ids, separator);
-            // Job.Controller.ExecuteSaveJob.Execute(args);
+            
+            Console.WriteLine(message);
+
         }
 
     }

@@ -18,7 +18,14 @@ namespace CLI
 
         public void Run(Configuration config, string[] args)
         {
-            this.Action(config, args);
+            try
+            {
+                this.Action(config, args);
+            }
+            catch (Exception e)
+            {
+                this.Action(args);
+            }
         }
 
         public bool IsCall(string commandeName)
@@ -40,7 +47,14 @@ namespace CLI
             }
         }
 
-        public virtual void Action(string[] args) {}
-        public virtual void Action(Configuration config, string[] args) {}
+        public virtual void Action(string[] args)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void Action(Configuration config, string[] args)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

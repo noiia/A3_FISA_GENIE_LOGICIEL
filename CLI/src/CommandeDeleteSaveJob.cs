@@ -17,7 +17,7 @@ namespace CLI;
 
         public override void Action(string[] args)
         {
-            string content = Convert.ToString(args) ?? string.Empty;
+            string content = args[0];
         
             string separator;   
             if (content.Contains(";")) {
@@ -29,9 +29,12 @@ namespace CLI;
             }
 
             string[] contentSplited = content.Split(separator);
-            List<int>  ids = contentSplited.Select(int.Parse).ToList();
+            List<int> ids = contentSplited.Select(int.Parse).ToList();
         
             (int returnCode, string message) = Job.Controller.DeleteSaveJob.Execute(ids, separator);
+            
+            Console.WriteLine(message);
+
             
         }
     }
