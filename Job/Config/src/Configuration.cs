@@ -23,7 +23,7 @@ namespace Job.Config
                 string defaultLogPath =
                     (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\Logs\\")
                     .Replace("\\", "/");
-                ConfigFile tempConfigFile = new ConfigFile([], defaultLogPath, "en", "json", [],[]);
+                ConfigFile tempConfigFile = new ConfigFile([], defaultLogPath, "CryptoKey", "en", "json", [],[]);
                 string json = JsonSerializer.Serialize(tempConfigFile);
                 File.WriteAllText(this._configPath, json);
             }
@@ -220,6 +220,18 @@ namespace Job.Config
                 this._configFile.BuisnessApp = this._configFile.BuisnessApp.Where(app => app != buisnessApp).ToArray();
                 this.SaveConfiguration();
             }
+        }
+        
+        
+        public void SetCryptKey(string cryptKey)
+        {
+            this._configFile.CryptoKey = cryptKey;
+            this.SaveConfiguration();
+        }
+
+        public string GetCryptKey()
+        {
+            return this._configFile.CryptoKey;
         }
     }
 }

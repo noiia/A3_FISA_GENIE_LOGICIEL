@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using Job.Config;
 using Logger;
@@ -95,7 +96,32 @@ public abstract class Backup
             }
             try
             {
-                File.Copy(RootFile, ToFile, true);
+                string extension = Path.GetExtension(RootFile);
+                Configuration configuration = new Configuration( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
+                string[] extensionCrypt = configuration.GetCryptExtension();
+                if (extensionCrypt.Contains(extension))
+                {
+                    string cryptKey = configuration.GetCryptKey();
+                    string[] args = ["Crypt", RootFile, ToFile, cryptKey];
+                    ProcessStartInfo cryptoSoftStartInfo = new ProcessStartInfo
+                    {
+                        FileName = "CryptoSoft.exe",
+                        Arguments = string.Join(' ', args),
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        CreateNoWindow = true
+                    };
+                    Process processCryptoSoft = new Process { StartInfo = cryptoSoftStartInfo };
+                    processCryptoSoft.Start();
+                    string output = processCryptoSoft.StandardOutput.ReadToEnd();
+                    string error = processCryptoSoft.StandardError.ReadToEnd();
+                    processCryptoSoft.WaitForExit();
+                }
+                else
+                {
+                    File.Copy(RootFile, ToFile, true);
+                }
             }
             catch (Exception E)
             {
