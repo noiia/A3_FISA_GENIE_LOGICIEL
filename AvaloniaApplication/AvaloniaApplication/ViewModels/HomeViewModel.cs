@@ -145,7 +145,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     private void ExecuteSaveJob(object? args)
     {
         (List<int> ids, string separator) = ListAndConvertIds(args);
-        Console.WriteLine(ids.Count + separator);
         (int returnCode, string message) = Job.Controller.ExecuteSaveJob.Execute(ids, separator);
         
         Notification = message; 
