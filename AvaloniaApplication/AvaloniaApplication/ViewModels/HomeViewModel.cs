@@ -151,7 +151,16 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         (List<int> ids, string separator) = ListAndConvertIds(args);
         (int returnCode, string message) = Job.Controller.ExecuteSaveJob.Execute(ids, separator);
         
-        Notification = message; 
+        this.Manager
+            .CreateMessage()
+            .Accent("#1751C3")
+            .Animates(true)
+            .Background("#333")
+            .HasBadge("Info")
+            .HasMessage(message)
+            .Dismiss()
+            .WithDelay(TimeSpan.FromSeconds(5))
+            .Queue();  
     }
     
     private void DeleteSaveJob(object? args)
@@ -169,7 +178,15 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             }
         }
         
-        Notification = message;    
+        this.Manager
+            .CreateMessage()
+            .Accent("#1751C3")
+            .Animates(true)
+            .Background("#333")
+            .HasBadge("Info")
+            .HasMessage(message)
+            .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+            .Queue();  
     }
     
     public void AddItem(TableDataModel item)
@@ -226,6 +243,17 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         _config = config;
         LoadSaveJob(_config);
         
-        Notification = "Welcome back on EasySave !";
+        this.Manager
+            .CreateMessage()
+            .Accent("#1751C3")
+            .Animates(true)
+            .Background("#333")
+            .HasBadge("Info")
+            .HasMessage(
+                "Welcome back on EasySave")
+            .Dismiss().WithButton("Update now", button => { })
+            .Dismiss().WithButton("Release notes", button => { })
+            .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+            .Queue();
     }
 }

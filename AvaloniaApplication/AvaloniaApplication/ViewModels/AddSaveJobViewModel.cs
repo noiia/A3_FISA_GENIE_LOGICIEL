@@ -125,6 +125,14 @@ public partial class AddSaveJobViewModel : ReactiveObject
     private void AddSaveJob(string name, string srcPath, string destPath, string type)
     {
         (int returnCode, string message) = Job.Controller.AddSaveJob.Execute(name, srcPath, destPath, type);
-        Notification = message;
+        this.Manager
+            .CreateMessage()
+            .Accent("#1751C3")
+            .Animates(true)
+            .Background("#333")
+            .HasBadge("Info")
+            .HasMessage(message)
+            .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+            .Queue();
     }
 }
