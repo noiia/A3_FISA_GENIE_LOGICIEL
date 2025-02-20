@@ -44,13 +44,13 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn> 
-                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="100" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="150" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="65" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="100" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Source" Binding="{Binding SrcPath}" Width="300" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Destination" Binding="{Binding DestPath}" Width="300" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Last Execution" Binding="{Binding LastExec}" Width="200" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="200" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="100" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Last Execution" Binding="{Binding LastExec}" Width="150" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="75" IsReadOnly="True"/>
                             <DataGridTemplateColumn Header="Execute" Width="100">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

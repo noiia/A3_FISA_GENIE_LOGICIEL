@@ -151,7 +151,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         (List<int> ids, string separator) = ListAndConvertIds(args);
         (int returnCode, string message) = Job.Controller.ExecuteSaveJob.Execute(ids, separator);
         
-        Notification = message; 
+        NotificationMessageManagerSingleton.GenerateNotification(this.Manager, returnCode, message);
     }
     
     private void DeleteSaveJob(object? args)
@@ -169,7 +169,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             }
         }
         
-        Notification = message;    
+        NotificationMessageManagerSingleton.GenerateNotification(this.Manager, returnCode, message);
     }
     
     public void AddItem(TableDataModel item)
@@ -225,7 +225,5 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         config.LoadConfiguration();
         _config = config;
         LoadSaveJob(_config);
-        
-        Notification = "Welcome back on EasySave !";
     }
 }

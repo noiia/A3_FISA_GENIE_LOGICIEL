@@ -10,9 +10,9 @@ public class ServiceExecSaveJob
 {
     public static (int, string) Run(Configuration configuration, int? id, string? name)
     {
+        SaveJob? saveJob = null;
         if (id is not null ^ name is not "")
         {
-            SaveJob? saveJob = null;
             if (id is not null)
             {
                 saveJob = configuration.GetSaveJob(id ?? -1);   
@@ -44,11 +44,11 @@ public class ServiceExecSaveJob
             
             LoggerUtility.WriteLog(LoggerUtility.Info, $"The savejob took {stopwatch.ElapsedMilliseconds} ms");
             LoggerUtility.WriteLog(LoggerUtility.Info, $"Save : id: {id.ToString()}, name : {saveJob.Name} from ({saveJob.Source}) to ({saveJob.Destination}) is save");
-            return (1, $"{Translation.Translator.GetString("SjCreatedSuccesfully") ?? String.Empty}");
+            return (1, $"{Translation.Translator.GetString("SjExecSuccesfully") ?? String.Empty} - ID : {id.ToString()}");
         }
         else
         {
-            string returnSentence = $"{Translation.Translator.GetString("BadArgsGiven") ?? String.Empty} {id} {name}";
+            string returnSentence = $"{Translation.Translator.GetString("BadArgsGiven") ?? String.Empty} - ID : {id.ToString()}";
             LoggerUtility.WriteLog(LoggerUtility.Warning, returnSentence);
             return (2, returnSentence);
         }
