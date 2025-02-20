@@ -12,6 +12,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Notification;
 using Avalonia.Threading;
 using Config;
 using DynamicData;
@@ -79,6 +80,9 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         get => _notification;
         set => this.RaiseAndSetIfChanged(ref _notification, value);
     }
+    
+    public INotificationMessageManager Manager => NotificationMessageManagerSingleton.Instance;
+
     
     private ObservableCollection<TableDataModel> _tableData;
 

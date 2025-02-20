@@ -5,10 +5,14 @@
              xmlns:vm="clr-namespace:AvaloniaApplication.ViewModels"
              xmlns:avaloniaApplication="clr-namespace:AvaloniaApplication"
              xmlns:views="clr-namespace:AvaloniaApplication.Views"
+             xmlns:controls="clr-namespace:Avalonia.Notification.Controls;assembly=Notification.Avalonia"
              x:Class="AvaloniaApplication.Views.HomeView"
              x:DataType="vm:HomeViewModel">
      <Grid Margin="0,0,0,50">
-        <TextBlock Text="EasySave.exe" xml:space="preserve" FontSize="30" Margin="48,24,0,48" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+         <Border Grid.Column="1">
+             <controls:NotificationMessageContainer Manager="{Binding Manager}" />
+         </Border>
+         <TextBlock Text="EasySave.exe" xml:space="preserve" FontSize="30" Margin="48,24,0,48" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TabControl Margin="32,124,32,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
             <TabItem Header="Home">
                 <Grid Margin="16">
