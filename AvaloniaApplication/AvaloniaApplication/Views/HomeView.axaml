@@ -13,13 +13,13 @@
             <TabItem Header="Home">
                 <Grid Margin="16">
                     <TextBlock Text="{Binding Title}" FontSize="24" Margin="0,0,0,0"/>
-                    <Button Command="{Binding ExecuteSaveJob}" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsAnySelected}" Margin="600,0,0,400">
+                    <Button Command="{Binding ExecuteListSaveJob}" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsAnySelected}" Margin="600,0,0,400">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Execute" FontSize="16" Margin="0,0,10,0"/>
                             <Image Source="avares://AvaloniaApplication/Assets/gear.png" Width="30" Height="30"/>
                         </StackPanel>
                     </Button>
-                    <Button Command="{Binding DeleteSaveJob}" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsAnySelected}" Margin="900,0,0,400">
+                    <Button Command="{Binding DeleteListSaveJob}" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsAnySelected}" Margin="900,0,0,400">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Delete" FontSize="16" Margin="0,0,10,0"/>
                             <Image Source="avares://AvaloniaApplication/Assets/trash.png" Width="30" Height="30"/>

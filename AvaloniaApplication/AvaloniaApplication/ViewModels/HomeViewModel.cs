@@ -93,32 +93,56 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         }
     }
 
-    private void ExecuteListSaveJob()
+    public void ExecuteListSaveJob()
     {
         List<int> ids = new List<int>();
         ids.AddRange(TableData.Where(item => item.Checked).Select(item => item.Id));
         ExecuteSaveJob(ids);
     }
     
+    public void DeleteListSaveJob()
+    {
+        List<int> ids = new List<int>();
+        ids.AddRange(TableData.Where(item => item.Checked).Select(item => item.Id));
+        DeleteSaveJob(ids);
+    }
+
+    private (List<int>, string) ListAndConvertIds(object? args)
+    {
+        string content = "";
+        string separator = ""; 
+        List<int> ids = new List<int>();
+        
+        if (args is List<int>)
+        {
+            ids = ((List<int>)args).ToList();
+            separator = ";";
+        }
+        else
+        {
+            content = Convert.ToString(args) ?? string.Empty;
+            if (content.Contains(";")) {
+                separator = ";";
+            } else if (content.Contains(",")) {
+                separator = ",";
+            } else {
+                separator = "";
+            }
+        
+            string[] contentSplited = content.Split(separator);
+        
+            foreach (string id in contentSplited)
+            {
+                ids.Add([int.Parse(id)]);
+            }
+        }
+        
+        return (ids, separator);
+    }
+    
     private void ExecuteSaveJob(object? args)
     {
-        string content = Convert.ToString(args) ?? string.Empty;
-        
-        string separator;   
-        if (content.Contains(";")) {
-            separator = ";";
-        } else if (content.Contains(",")) {
-            separator = ",";
-        } else {
-            separator = "";
-        }
-
-        string[] contentSplited = content.Split(separator);
-        List<int>  ids = new List<int>();
-        foreach (string id in contentSplited)
-        {
-            ids.Add([int.Parse(id)]);
-        }
+        (List<int> ids, string separator) = ListAndConvertIds(args);
         
         (int returnCode, string message) = Job.Controller.ExecuteSaveJob.Execute(ids, separator);
         
@@ -127,23 +151,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     
     private void DeleteSaveJob(object? args)
     {
-        string content = Convert.ToString(args) ?? string.Empty;
-        
-        string separator;   
-        if (content.Contains(";")) {
-            separator = ";";
-        } else if (content.Contains(",")) {
-            separator = ",";
-        } else {
-            separator = "";
-        }
-        
-        string[] contentSplited = content.Split(separator);
-        List<int> ids = new List<int>();
-        foreach (string id in contentSplited)
-        {
-            ids.Add([int.Parse(id)]);
-        }
+        (List<int> ids, string separator) = ListAndConvertIds(args);
         
         (int returnCode, string message) = Job.Controller.DeleteSaveJob.Execute(ids, separator);
 
@@ -159,7 +167,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         Notification = message;    
     }
     
-
     public void AddItem(TableDataModel item)
     {
         Dispatcher.UIThread.InvokeAsync(() => TableData.Add(item));
