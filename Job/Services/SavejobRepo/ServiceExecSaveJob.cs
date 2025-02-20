@@ -29,12 +29,14 @@ public class ServiceExecSaveJob
             
             if (saveJob.Type == "full")
             {
-                CompleteBackup completeBackup = CompleteBackup.GetInstance(saveJob);
+                // CompleteBackup completeBackup = CompleteBackup.GetInstance(saveJob);
+                CompleteBackup completeBackup = new CompleteBackup(saveJob);
                 completeBackup.Save();
             }
             else if (saveJob.Type == "diff")
             {
-                DifferentialBackup differentialBackup = DifferentialBackup.GetInstance(saveJob);
+                // DifferentialBackup differentialBackup = DifferentialBackup.GetInstance(saveJob);
+                DifferentialBackup differentialBackup = new DifferentialBackup(saveJob);
                 differentialBackup.Save();
             }
             
