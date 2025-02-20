@@ -20,8 +20,18 @@ using Job.Services;
 
 namespace AvaloniaApplication.ViewModels;
 
-public class TableDataModel
+public class TableDataModel : ReactiveObject
 {
+    private bool _checked;
+    public bool Checked
+    {
+        get => _checked;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _checked, value);
+            (App.Current.DataContext as HomeViewModel)?.UpdateSelection();
+        }
+    }
     public required int Id { get; set; }
     public required string Name { get; set; }
     public required DateTime LastExec { get; set; }
@@ -39,6 +49,25 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+
+    private bool _isAnySelected;
+    public bool IsAnySelected
+    {
+        get => _isAnySelected;
+        set
+        {
+            if (_isAnySelected != value)
+            {
+                _isAnySelected = value;
+                OnPropertyChanged(nameof(IsAnySelected));
+            }
+        }
+        
+    }
+    public void UpdateSelection()
+    {
+        IsAnySelected = TableData.Any(row => row.Checked);
+    }
     
     public string Title { get; set; }
     
@@ -50,16 +79,25 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     }
     
     private ObservableCollection<TableDataModel> _tableData;
+
     public ObservableCollection<TableDataModel> TableData
     {
         get => _tableData;
-        set  {
+        set
+        {
             if (_tableData != value)
             {
-            _tableData = value;
-            OnPropertyChanged(nameof(TableData));
+                _tableData = value;
+                OnPropertyChanged(nameof(TableData));
             }
         }
+    }
+
+    private void ExecuteListSaveJob()
+    {
+        List<int> ids = new List<int>();
+        ids.AddRange(TableData.Where(item => item.Checked).Select(item => item.Id));
+        ExecuteSaveJob(ids);
     }
     
     private void ExecuteSaveJob(object? args)
@@ -153,6 +191,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         {
             AddItem(new TableDataModel 
             { 
+                Checked = false,
                 Id = saveJob.Id, 
                 Name = saveJob.Name, 
                 LastExec = saveJob.LastSave, 
