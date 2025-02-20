@@ -13,6 +13,18 @@
             <TabItem Header="Home">
                 <Grid Margin="16">
                     <TextBlock Text="{Binding Title}" FontSize="24" Margin="0,0,0,0"/>
+                    <Button Command="{Binding ExecuteListSaveJob}" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsAnySelected}" Margin="600,0,0,400">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Execute" FontSize="16" Margin="0,0,10,0"/>
+                            <Image Source="avares://AvaloniaApplication/Assets/gear.png" Width="30" Height="30"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding DeleteListSaveJob}" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsAnySelected}" Margin="900,0,0,400">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Delete" FontSize="16" Margin="0,0,10,0"/>
+                            <Image Source="avares://AvaloniaApplication/Assets/trash.png" Width="30" Height="30"/>
+                        </StackPanel>
+                    </Button>
                     <DataGrid ItemsSource="{Binding TableData}"
                               AutoGenerateColumns="False"
                               IsReadOnly="False"
@@ -21,8 +33,17 @@
                               BorderThickness="1" 
                               BorderBrush="Gray">
                         <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Select" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="IsSelected" IsChecked="{Binding Checked}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn> 
                             <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="100" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="300" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="150" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Source" Binding="{Binding SrcPath}" Width="300" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Destination" Binding="{Binding DestPath}" Width="300" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Last Execution" Binding="{Binding LastExec}" Width="200" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="200" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="100" IsReadOnly="True"/>
