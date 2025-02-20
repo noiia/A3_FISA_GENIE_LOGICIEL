@@ -21,6 +21,7 @@
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="HarfBuzzSharp" />
+    <PackageReference Include="Notification.Avalonia" />
     <PackageReference Include="ReactiveUI" />
     <PackageReference Include="SkiaSharp" />
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" />
