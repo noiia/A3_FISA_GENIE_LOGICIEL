@@ -1,27 +1,38 @@
 ﻿using System.Globalization;
-using System.Reflection;
 using System.Resources;
+using System.Threading;
 
-namespace Job.Config.i18n;
-
-public class Translation
+namespace Job.Config.i18n
 {
-    private static ResourceManager _translator = new ResourceManager("Job.Config.i18n.Resources.Resources", typeof(Translation).Assembly);
-    public static ResourceManager Translator
+    public static class Translation
     {
-        get => _translator;
-        private set => _translator = value;
-    }
+        private static ResourceManager _translator = new ResourceManager("Job.Config.i18n.Resources.Resources", typeof(Translation).Assembly);
 
-    public static void SelectLanguage(string language)
-    {
-        Thread.CurrentThread.CurrentUICulture = language switch
+        public static ResourceManager Translator
         {
-            "en" => new CultureInfo("en"),
-            "fr" => new CultureInfo("fr"),
-            _ => new CultureInfo("en")
-        };
-        Translator = new ResourceManager("Job.Config.i18n.Resources.Resources", typeof(Translation).Assembly);
-        // return () => new List<string>{"a", "b"};
+            get => _translator;
+            private set => _translator = value;
+        }
+
+        public static void SelectLanguage(string language)
+        {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
+            // Re-initialize the ResourceManager if needed
+            Translator = new ResourceManager("Job.Config.i18n.Resources.Resources", typeof(Translation).Assembly);
+        }
+
+        public static string GetString(string key)
+        {
+            try
+            {
+                return Translator.GetString(key, Thread.CurrentThread.CurrentUICulture);
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (e.g., missing resource)
+                Console.WriteLine($"Error retrieving translation for key '{key}': {ex.Message}");
+                return $"[{key}]"; // Return the key in brackets if not found
+            }
+        }
     }
 }

@@ -60,6 +60,33 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ajouter une application métier.
+        /// </summary>
+        internal static string AddBusinessAppWatermark_ {
+            get {
+                return ResourceManager.GetString("AddBusinessAppWatermark ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ajouter.
+        /// </summary>
+        internal static string AddButton {
+            get {
+                return ResourceManager.GetString("AddButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ajouter un type de fichier.
+        /// </summary>
+        internal static string AddFileTypeWatermark_ {
+            get {
+                return ResourceManager.GetString("AddFileTypeWatermark ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mauvais arguments, Add-Savejob &lt;nom&gt; &lt;source&gt; &lt;destination&gt; &lt;type&gt;.
         /// </summary>
         internal static string AddSjBadArgs {
@@ -83,6 +110,24 @@ namespace Config.i18n.Ressources {
         internal static string BadArgsGiven {
             get {
                 return ResourceManager.GetString("BadArgsGiven", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parcourir....
+        /// </summary>
+        internal static string BrowseButton {
+            get {
+                return ResourceManager.GetString("BrowseButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Applications métiers bloquant SJ.
+        /// </summary>
+        internal static string BusinessAppBlockingTitle {
+            get {
+                return ResourceManager.GetString("BusinessAppBlockingTitle", resourceCulture);
             }
         }
         
@@ -141,11 +186,29 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Entrer la clé de chiffrement.
+        /// </summary>
+        internal static string EnterEncryptionKeyWatermark_ {
+            get {
+                return ResourceManager.GetString("EnterEncryptionKeyWatermark ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mauvais arguments, la commande nécessite Exec-Savejob &lt;id&gt;|&lt;nom&gt; ou &lt;id&gt;;&lt;id&gt;;&lt;id&gt; ou &lt;id&gt;,&lt;id&gt; .
         /// </summary>
         internal static string ExecSjBadArgs {
             get {
                 return ResourceManager.GetString("ExecSjBadArgs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Types de fichiers à chiffrer.
+        /// </summary>
+        internal static string FileTypesToEncryptTitle {
+            get {
+                return ResourceManager.GetString("FileTypesToEncryptTitle", resourceCulture);
             }
         }
         
@@ -276,11 +339,65 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Supprimer la sélection.
+        /// </summary>
+        internal static string RemoveSelectedButton_ {
+            get {
+                return ResourceManager.GetString("RemoveSelectedButton ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Réinitialiser.
+        /// </summary>
+        internal static string ResetButton_ {
+            get {
+                return ResourceManager.GetString("ResetButton ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Un travail de sauvegarde existe déjà sous ce nom.
         /// </summary>
         internal static string SaveAlreadyExist {
             get {
                 return ResourceManager.GetString("SaveAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sélectionner la langue.
+        /// </summary>
+        internal static string SelectLanguagePlaceholder {
+            get {
+                return ResourceManager.GetString("SelectLanguagePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sélectionner la langue.
+        /// </summary>
+        internal static string SelectLanguageTitle_ {
+            get {
+                return ResourceManager.GetString("SelectLanguageTitle ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sélectionner le type de log.
+        /// </summary>
+        internal static string SelectLogTypePlaceholder {
+            get {
+                return ResourceManager.GetString("SelectLogTypePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sélectionner le type de log.
+        /// </summary>
+        internal static string SelectLogTypeTitle {
+            get {
+                return ResourceManager.GetString("SelectLogTypeTitle", resourceCulture);
             }
         }
         
@@ -294,11 +411,47 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Définir la clé de chiffrement.
+        /// </summary>
+        internal static string SetEncryptionKeyTitle_ {
+            get {
+                return ResourceManager.GetString("SetEncryptionKeyTitle ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set-LogPath : est appelé avec les arguments : .
         /// </summary>
         internal static string SetLogPathCallWith {
             get {
                 return ResourceManager.GetString("SetLogPathCallWith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Définir le chemin du log.
+        /// </summary>
+        internal static string SetLogPathTitle {
+            get {
+                return ResourceManager.GetString("SetLogPathTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Définir le chemin du log.
+        /// </summary>
+        internal static string SetLogPathWatermark_ {
+            get {
+                return ResourceManager.GetString("SetLogPathWatermark ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paramètres.
+        /// </summary>
+        internal static string SettingsTitle {
+            get {
+                return ResourceManager.GetString("SettingsTitle", resourceCulture);
             }
         }
         
@@ -371,6 +524,15 @@ namespace Config.i18n.Ressources {
         internal static string TooMuchIdWithoutSep {
             get {
                 return ResourceManager.GetString("TooMuchIdWithoutSep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mettre à jour la clé.
+        /// </summary>
+        internal static string UpdateKeyButton_ {
+            get {
+                return ResourceManager.GetString("UpdateKeyButton ", resourceCulture);
             }
         }
     }

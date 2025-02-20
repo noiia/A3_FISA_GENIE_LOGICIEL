@@ -123,4 +123,58 @@
     <data name="MissingArgs" xml:space="preserve">
         <value>Missing arguments  : </value>
     </data>
+    <data name="SettingsTitle" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="SelectLanguageTitle " xml:space="preserve">
+        <value>Select Language</value>
+    </data>
+    <data name="SelectLanguagePlaceholder" xml:space="preserve">
+        <value>Select Language</value>
+    </data>
+    <data name="SelectLogTypeTitle" xml:space="preserve">
+        <value>Select Log Type</value>
+    </data>
+    <data name="SelectLogTypePlaceholder" xml:space="preserve">
+        <value>Select Log Type</value>
+    </data>
+    <data name="SetLogPathTitle" xml:space="preserve">
+        <value>Set Log Path</value>
+    </data>
+    <data name="SetLogPathWatermark " xml:space="preserve">
+        <value>Set Log Path</value>
+    </data>
+    <data name="BrowseButton" xml:space="preserve">
+        <value>Browse...</value>
+    </data>
+    <data name="ResetButton " xml:space="preserve">
+        <value>Reset</value>
+    </data>
+    <data name="FileTypesToEncryptTitle" xml:space="preserve">
+        <value>File Types to Encrypt</value>
+    </data>
+    <data name="AddFileTypeWatermark " xml:space="preserve">
+        <value>Add File Type</value>
+    </data>
+    <data name="AddButton" xml:space="preserve">
+        <value>Add</value>
+    </data>
+    <data name="RemoveSelectedButton " xml:space="preserve">
+        <value>Remove Selected</value>
+    </data>
+    <data name="BusinessAppBlockingTitle" xml:space="preserve">
+        <value>Business Applications Blocking SJ</value>
+    </data>
+    <data name="AddBusinessAppWatermark " xml:space="preserve">
+        <value>Add Business App</value>
+    </data>
+    <data name="SetEncryptionKeyTitle " xml:space="preserve">
+        <value>Set Encryption Key</value>
+    </data>
+    <data name="EnterEncryptionKeyWatermark " xml:space="preserve">
+        <value>Enter Encryption Key</value>
+    </data>
+    <data name="UpdateKeyButton " xml:space="preserve">
+        <value>Update Key</value>
+    </data>
 </root>
