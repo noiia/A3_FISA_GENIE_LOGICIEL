@@ -40,14 +40,14 @@ public partial class AddSaveJobViewModel : ReactiveObject
     
     public string SourceField
     {
-        get => _status;
-        set => this.RaiseAndSetIfChanged(ref _status, value);
+        get => _sourceField;
+        set => this.RaiseAndSetIfChanged(ref _sourceField, value);
     }
     
     public string DestinationField
     {
-        get => _status;
-        set => this.RaiseAndSetIfChanged(ref _status, value);
+        get => _destinationField;
+        set => this.RaiseAndSetIfChanged(ref _destinationField, value);
     }
     
     public string Notification { get; set; }
@@ -106,9 +106,6 @@ public partial class AddSaveJobViewModel : ReactiveObject
             Console.WriteLine("error");
             Status = "Conditions not met";
         }
-
-        // DestinationField = "DestinationField";
-        // SourceField = "SourceField";
     }
     
     // private async void OnBrowseButtonClicked(object sender, RoutedEventArgs e)
