@@ -21,7 +21,7 @@
                                         <TranslateTransform X="-200" Y="350"/>
                                 </Ellipse.RenderTransform>
                                 <Ellipse.Effect>
-                                        <BlurEffect Radius="100"/>
+                                        <BlurEffect Radius="500"/>
                                 </Ellipse.Effect>
                         </Ellipse>
                 </Canvas>
@@ -37,7 +37,7 @@
                                         <TranslateTransform X="1000" Y="0"/>
                                 </Ellipse.RenderTransform>
                                 <Ellipse.Effect>
-                                        <BlurEffect Radius="100"/>
+                                        <BlurEffect Radius="500"/>
                                 </Ellipse.Effect>
                         </Ellipse>
                 </Canvas>
@@ -53,7 +53,7 @@
                                         <TranslateTransform X="300" Y="0"/>
                                 </Ellipse.RenderTransform>
                                 <Ellipse.Effect>
-                                        <BlurEffect Radius="100"/>
+                                        <BlurEffect Radius="500"/>
                                 </Ellipse.Effect>
                         </Ellipse>
                 </Canvas>

@@ -9,17 +9,18 @@ public class CompleteBackup : Backup
 
     private string BackupId;
 
-    private CompleteBackup(SaveJob saveJob) : base(saveJob) {}
+    public CompleteBackup(SaveJob saveJob) : base(saveJob) {}
 
-    public static CompleteBackup GetInstance(SaveJob saveJob)
-    {
-        if (instance == null)
-        {
-            instance = new CompleteBackup(saveJob);
-        }
-        
-        return instance;
-    }
+    // public CompleteBackup GetInstance(SaveJob saveJob)
+    // {
+    //     // if (instance == null)
+    //     // {
+    //     //     instance = new CompleteBackup(saveJob);
+    //     // }
+    //     //
+    //     // return instance;
+    //     return new CompleteBackup(SaveJob);
+    // }
     
 
     

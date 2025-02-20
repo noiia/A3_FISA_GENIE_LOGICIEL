@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Logger
 {
@@ -67,7 +68,8 @@ namespace Logger
 
             double remainingFile = counter.FileCount - counter.TransferedFileCount;
             double remainingData = counter.DataCount - counter.TransferedData;
-            string message = $"{DateTime.Now.Date.ToString()} : Source :{fileInfo.FullName}, Destination:{destinationPath} remaining files :{remainingFile}, remaining data : {remainingData}";
+
+            string message = $"{DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss")} : Source : {fileInfo.FullName}, Destination:{destinationPath} remaining files :{remainingFile}, remaining data : {remainingData}";
 
             if (!header)
             {

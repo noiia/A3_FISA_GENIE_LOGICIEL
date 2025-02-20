@@ -79,5 +79,14 @@ namespace AvaloniaApplication.Views
                 }
             }
         }
+        
+        private void OnUpdateCryptKeyButtonClicked(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is SettingsViewModel viewModel)
+            {
+                viewModel.CryptKey = viewModel.CryptKey; // Force the update
+            }
+        }
+
     }
 }

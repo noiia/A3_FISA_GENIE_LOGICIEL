@@ -10,7 +10,6 @@ using Job.Config;
 
 namespace AvaloniaApplication.ViewModels
 {
-    
     public class SettingsViewModel : INotifyPropertyChanged
     {
         Configuration config;
@@ -18,56 +17,75 @@ namespace AvaloniaApplication.ViewModels
 
         public SettingsViewModel()
         {
-            config = ConfigSingleton.Instance();
-            LoadDefaultSettings();
-            FileTypesToEncrypt = new ObservableCollection<string>(config.GetCryptExtension() ?? Array.Empty<string>());
-            BusinessApp = new ObservableCollection<string>(config.GetBuisnessApp() ?? Array.Empty<string>());
+            try
+            {
+                config = ConfigSingleton.Instance();
+                LoadDefaultSettings();
+                FileTypesToEncrypt = new ObservableCollection<string>(config.GetCryptExtension() ?? Array.Empty<string>());
+                BusinessApp = new ObservableCollection<string>(config.GetBuisnessApp() ?? Array.Empty<string>());
+            }
+            catch (Exception ex)
+            {
+                ShowErrorNotification(ex.Message);
+            }
         }
 
-        
         private string _selectedLanguage;
         public string SelectedLanguage
         {
             get
             {
-                string currentLanguageCode = config.GetLanguage();
-                Console.WriteLine($"Current Language Code: {currentLanguageCode}");
-
-                return currentLanguageCode switch
+                try
                 {
-                    "en" => "English",
-                    "fr" => "French",
-                    _ => string.Empty
-                };
+                    string currentLanguageCode = config.GetLanguage();
+                    Console.WriteLine($"Current Language Code: {currentLanguageCode}");
+
+                    return currentLanguageCode switch
+                    {
+                        "en" => "English",
+                        "fr" => "French",
+                        _ => string.Empty
+                    };
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorNotification(ex.Message);
+                    return string.Empty;
+                }
             }
             set
-            { 
-                Console.WriteLine($"Setting Language to: {value}");
-
-                if (_selectedLanguage != value)
+            {
+                try
                 {
-                    _selectedLanguage = value;
+                    Console.WriteLine($"Setting Language to: {value}");
 
-                    switch (value)
+                    if (_selectedLanguage != value)
                     {
-                        case "English":
-                            config.SetLanguage("en");
-                            break;
-                        case "French":
-                            config.SetLanguage("fr");
-                            break;
+                        _selectedLanguage = value;
+
+                        switch (value)
+                        {
+                            case "English":
+                                config.SetLanguage("en");
+                                break;
+                            case "French":
+                                config.SetLanguage("fr");
+                                break;
+                        }
+                        Manager.CreateMessage()
+                            .Accent(NotifColors.green)
+                            .Animates(true)
+                            .Background("#333")
+                            .HasBadge("Info")
+                            .HasMessage("La langue a été changée. Merci de redémarrer le logiciel.")
+                            .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+                            .Queue();
+                        OnPropertyChanged();
                     }
-                    Manager.CreateMessage()
-                        .Accent("#1751C3")
-                        .Animates(true)
-                        .Background("#333")
-                        .HasBadge("Info")
-                        .HasMessage("La langue a été changer merci de redemaré le logiciel")
-                        // .Dismiss().WithButton("Update now", button => { })
-                        // .Dismiss().WithButton("Release notes", button => { })
-                        .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
-                        .Queue();
-                    OnPropertyChanged();
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorNotification(ex.Message);
                 }
             }
         }
@@ -77,35 +95,57 @@ namespace AvaloniaApplication.ViewModels
         {
             get
             {
-                string currentLogType = config.GetLogType();
-                Console.WriteLine($"Current Log Type: {currentLogType}");
-
-                return currentLogType switch
+                try
                 {
-                    "xml" => "XML",
-                    "json" => "JSON",
-                    _ => string.Empty
-                };
+                    string currentLogType = config.GetLogType();
+                    Console.WriteLine($"Current Log Type: {currentLogType}");
+
+                    return currentLogType switch
+                    {
+                        "xml" => "XML",
+                        "json" => "JSON",
+                        _ => string.Empty
+                    };
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorNotification(ex.Message);
+                    return string.Empty;
+                }
             }
             set
             {
-                Console.WriteLine($"Setting Log Type to: {value}");
-
-                if (_selectedLogType != value)
+                try
                 {
-                    _selectedLogType = value;
+                    Console.WriteLine($"Setting Log Type to: {value}");
 
-                    switch (value)
+                    if (_selectedLogType != value)
                     {
-                        case "XML":
-                            config.SetLogType("xml");
-                            break;
-                        case "JSON":
-                            config.SetLogType("json");
-                            break;
-                    }
+                        _selectedLogType = value;
 
-                    OnPropertyChanged();
+                        switch (value)
+                        {
+                            case "XML":
+                                config.SetLogType("xml");
+                                break;
+                            case "JSON":
+                                config.SetLogType("json");
+                                break;
+                        }
+                        Manager.CreateMessage()
+                            .Accent(NotifColors.green)
+                            .Animates(true)
+                            .Background("#333")
+                            .HasBadge("Info")
+                            .HasMessage("Le type de log a été changé.")
+                            .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+                            .Queue();
+                        OnPropertyChanged();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorNotification(ex.Message);
                 }
             }
         }
@@ -115,20 +155,43 @@ namespace AvaloniaApplication.ViewModels
         {
             get
             {
-                string currentLogPath = config.GetLogPath();
-                Console.WriteLine($"Current Log Path: {currentLogPath}");
+                try
+                {
+                    string currentLogPath = config.GetLogPath();
+                    Console.WriteLine($"Current Log Path: {currentLogPath}");
 
-                return currentLogPath;
+                    return currentLogPath;
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorNotification(ex.Message);
+                    return string.Empty;
+                }
             }
             set
             {
-                Console.WriteLine($"Setting Log Path to: {value}");
-
-                if (_logPath != value)
+                try
                 {
-                    _logPath = value;
-                    config.SetLogPath(value);
-                    OnPropertyChanged();
+                    Console.WriteLine($"Setting Log Path to: {value}");
+
+                    if (_logPath != value)
+                    {
+                        _logPath = value;
+                        config.SetLogPath(value);
+                        Manager.CreateMessage()
+                            .Accent(NotifColors.green)
+                            .Animates(true)
+                            .Background("#333")
+                            .HasBadge("Info")
+                            .HasMessage("Le chemin du log a été mis à jour.")
+                            .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+                            .Queue();
+                        OnPropertyChanged();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorNotification(ex.Message);
                 }
             }
         }
@@ -198,61 +261,194 @@ namespace AvaloniaApplication.ViewModels
 
         public void LoadDefaultSettings()
         {
-            Console.WriteLine(config.GetLanguage() as string);
-            switch (config.GetLanguage())
+            try
             {
-                case "en":
-                    SelectedLanguage = "English";
-                    break;
-                case "fr":
-                    SelectedLanguage = "French";
-                    break;
-                default:
-                    SelectedLanguage = string.Empty;
-                    break;
+                Console.WriteLine(config.GetLanguage() as string);
+                switch (config.GetLanguage())
+                {
+                    case "en":
+                        SelectedLanguage = "English";
+                        break;
+                    case "fr":
+                        SelectedLanguage = "French";
+                        break;
+                    default:
+                        SelectedLanguage = string.Empty;
+                        break;
+                }
+                SelectedLogType = config.GetLogType();
+                LogPath = config.GetLogPath();
+                FileTypesToEncrypt = new ObservableCollection<string>(config.GetCryptExtension() ?? Array.Empty<string>());
+                BusinessApp = new ObservableCollection<string>(config.GetBuisnessApp() ?? Array.Empty<string>());
             }
-            SelectedLogType = "XML";
-            LogPath = config.GetLogPath();
-            FileTypesToEncrypt = new ObservableCollection<string>(config.GetCryptExtension() ?? Array.Empty<string>());
-            BusinessApp = new ObservableCollection<string>(config.GetBuisnessApp() ?? Array.Empty<string>());
+            catch (Exception ex)
+            {
+                ShowErrorNotification(ex.Message);
+            }
         }
 
         public void AddFileTypeToEncrypt()
         {
-            if (!string.IsNullOrEmpty(NewFileTypeToEncrypt))
+            try
             {
-                FileTypesToEncrypt.Add(NewFileTypeToEncrypt);
-                config.AddCryptExtension(NewFileTypeToEncrypt);
-                NewFileTypeToEncrypt = string.Empty;
+                if (!string.IsNullOrEmpty(NewFileTypeToEncrypt))
+                {
+                    FileTypesToEncrypt.Add(NewFileTypeToEncrypt);
+                    config.AddCryptExtension(NewFileTypeToEncrypt);
+                    NewFileTypeToEncrypt = string.Empty;
+                    Manager.CreateMessage()
+                        .Accent(NotifColors.green)
+                        .Animates(true)
+                        .Background("#333")
+                        .HasBadge("Info")
+                        .HasMessage("Le type de fichier à chiffrer a été ajouté.")
+                        .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+                        .Queue();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorNotification(ex.Message);
             }
         }
 
         public void RemoveFileTypeToEncrypt(string fileType)
         {
-            if (FileTypesToEncrypt.Contains(fileType))
+            try
             {
-                FileTypesToEncrypt.Remove(fileType);
-                config.RemoveCryptExtension(fileType);
+                if (FileTypesToEncrypt.Contains(fileType))
+                {
+                    FileTypesToEncrypt.Remove(fileType);
+                    config.RemoveCryptExtension(fileType);
+                    Manager.CreateMessage()
+                        .Accent(NotifColors.green)
+                        .Animates(true)
+                        .Background("#333")
+                        .HasBadge("Info")
+                        .HasMessage("Le type de fichier à chiffrer a été supprimé.")
+                        .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+                        .Queue();
+                }
+                else
+                {
+                    ShowErrorNotification("File type doesn't exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorNotification(ex.Message);
             }
         }
 
         public void AddBusinessApp()
         {
-            if (!string.IsNullOrEmpty(NewBusinessApp))
+            try
             {
-                BusinessApp.Add(NewBusinessApp);
-                config.AddBuisnessApp(NewBusinessApp);
-                NewBusinessApp = string.Empty;
+                if (!string.IsNullOrEmpty(NewBusinessApp))
+                {
+                    BusinessApp.Add(NewBusinessApp);
+                    config.AddBuisnessApp(NewBusinessApp);
+                    NewBusinessApp = string.Empty;
+                    Manager.CreateMessage()
+                        .Accent(NotifColors.green)
+                        .Animates(true)
+                        .Background("#333")
+                        .HasBadge("Info")
+                        .HasMessage("L'application métier a été ajoutée.")
+                        .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+                        .Queue();
+                }
+                else
+                {
+                    ShowErrorNotification("Field is empty");
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorNotification(ex.Message);
             }
         }
 
         public void RemoveBusinessApp(string businessApp)
         {
-            if (BusinessApp.Contains(businessApp))
+            try
             {
-                BusinessApp.Remove(businessApp);
-                config.RemoveBuisnessApp(businessApp);
+                if (BusinessApp.Contains(businessApp))
+                {
+                    BusinessApp.Remove(businessApp);
+                    config.RemoveBuisnessApp(businessApp);
+                    Manager.CreateMessage()
+                        .Accent(NotifColors.green)
+                        .Animates(true)
+                        .Background("#333")
+                        .HasBadge("Info")
+                        .HasMessage("L'application métier a été supprimée.")
+                        .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+                        .Queue();
+                    OnPropertyChanged();
+                }
+                else
+                {
+                    ShowErrorNotification("Application dosent exist");
+                }
             }
+            catch (Exception ex)
+            {
+                ShowErrorNotification(ex.Message);
+            }
+        }
+
+        private string _cryptKey;
+        public string CryptKey
+        {
+            get
+            {
+                try
+                {
+                    return config.GetCryptKey();
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorNotification(ex.Message);
+                    return string.Empty;
+                }
+            }
+            set
+            {
+                try
+                {
+                    if (_cryptKey != value)
+                    {
+                        _cryptKey = value;
+                        config.SetCryptKey(value);
+                        Manager.CreateMessage()
+                            .Accent(NotifColors.green)
+                            .Animates(true)
+                            .Background("#333")
+                            .HasBadge("Info")
+                            .HasMessage("La clef de chiffrement a été modifiée.")
+                            .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+                            .Queue();
+                        OnPropertyChanged();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorNotification(ex.Message);
+                }
+            }
+        }
+
+        private void ShowErrorNotification(string message)
+        {
+            Manager.CreateMessage()
+                .Accent(NotifColors.red)
+                .Animates(true)
+                .Background("#333")
+                .HasBadge("Error")
+                .HasMessage(message)
+                .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+                .Queue();
         }
     }
 }
