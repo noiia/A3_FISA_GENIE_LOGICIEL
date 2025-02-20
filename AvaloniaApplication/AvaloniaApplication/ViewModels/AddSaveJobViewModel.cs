@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-
+using Avalonia.Notification;
 using Job;
 using Job.Controller;
 using Job.Config;
@@ -18,6 +18,7 @@ namespace AvaloniaApplication.ViewModels;
 
 public partial class AddSaveJobViewModel : ReactiveObject
 {
+    public INotificationMessageManager Manager => NotificationMessageManagerSingleton.Instance;
 
     public string _name;
     public string Name

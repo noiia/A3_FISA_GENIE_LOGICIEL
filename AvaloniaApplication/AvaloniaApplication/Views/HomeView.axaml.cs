@@ -3,6 +3,7 @@ using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Notification;
 using AvaloniaApplication.ViewModels;
 using Job.Config;
 using Job.Services;
@@ -23,4 +24,5 @@ public partial class HomeView : UserControl, INotifyPropertyChanged
     {
         AvaloniaXamlLoader.Load(this);
     }
+
 }

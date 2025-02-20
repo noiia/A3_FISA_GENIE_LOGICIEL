@@ -4,14 +4,17 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Avalonia.Notification;
 using AvaloniaApplication.Views;
 using Job.Config;
 
 namespace AvaloniaApplication.ViewModels
 {
+    
     public class SettingsViewModel : INotifyPropertyChanged
     {
         Configuration config;
+        public INotificationMessageManager Manager => NotificationMessageManagerSingleton.Instance;
 
         public SettingsViewModel()
         {
@@ -21,6 +24,7 @@ namespace AvaloniaApplication.ViewModels
             BusinessApp = new ObservableCollection<string>(config.GetBuisnessApp() ?? Array.Empty<string>());
         }
 
+        
         private string _selectedLanguage;
         public string SelectedLanguage
         {
@@ -37,7 +41,7 @@ namespace AvaloniaApplication.ViewModels
                 };
             }
             set
-            {
+            { 
                 Console.WriteLine($"Setting Language to: {value}");
 
                 if (_selectedLanguage != value)
@@ -53,7 +57,16 @@ namespace AvaloniaApplication.ViewModels
                             config.SetLanguage("fr");
                             break;
                     }
-
+                    Manager.CreateMessage()
+                        .Accent("#1751C3")
+                        .Animates(true)
+                        .Background("#333")
+                        .HasBadge("Info")
+                        .HasMessage("La langue a été changer merci de redemaré le logiciel")
+                        // .Dismiss().WithButton("Update now", button => { })
+                        // .Dismiss().WithButton("Release notes", button => { })
+                        .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+                        .Queue();
                     OnPropertyChanged();
                 }
             }
