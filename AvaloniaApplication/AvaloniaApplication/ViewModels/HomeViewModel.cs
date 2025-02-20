@@ -34,6 +34,8 @@ public class TableDataModel : ReactiveObject
     }
     public required int Id { get; set; }
     public required string Name { get; set; }
+    public required string SrcPath { get; set; }
+    public required string DestPath { get; set; }
     public required DateTime LastExec { get; set; }
     public required string Status { get; set; }
     public required string Type { get; set; }
@@ -143,7 +145,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     private void ExecuteSaveJob(object? args)
     {
         (List<int> ids, string separator) = ListAndConvertIds(args);
-        
+        Console.WriteLine(ids.Count + separator);
         (int returnCode, string message) = Job.Controller.ExecuteSaveJob.Execute(ids, separator);
         
         Notification = message; 
@@ -152,7 +154,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     private void DeleteSaveJob(object? args)
     {
         (List<int> ids, string separator) = ListAndConvertIds(args);
-        
+        Console.WriteLine(ids.Count + separator);
         (int returnCode, string message) = Job.Controller.DeleteSaveJob.Execute(ids, separator);
 
         foreach (int id in ids)
@@ -201,6 +203,8 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
                 Checked = false,
                 Id = saveJob.Id, 
                 Name = saveJob.Name, 
+                SrcPath = saveJob.Source,
+                DestPath = saveJob.Destination,
                 LastExec = saveJob.LastSave, 
                 Status = "en cours", 
                 Type = saveJob.Type,
