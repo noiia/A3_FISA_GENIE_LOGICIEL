@@ -63,6 +63,13 @@
                                 <Button Content="Remove Selected" Width="200" Click="OnRemoveBusinessAppButtonClicked"/>
                             </StackPanel>
                         </StackPanel>
+                        <TextBlock Text="Set Encryption Key" FontSize="18" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBox Watermark="Enter Encryption Key" Width="500"
+                                     Text="{Binding CryptKey, Mode=TwoWay}"/>
+                            <Button Content="Update Key" Width="100" Click="OnUpdateCryptKeyButtonClicked"/>
+                        </StackPanel>
+
                     </StackPanel>
                 </Grid>
             </StackPanel>
