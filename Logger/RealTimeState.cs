@@ -155,7 +155,7 @@ namespace Logger
             // counter.TransferedData += fileInfo.Length;
 
             double remainingFile = counter.FileCount - counter.TransferedFileCount;
-            double remainingData = counter.DataCount - advancement;
+            double remainingData = counter.DataCount - counter.TransferedData - advancement;
 
 
             // if (!header)
