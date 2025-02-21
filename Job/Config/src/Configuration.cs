@@ -61,6 +61,11 @@ namespace Job.Config
             return _configFile.SaveJobs;
         }
 
+        public void SetSaveJobs(SaveJob[] saveJobs)
+        {
+            _configFile.SaveJobs = saveJobs;
+        }
+
         public void AddSaveJob(SaveJob saveJob)
         {
             if (this.GetSaveJob(saveJob.Id) == null && this.GetSaveJob(saveJob.Name) == null){
