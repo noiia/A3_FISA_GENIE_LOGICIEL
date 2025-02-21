@@ -67,7 +67,7 @@ public class TableDataModel : ReactiveObject
 
 public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
 {
-    private readonly Configuration _config;
+    private Configuration _configuration;
     public new event PropertyChangedEventHandler? PropertyChanged;
     protected virtual void OnPropertyChanged(string propertyName)
     {
@@ -212,16 +212,20 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             item.IsReadOnly = _isEditClicked;
             Console.WriteLine(item.Name + ";" + item.IsReadOnly);
         }
-        LoadSaveJob(_config);
-
-        if (IsEditClicked is false)
+        // LoadSaveJob(_config);
+        if ((IsEditClicked == false) || true)
         {
+            Console.WriteLine("in");
             SaveJob[] saveJobs = new SaveJob[]{};
+            Console.WriteLine(TableData.Count);
             foreach (var item in TableData)
             {
-                new SaveJob(item.Id, item.Name, item.SrcPath, item.DestPath, item.LastExec,  item.CreatDate, item.Type);
+                Console.WriteLine("var item in TableData");
+                SaveJob sj = new SaveJob(item.Id, item.Name, item.SrcPath, item.DestPath, item.LastExec, item.CreatDate, item.Type);
+                saveJobs = saveJobs.Append(sj).ToArray();
             }
-            _config.SetSaveJobs(saveJobs);
+            Console.WriteLine("_config.SetSaveJobs(saveJobs);");
+            _configuration.SetSaveJobs(saveJobs);
         }
     }
     
@@ -238,18 +242,17 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             
             if (_selectedTabIndex == 0)
             {
-                _config.LoadConfiguration();
-                LoadSaveJob(_config);
+                _configuration.LoadConfiguration();
+                LoadSaveJob();
             }
         }
     }
     
 
-    public void LoadSaveJob(Configuration config)
+    public void LoadSaveJob()
     {
         TableData = new ObservableCollection<TableDataModel>();
-        int i = 0;
-        foreach (SaveJob saveJob in config.GetSaveJobs())
+        foreach (SaveJob saveJob in _configuration.GetSaveJobs())
         {
             AddItem(new TableDataModel 
             { 
@@ -267,13 +270,15 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             });
         }
     }
+    
 
-    public HomeViewModel(Configuration config)
+    public HomeViewModel()
     {
         Title = "Save job list";
         TableData = new ObservableCollection<TableDataModel>();
-        config.LoadConfiguration();
-        _config = config;
-        LoadSaveJob(_config);
+        // config.Load_configuration();
+        _configuration = ConfigSingleton.Instance();
+        _configuration.LoadConfiguration();
+        LoadSaveJob();
     }
 }
