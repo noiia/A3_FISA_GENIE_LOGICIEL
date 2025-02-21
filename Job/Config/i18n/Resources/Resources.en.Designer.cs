@@ -62,9 +62,9 @@ namespace Config.i18n.Ressources {
         /// <summary>
         ///   Looks up a localized string similar to Add Business App.
         /// </summary>
-        internal static string AddBusinessAppWatermark_ {
+        internal static string AddBusinessAppWatermark {
             get {
-                return ResourceManager.GetString("AddBusinessAppWatermark ", resourceCulture);
+                return ResourceManager.GetString("AddBusinessAppWatermark", resourceCulture);
             }
         }
         
@@ -80,9 +80,9 @@ namespace Config.i18n.Ressources {
         /// <summary>
         ///   Looks up a localized string similar to Add File Type.
         /// </summary>
-        internal static string AddFileTypeWatermark_ {
+        internal static string AddFileTypeWatermark {
             get {
-                return ResourceManager.GetString("AddFileTypeWatermark ", resourceCulture);
+                return ResourceManager.GetString("AddFileTypeWatermark", resourceCulture);
             }
         }
         
@@ -188,9 +188,9 @@ namespace Config.i18n.Ressources {
         /// <summary>
         ///   Looks up a localized string similar to Enter Encryption Key.
         /// </summary>
-        internal static string EnterEncryptionKeyWatermark_ {
+        internal static string EnterEncryptionKeyWatermark {
             get {
-                return ResourceManager.GetString("EnterEncryptionKeyWatermark ", resourceCulture);
+                return ResourceManager.GetString("EnterEncryptionKeyWatermark", resourceCulture);
             }
         }
         
@@ -341,18 +341,18 @@ namespace Config.i18n.Ressources {
         /// <summary>
         ///   Looks up a localized string similar to Remove Selected.
         /// </summary>
-        internal static string RemoveSelectedButton_ {
+        internal static string RemoveSelectedButton {
             get {
-                return ResourceManager.GetString("RemoveSelectedButton ", resourceCulture);
+                return ResourceManager.GetString("RemoveSelectedButton", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Reset.
         /// </summary>
-        internal static string ResetButton_ {
+        internal static string ResetButton {
             get {
-                return ResourceManager.GetString("ResetButton ", resourceCulture);
+                return ResourceManager.GetString("ResetButton", resourceCulture);
             }
         }
         
@@ -377,9 +377,9 @@ namespace Config.i18n.Ressources {
         /// <summary>
         ///   Looks up a localized string similar to Select Language.
         /// </summary>
-        internal static string SelectLanguageTitle_ {
+        internal static string SelectLanguageTitle {
             get {
-                return ResourceManager.GetString("SelectLanguageTitle ", resourceCulture);
+                return ResourceManager.GetString("SelectLanguageTitle", resourceCulture);
             }
         }
         
@@ -413,9 +413,9 @@ namespace Config.i18n.Ressources {
         /// <summary>
         ///   Looks up a localized string similar to Set Encryption Key.
         /// </summary>
-        internal static string SetEncryptionKeyTitle_ {
+        internal static string SetEncryptionKeyTitle {
             get {
-                return ResourceManager.GetString("SetEncryptionKeyTitle ", resourceCulture);
+                return ResourceManager.GetString("SetEncryptionKeyTitle", resourceCulture);
             }
         }
         
@@ -440,9 +440,9 @@ namespace Config.i18n.Ressources {
         /// <summary>
         ///   Looks up a localized string similar to Set Log Path.
         /// </summary>
-        internal static string SetLogPathWatermark_ {
+        internal static string SetLogPathWatermark {
             get {
-                return ResourceManager.GetString("SetLogPathWatermark ", resourceCulture);
+                return ResourceManager.GetString("SetLogPathWatermark", resourceCulture);
             }
         }
         
@@ -530,9 +530,9 @@ namespace Config.i18n.Ressources {
         /// <summary>
         ///   Looks up a localized string similar to Update Key.
         /// </summary>
-        internal static string UpdateKeyButton_ {
+        internal static string UpdateKeyButton {
             get {
-                return ResourceManager.GetString("UpdateKeyButton ", resourceCulture);
+                return ResourceManager.GetString("UpdateKeyButton", resourceCulture);
             }
         }
     }
