@@ -146,7 +146,7 @@ namespace AvaloniaApplication.ViewModels
     public void UpdateTranslations()
     {
         string language = config.GetLanguage() ?? "en";
-        CultureInfo culture = new CultureInfo(language);
+        Translation.SelectLanguage(language);
         SettingsTitle = Translation.GetString("SettingsTitle");
         SelectLanguageTitle = Translation.GetString("SelectLanguageTitle");
         SelectLanguagePlaceholder = Translation.GetString("SelectLanguagePlaceholder");
@@ -165,7 +165,6 @@ namespace AvaloniaApplication.ViewModels
         SetEncryptionKeyTitle = Translation.GetString("SetEncryptionKeyTitle");
         EnterEncryptionKeyWatermark = Translation.GetString("EnterEncryptionKeyWatermark");
         UpdateKeyButton = Translation.GetString("UpdateKeyButton");
-
     }
         
         Configuration config;
