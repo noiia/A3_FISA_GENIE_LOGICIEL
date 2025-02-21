@@ -25,7 +25,7 @@ namespace AvaloniaApplication
         {
             Configuration configuration = new Configuration( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
             SaveJobRepo _ = new SaveJobRepo(configuration, 5);
-            HomeViewModelInstance = new HomeViewModel(configuration);
+            HomeViewModelInstance = new HomeViewModel();
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
