@@ -230,6 +230,35 @@ public abstract class Backup
     }
     
     
+    static void CopyFileWithProgress(string sourceFilePath, string destinationFilePath, Infos infos, int offset)
+    {
+        const int bufferSize = 2 * 1048576; // 2 MB buffer size, you can adjust it as per your requirement
+        // const int bufferSize = 1024;
+        
+        using (var sourceStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
+        using (var destinationStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write))
+        {
+            byte[] buffer = new byte[bufferSize];
+            int bytesRead;
+            long totalBytesCopied = 0;
+            long fileSize = sourceStream.Length;
+            
+            //#TODO add offset on the first iteration
+ 
+            while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
+            {
+                destinationStream.Write(buffer, 0, bytesRead);
+                totalBytesCopied += bytesRead;
+ 
+                // Calculate progress
+                double progress = (double)totalBytesCopied / fileSize * 100;
+                Console.WriteLine($"Progress: {progress:F2}%");
+                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, infos.SavesDir, infos.StateFileName, "", infos.ID, totalBytesCopied);                
+            }
+        }
+    }
+    
+    
     protected virtual List<string> GetFiles(string rootDir, List<string> files)
     {
         string stateFileName = "statefile.log";
@@ -295,18 +324,13 @@ public abstract class Backup
         {
             infos.FileInfo = new FileInfo(file);
             RealTimeState.AddCounter(counters);
-            //#TODO avancement
-            // while (!Backup.Finished)
-            // {
-            // advancement = CopyPasteFile(file, file.Replace(RootDir, SaveDir)); => wait 10s or finish => return progress or end 
-            // if advancement = end => Finished = true
-            // RealTimeState.WriteState(this.SaveJob.Name, counters, new FileInfo(file), SavesDir, stateFileName, "", this.ID, advancement); 
-            // }
             
             CopyPasteFile(file, file.Replace(RootDir, SaveDir), infos);
             RealTimeState.WriteState(this.SaveJob.Name, counters, new FileInfo(file), SavesDir, stateFileName, "", this.ID);
             turnArchiveBitFalse(file);
-        } 
+        }
+        
+        // RealTimeState.WriteMessage($"Job {this.SaveJob.Name}, with ID {this.ID} has been saved");
     }
 
     public void Save()
