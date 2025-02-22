@@ -73,7 +73,7 @@
         <value>Il n'y a aucun travail de sauvegarde à imprimer</value>
     </data>
     <data name="Name" xml:space="preserve">
-        <value>Nom :</value>
+        <value>Nom </value>
     </data>
     <data name="Id" xml:space="preserve">
         <value>Id : </value>
@@ -122,5 +122,101 @@
     </data>
     <data name="MissingArgs" xml:space="preserve">
         <value>Arguments manquants :</value>
+    </data>
+    <data name="SettingsTitle" xml:space="preserve">
+        <value>Paramètres</value>
+    </data>
+    <data name="SelectLanguageTitle" xml:space="preserve">
+        <value>Sélectionner la langue</value>
+    </data>
+    <data name="SelectLanguagePlaceholder" xml:space="preserve">
+        <value>Sélectionner la langue</value>
+    </data>
+    <data name="SelectLogTypeTitle" xml:space="preserve">
+        <value>Sélectionner le type de log</value>
+    </data>
+    <data name="SelectLogTypePlaceholder" xml:space="preserve">
+        <value>Sélectionner le type de log</value>
+    </data>
+    <data name="SetLogPathTitle" xml:space="preserve">
+        <value>Définir le chemin du log</value>
+    </data>
+    <data name="SetLogPathWatermark" xml:space="preserve">
+        <value>Définir le chemin du log</value>
+    </data>
+    <data name="BrowseButton" xml:space="preserve">
+        <value>Parcourir...</value>
+    </data>
+    <data name="ResetButton" xml:space="preserve">
+        <value>Réinitialiser</value>
+    </data>
+    <data name="FileTypesToEncryptTitle" xml:space="preserve">
+        <value>Types de fichiers à chiffrer</value>
+    </data>
+    <data name="AddFileTypeWatermark" xml:space="preserve">
+        <value>Ajouter un type de fichier</value>
+    </data>
+    <data name="AddButton" xml:space="preserve">
+        <value>Ajouter</value>
+    </data>
+    <data name="RemoveSelectedButton" xml:space="preserve">
+        <value>Supprimer la sélection</value>
+    </data>
+    <data name="BusinessAppBlockingTitle" xml:space="preserve">
+        <value>Applications métiers bloquant SJ</value>
+    </data>
+    <data name="AddBusinessAppWatermark" xml:space="preserve">
+        <value>Ajouter une application métier</value>
+    </data>
+    <data name="SetEncryptionKeyTitle" xml:space="preserve">
+        <value>Définir la clé de chiffrement</value>
+    </data>
+    <data name="EnterEncryptionKeyWatermark" xml:space="preserve">
+        <value>Entrer la clé de chiffrement</value>
+    </data>
+    <data name="UpdateKeyButton" xml:space="preserve">
+        <value>Mettre à jour la clé</value>
+    </data>
+    <data name="Confirm" xml:space="preserve">
+        <value>Confirmer</value>
+    </data>
+    <data name="Full" xml:space="preserve">
+        <value>Complet</value>
+    </data>
+    <data name="SelectSaveType" xml:space="preserve">
+        <value>Sélectionner le type de sauvegarde</value>
+    </data>
+    <data name="Differential" xml:space="preserve">
+        <value>Différentielle</value>
+    </data>
+    <data name="SrcPath" xml:space="preserve">
+        <value>Dossier source</value>
+    </data>
+    <data name="DestPath" xml:space="preserve">
+        <value>Dossier de destination</value>
+    </data>
+    <data name="LastExecution" xml:space="preserve">
+        <value>Dernière exécution</value>
+    </data>
+    <data name="Status" xml:space="preserve">
+        <value>Status</value>
+    </data>
+    <data name="Type" xml:space="preserve">
+        <value>Type</value>
+    </data>
+    <data name="Execute" xml:space="preserve">
+        <value>Exécuter</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Supprimer</value>
+    </data>
+    <data name="Select" xml:space="preserve">
+        <value>Sélectionner</value>
+    </data>
+    <data name="Creation" xml:space="preserve">
+        <value>Création</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Editer</value>
     </data>
 </root>

@@ -8,6 +8,7 @@ using AvaloniaApplication.ViewModels;
 using AvaloniaApplication.Views;
 using System.Linq;
 using Job.Config;
+using Job.Config.i18n;
 using Job.Services;
 
 namespace AvaloniaApplication
@@ -19,13 +20,13 @@ namespace AvaloniaApplication
             AvaloniaXamlLoader.Load(this);
         }
 
-        public static HomeViewModel HomeViewModelInstance { get; private set; }
-        
+        public static ParentHomeSettingsViewModel ParentHomeViewModelInstance { get; private set; }
+
         public override void OnFrameworkInitializationCompleted()
         {
             Configuration configuration = new Configuration( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
             SaveJobRepo _ = new SaveJobRepo(configuration, 5);
-            HomeViewModelInstance = new HomeViewModel();
+            ParentHomeViewModelInstance = new ParentHomeSettingsViewModel();
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
@@ -33,19 +34,24 @@ namespace AvaloniaApplication
                 DisableAvaloniaDataAnnotationValidation();
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = HomeViewModelInstance
+                    DataContext = ParentHomeViewModelInstance
                 };
             }
             else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
             {
                 singleViewPlatform.MainView = new HomeView
                 {
-                    DataContext = HomeViewModelInstance
+                    DataContext = new HomeViewModel()
                 };
             }
 
-            if (App.Current != null) App.Current.DataContext = HomeViewModelInstance;
+            if (App.Current != null) App.Current.DataContext = ParentHomeViewModelInstance;
             
+            Translation.StaticPropertyChanged += (s, e) =>
+            {
+                (DataContext as SettingsViewModel)?.OnPropertyChanged(nameof(SettingsViewModel.Translations));
+            };
+
             base.OnFrameworkInitializationCompleted();
         }
 
