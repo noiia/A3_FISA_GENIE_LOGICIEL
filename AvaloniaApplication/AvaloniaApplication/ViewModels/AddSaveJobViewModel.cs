@@ -7,12 +7,15 @@ using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
 using Avalonia.Notification;
 using Job;
 using Job.Controller;
 using Job.Config;
+using Job.Config.i18n;
 
 namespace AvaloniaApplication.ViewModels;
 
@@ -67,7 +70,7 @@ public partial class AddSaveJobViewModel : ReactiveObject
     private string _notification;    
     private Configuration config = ConfigSingleton.Instance();
     // public object ConfirmCommand { get; }
-
+    
     public AddSaveJobViewModel()
     {
         Name = "AddSaveJob";

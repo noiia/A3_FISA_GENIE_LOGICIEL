@@ -19,51 +19,51 @@
             <StackPanel>
                 <Grid Margin="16">
                     <StackPanel Spacing="16">
-                        <TextBlock Text="{Binding SettingsTitle}" FontSize="24" Margin="0,0,0,20"/>
-                        <TextBlock Text="{Binding SelectLanguageTitle}" FontSize="18" Margin="0,0,0,10"/>
-                        <ComboBox PlaceholderText="{Binding SelectLanguagePlaceholder}" Width="500"
+                        <TextBlock Text="{Binding Translations.SettingsTitle}" FontSize="24" Margin="0,0,0,20"/>
+                        <TextBlock Text="{Binding Translations.SelectLanguageTitle}" FontSize="18" Margin="0,0,0,10"/>
+                        <ComboBox PlaceholderText="{Binding Translations.SelectLanguagePlaceholder}" Width="500"
                                   SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
                             <system:String>English</system:String>
                             <system:String>French</system:String>
                         </ComboBox>
-                        <TextBlock Text="{Binding SelectLogTypeTitle}" FontSize="18" Margin="0,0,0,10"/>
-                        <ComboBox PlaceholderText="{Binding SelectLogTypePlaceholder}" Width="500"
+                        <TextBlock Text="{Binding Translations.SelectLogTypeTitle}" FontSize="18" Margin="0,0,0,10"/>
+                        <ComboBox PlaceholderText="{Binding Translations.SelectLogTypePlaceholder}" Width="500"
                                   SelectedItem="{Binding SelectedLogType, Mode=TwoWay}">
                             <system:String>XML</system:String>
                             <system:String>JSON</system:String>
                         </ComboBox>
-                        <TextBlock Text="{Binding SetLogPathTitle}" FontSize="18" Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding Translations.SetLogPathTitle}" FontSize="18" Margin="0,0,0,10"/>
                         <StackPanel Orientation="Horizontal" Spacing="10">
-                            <TextBox Watermark="{Binding SetLogPathWatermark}" Width="500"
+                            <TextBox Watermark="{Binding Translations.SetLogPathWatermark}" Width="500"
                                      Text="{Binding LogPath, Mode=TwoWay}"/>
-                            <Button Content="{Binding BrowseButton}" Width="100" Click="OnBrowseButtonClicked"/>
-                            <Button Content="{Binding ResetButton}" Width="100" Click="OnResetButtonClicked"/>
+                            <Button Content="{Binding Translations.BrowseButton}" Click="OnBrowseButtonClicked"/>
+                            <Button Content="{Binding Translations.ResetButton}" Click="OnResetButtonClicked"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical" Spacing="10">
-                            <TextBlock Text="{Binding FileTypesToEncryptTitle}" FontSize="18" Margin="0,0,0,10"/>
+                            <TextBlock Text="{Binding Translations.FileTypesToEncryptTitle}" FontSize="18" Margin="0,0,0,10"/>
                             <ListBox HorizontalAlignment="Left" ItemsSource="{Binding FileTypesToEncrypt}" Width="500" Height="120" Name="FileTypesListBox"/>
                             <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBox Watermark="{Binding AddFileTypeWatermark}" Width="350" Text="{Binding NewFileTypeToEncrypt, Mode=TwoWay}"/>
-                                <Button Content="{Binding AddButton}" Width="100" Click="OnAddFileTypeButtonClicked"/>
-                                <Button Content="{Binding RemoveSelectedButton}" Width="200" Click="OnRemoveFileTypeButtonClicked"/>
+                                <TextBox Watermark="{Binding Translations.AddFileTypeWatermark}" Width="350" Text="{Binding NewFileTypeToEncrypt, Mode=TwoWay}"/>
+                                <Button Content="{Binding Translations.AddButton}" Click="OnAddFileTypeButtonClicked"/>
+                                <Button Content="{Binding Translations.RemoveSelectedButton}" Click="OnRemoveFileTypeButtonClicked"/>
                             </StackPanel>
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical" Spacing="10">
-                            <TextBlock Text="{Binding BusinessAppBlockingTitle}" FontSize="18" Margin="0,0,0,10"/>
+                            <TextBlock Text="{Binding Translations.BusinessAppBlockingTitle}" FontSize="18" Margin="0,0,0,10"/>
                             <ListBox HorizontalAlignment="Left" ItemsSource="{Binding BusinessApp}" Width="500" Height="120" Name="BusinessAppListBox"/>
                             <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBox Watermark="{Binding AddBusinessAppWatermark}" Width="350" Text="{Binding NewBusinessApp, Mode=TwoWay}"/>
-                                <Button Content="{Binding AddButton}" Width="100" Click="OnAddBusinessAppButtonClicked"/>
-                                <Button Content="{Binding RemoveSelectedButton}" Width="200" Click="OnRemoveBusinessAppButtonClicked"/>
+                                <TextBox Watermark="{Binding Translations.AddBusinessAppWatermark}" Width="350" Text="{Binding NewBusinessApp, Mode=TwoWay}"/>
+                                <Button Content="{Binding Translations.AddButton}" Click="OnAddBusinessAppButtonClicked"/>
+                                <Button Content="{Binding Translations.RemoveSelectedButton}" Click="OnRemoveBusinessAppButtonClicked"/>
                             </StackPanel>
                         </StackPanel>
-                        <TextBlock Text="{Binding SetEncryptionKeyTitle}" FontSize="18" Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding Translations.SetEncryptionKeyTitle}" FontSize="18" Margin="0,0,0,10"/>
                         <StackPanel Orientation="Horizontal" Spacing="10">
-                            <TextBox Watermark="{Binding EnterEncryptionKeyWatermark}" Width="500"
+                            <TextBox Watermark="{Binding Translations.EnterEncryptionKeyWatermark}" Width="500"
                                      Text="{Binding CryptKey, Mode=TwoWay}"/>
-                            <Button Content="{Binding UpdateKeyButton}" Width="100" Click="OnUpdateCryptKeyButtonClicked"/>
+                            <Button Content="{Binding Translations.UpdateKeyButton}" Click="OnUpdateCryptKeyButtonClicked"/>
                         </StackPanel>
 
                     </StackPanel>

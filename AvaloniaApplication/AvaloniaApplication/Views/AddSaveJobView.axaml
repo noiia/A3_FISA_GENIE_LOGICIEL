@@ -8,38 +8,37 @@
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaApplication.Views.AddSaveJobView"
-             x:DataType="vm:AddSaveJobViewModel">
+             x:DataType="vm:ParentAddSaveJobViewModel"
+             >
+
     <Grid Margin="16">
         <StackPanel Spacing="16">
-            <!-- <TextBlock Text="Add Savejob" FontSize="24" Margin="0,0,0,20"/> -->
-            <TextBlock Text="{Binding Name}" FontSize="24" Margin="0,0,0,20"/>
+            <TextBlock Text="{Binding AddSaveJobVM.Name}" FontSize="24" Margin="0,0,0,20"/>
             <StackPanel Orientation="Horizontal" Spacing="10">
-                <TextBox Watermark="Name" Width="300" Text="{Binding NameField, Mode=TwoWay}"/>
+                <TextBox Watermark="{Binding SettingsVM.Translations.NameTranslate}" Width="300" Text="{Binding AddSaveJobVM.NameField, Mode=TwoWay}"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Spacing="10">
-                <TextBox Watermark="{Binding SourcePath}" Width="300" Text="{Binding SourceField, Mode=TwoWay}"/>
-                <Button Content="Browse..." Width="100" Click="OnBrowseButtonClickedSource"/>
+                <TextBox Watermark="{Binding SettingsVM.Translations.SrcPath}" Width="300" Text="{Binding AddSaveJobVM.SourceField, Mode=TwoWay}"/>
+                <Button Content="{Binding SettingsVM.Translations.BrowseButton}" Click="OnBrowseButtonClickedSource"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Spacing="10">
-                <TextBox Watermark="{Binding DestinationPath}" Width="300" Text="{Binding DestinationField, Mode=TwoWay}"/>
-                <Button Content="Browse..." Width="100" Click="OnBrowseButtonClickedDestination"/>
+                <TextBox Watermark="{Binding SettingsVM.Translations.DestPath}" Width="300" Text="{Binding AddSaveJobVM.DestinationField, Mode=TwoWay}"/>
+                <Button Content="{Binding SettingsVM.Translations.Browse}" Click="OnBrowseButtonClickedDestination"/>
             </StackPanel>
             
-            <ComboBox PlaceholderText="Select Save Type" Width="300"
-                      SelectedItem="{Binding SaveType, Mode=TwoWay}">
+            <ComboBox PlaceholderText="{Binding SettingsVM.Translations.SelectSaveType}" Width="300"
+                      SelectedItem="{Binding AddSaveJobVM.SaveType, Mode=TwoWay}">
                 <system:String>Full</system:String>
                 <system:String>Differential</system:String>
             </ComboBox>
 
-            <Button Content="Confirm" HorizontalAlignment="Right" Width="100" Command="{Binding ConfirmCommand}"/>
+            <Button Content="{Binding SettingsVM.Translations.Confirm}" HorizontalAlignment="Right" FontSize="18" Command="{Binding AddSaveJobVM.ConfirmCommand}"/>
             
             <StackPanel Orientation="Horizontal" Spacing="10">
-                <TextBlock Text="{Binding Status, Mode=TwoWay}"/>
-                <!-- <TextBlock Text="a"/> -->
+                <TextBlock Text="{Binding AddSaveJobVM.Status, Mode=TwoWay}"/>
             </StackPanel>
-            
         </StackPanel>
     </Grid>
 </UserControl>

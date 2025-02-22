@@ -11,7 +11,7 @@ public partial class AddSaveJobView : UserControl
     public AddSaveJobView()
     {
         InitializeComponent();
-        DataContext = new AddSaveJobViewModel();
+        DataContext = new ParentAddSaveJobViewModel();    
     }
     private void InitializeComponent()
     {

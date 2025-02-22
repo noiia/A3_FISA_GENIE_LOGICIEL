@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
@@ -8,6 +9,7 @@ using AvaloniaApplication.ViewModels;
 using AvaloniaApplication.Views;
 using System.Linq;
 using Job.Config;
+using Job.Config.i18n;
 using Job.Services;
 
 namespace AvaloniaApplication
@@ -30,7 +32,7 @@ namespace AvaloniaApplication
                 DisableAvaloniaDataAnnotationValidation();
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new HomeViewModel(configuration)
+                    DataContext = new ParentHomeSettingsViewModel(configuration)
                 };
             }
             else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
@@ -40,7 +42,13 @@ namespace AvaloniaApplication
                     DataContext = new HomeViewModel(configuration)
                 };
             }
-        
+            DataContext = new SettingsViewModel();
+            
+            Translation.StaticPropertyChanged += (s, e) =>
+            {
+                (DataContext as SettingsViewModel)?.OnPropertyChanged(nameof(SettingsViewModel.Translations));
+            };
+
             base.OnFrameworkInitializationCompleted();
         }
 

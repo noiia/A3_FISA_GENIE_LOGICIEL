@@ -141,6 +141,15 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirmer.
+        /// </summary>
+        internal static string Confirm {
+            get {
+                return ResourceManager.GetString("Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Créé le : .
         /// </summary>
         internal static string Created {
@@ -177,6 +186,24 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dossier de destination.
+        /// </summary>
+        internal static string DestPath {
+            get {
+                return ResourceManager.GetString("DestPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Différentielle.
+        /// </summary>
+        internal static string Differential {
+            get {
+                return ResourceManager.GetString("Differential", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Le répertoire destination n&apos;existe pas.
         /// </summary>
         internal static string DstDirNotExist {
@@ -209,6 +236,15 @@ namespace Config.i18n.Ressources {
         internal static string FileTypesToEncryptTitle {
             get {
                 return ResourceManager.GetString("FileTypesToEncryptTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Complet.
+        /// </summary>
+        internal static string Full {
+            get {
+                return ResourceManager.GetString("Full", resourceCulture);
             }
         }
         
@@ -267,6 +303,15 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dernière exécution.
+        /// </summary>
+        internal static string LastExecution {
+            get {
+                return ResourceManager.GetString("LastExecution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dernière sauvegarde : .
         /// </summary>
         internal static string LastSave {
@@ -312,7 +357,7 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nom :.
+        ///   Looks up a localized string similar to Nom .
         /// </summary>
         internal static string Name {
             get {
@@ -398,6 +443,15 @@ namespace Config.i18n.Ressources {
         internal static string SelectLogTypeTitle {
             get {
                 return ResourceManager.GetString("SelectLogTypeTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sélectionner le type de sauvegarde.
+        /// </summary>
+        internal static string SelectSaveType {
+            get {
+                return ResourceManager.GetString("SelectSaveType", resourceCulture);
             }
         }
         
@@ -519,11 +573,38 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dossier source.
+        /// </summary>
+        internal static string SrcPath {
+            get {
+                return ResourceManager.GetString("SrcPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        internal static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Trop d&apos;identifiants ont été passés sans bénéficier de séparateurs :.
         /// </summary>
         internal static string TooMuchIdWithoutSep {
             get {
                 return ResourceManager.GetString("TooMuchIdWithoutSep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        internal static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
         

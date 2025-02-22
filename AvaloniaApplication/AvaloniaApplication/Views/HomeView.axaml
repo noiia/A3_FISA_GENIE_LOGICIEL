@@ -7,17 +7,17 @@
              xmlns:views="clr-namespace:AvaloniaApplication.Views"
              xmlns:controls="clr-namespace:Avalonia.Notification.Controls;assembly=Notification.Avalonia"
              x:Class="AvaloniaApplication.Views.HomeView"
-             x:DataType="vm:HomeViewModel">
+             x:DataType="vm:ParentHomeSettingsViewModel">
      <Grid Margin="0,0,0,50">
          <Border Grid.Column="1">
-             <controls:NotificationMessageContainer Manager="{Binding Manager}" />
+             <controls:NotificationMessageContainer Manager="{Binding HomeVM.Manager}" />
          </Border>
          <TextBlock Text="EasySave.exe" xml:space="preserve" FontSize="30" Margin="48,24,0,48" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TabControl Margin="32,124,32,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
+        <TabControl Margin="32,124,32,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="{Binding HomeVM.SelectedTabIndex, Mode=TwoWay}">
             <TabItem Header="Home">
                 <Grid Margin="16">
-                    <TextBlock Text="{Binding Title}" FontSize="24" Margin="0,0,0,0"/>
-                    <DataGrid ItemsSource="{Binding TableData}"
+                    <TextBlock Text="{Binding HomeVM.Title}" FontSize="24" Margin="0,0,0,0"/>
+                    <DataGrid ItemsSource="{Binding HomeVM.TableData}"
                               AutoGenerateColumns="False"
                               IsReadOnly="False"
                               Height="300" 
@@ -25,11 +25,11 @@
                               BorderThickness="1" 
                               BorderBrush="Gray">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="100" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="300" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Last Execution" Binding="{Binding LastExec}" Width="200" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="200" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="100" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="100" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="{Binding SettingsVM.Translations.NameTranslate}" Binding="{Binding Name}" Width="300" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="{Binding SettingsVM.Translations.LastExecution}" Binding="{Binding LastExec}" Width="200" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="{Binding SettingsVM.Translations.Status}" Binding="{Binding Status}" Width="200" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="{Binding SettingsVM.Translations.Type}" Binding="{Binding Type}" Width="100" IsReadOnly="True"/>
                             <DataGridTemplateColumn Header="Execute" Width="100">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

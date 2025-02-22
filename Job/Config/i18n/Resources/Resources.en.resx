@@ -73,7 +73,7 @@
         <value>There is no SaveJob to print</value>
     </data>
     <data name="Name" xml:space="preserve">
-        <value>Name :</value>
+        <value>Name </value>
     </data>
     <data name="Id" xml:space="preserve">
         <value>Id : </value>
@@ -176,5 +176,32 @@
     </data>
     <data name="UpdateKeyButton" xml:space="preserve">
         <value>Update Key</value>
+    </data>
+    <data name="Confirm" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
+    <data name="Full" xml:space="preserve">
+        <value>Full</value>
+    </data>
+    <data name="SelectSaveType" xml:space="preserve">
+        <value>Select Save Type</value>
+    </data>
+    <data name="Differential" xml:space="preserve">
+        <value>Differential</value>
+    </data>
+    <data name="SrcPath" xml:space="preserve">
+        <value>Source path</value>
+    </data>
+    <data name="DestPath" xml:space="preserve">
+        <value>Destination path</value>
+    </data>
+    <data name="LastExecution" xml:space="preserve">
+        <value>Last Execution</value>
+    </data>
+    <data name="Status" xml:space="preserve">
+        <value>Status</value>
+    </data>
+    <data name="Type" xml:space="preserve">
+        <value>Type</value>
     </data>
 </root>

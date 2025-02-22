@@ -14,162 +14,8 @@ namespace AvaloniaApplication.ViewModels
 {
     public class SettingsViewModel : INotifyPropertyChanged
     {
-    private string _settingsTitle;
-    private string _selectLanguageTitle;
-    private string _selectLanguagePlaceholder;
-    private string _selectLogTypeTitle;
-    private string _selectLogTypePlaceholder;
-    private string _setLogPathTitle;
-    private string _setLogPathWatermark;
-    private string _browseButton;
-    private string _resetButton;
-    private string _fileTypesToEncryptTitle;
-    private string _addFileTypeWatermark;
-    private string _addButton;
-    private string _removeSelectedButton;
-    private string _businessAppBlockingTitle;
-    private string _addBusinessAppWatermark;
-    private string _setEncryptionKeyTitle;
-    private string _enterEncryptionKeyWatermark;
-    private string _updateKeyButton;
-
-    // Existing properties and fields...
-
-    public string SettingsTitle
-    {
-        get => _settingsTitle;
-        set { _settingsTitle = value; OnPropertyChanged(); }
-    }
-
-    public string SelectLanguageTitle
-    {
-        get => _selectLanguageTitle;
-        set { _selectLanguageTitle = value; OnPropertyChanged(); }
-    }
-
-    public string SelectLanguagePlaceholder
-    {
-        get => _selectLanguagePlaceholder;
-        set { _selectLanguagePlaceholder = value; OnPropertyChanged(); }
-    }
-
-    public string SelectLogTypeTitle
-    {
-        get => _selectLogTypeTitle;
-        set { _selectLogTypeTitle = value; OnPropertyChanged(); }
-    }
-
-    public string SelectLogTypePlaceholder
-    {
-        get => _selectLogTypePlaceholder;
-        set { _selectLogTypePlaceholder = value; OnPropertyChanged(); }
-    }
-
-    public string SetLogPathTitle
-    {
-        get => _setLogPathTitle;
-        set { _setLogPathTitle = value; OnPropertyChanged(); }
-    }
-
-    public string SetLogPathWatermark
-    {
-        get => _setLogPathWatermark;
-        set { _setLogPathWatermark = value; OnPropertyChanged(); }
-    }
-
-    public string BrowseButton
-    {
-        get => _browseButton;
-        set { _browseButton = value; OnPropertyChanged(); }
-    }
-
-    public string ResetButton
-    {
-        get => _resetButton;
-        set { _resetButton = value; OnPropertyChanged(); }
-    }
-
-    public string FileTypesToEncryptTitle
-    {
-        get => _fileTypesToEncryptTitle;
-        set { _fileTypesToEncryptTitle = value; OnPropertyChanged(); }
-    }
-
-    public string AddFileTypeWatermark
-    {
-        get => _addFileTypeWatermark;
-        set { _addFileTypeWatermark = value; OnPropertyChanged(); }
-    }
-
-    public string AddButton
-    {
-        get => _addButton;
-        set { _addButton = value; OnPropertyChanged(); }
-    }
-
-    public string RemoveSelectedButton
-    {
-        get => _removeSelectedButton;
-        set { _removeSelectedButton = value; OnPropertyChanged(); }
-    }
-
-    public string BusinessAppBlockingTitle
-    {
-        get => _businessAppBlockingTitle;
-        set { _businessAppBlockingTitle = value; OnPropertyChanged(); }
-    }
-
-    public string AddBusinessAppWatermark
-    {
-        get => _addBusinessAppWatermark;
-        set { _addBusinessAppWatermark = value; OnPropertyChanged(); }
-    }
-
-    public string SetEncryptionKeyTitle
-    {
-        get => _setEncryptionKeyTitle;
-        set { _setEncryptionKeyTitle = value; OnPropertyChanged(); }
-    }
-
-    public string EnterEncryptionKeyWatermark
-    {
-        get => _enterEncryptionKeyWatermark;
-        set { _enterEncryptionKeyWatermark = value; OnPropertyChanged(); }
-    }
-
-    public string UpdateKeyButton
-    {
-        get => _updateKeyButton;
-        set { _updateKeyButton = value; OnPropertyChanged(); }
-    }
-    
-    public void UpdateTranslations()
-    {
-        string language = config.GetLanguage() ?? "en";
-        Translation.SelectLanguage(language);
-        SettingsTitle = Translation.GetString("SettingsTitle");
-        SelectLanguageTitle = Translation.GetString("SelectLanguageTitle");
-        SelectLanguagePlaceholder = Translation.GetString("SelectLanguagePlaceholder");
-        SelectLogTypeTitle = Translation.GetString("SelectLogTypeTitle");
-        SelectLogTypePlaceholder = Translation.GetString("SelectLogTypePlaceholder");
-        SetLogPathTitle = Translation.GetString("SetLogPathTitle");
-        SetLogPathWatermark = Translation.GetString("SetLogPathWatermark");
-        BrowseButton = Translation.GetString("BrowseButton");
-        ResetButton = Translation.GetString("ResetButton");
-        FileTypesToEncryptTitle = Translation.GetString("FileTypesToEncryptTitle");
-        AddFileTypeWatermark = Translation.GetString("AddFileTypeWatermark");
-        AddButton = Translation.GetString("AddButton");
-        RemoveSelectedButton = Translation.GetString("RemoveSelectedButton");
-        BusinessAppBlockingTitle = Translation.GetString("BusinessAppBlockingTitle");
-        AddBusinessAppWatermark = Translation.GetString("AddBusinessAppWatermark");
-        SetEncryptionKeyTitle = Translation.GetString("SetEncryptionKeyTitle");
-        EnterEncryptionKeyWatermark = Translation.GetString("EnterEncryptionKeyWatermark");
-        UpdateKeyButton = Translation.GetString("UpdateKeyButton");
-    }
-        
         Configuration config;
         public INotificationMessageManager Manager => NotificationMessageManagerSingleton.Instance;
-
         public SettingsViewModel()
         {
             try
@@ -179,16 +25,15 @@ namespace AvaloniaApplication.ViewModels
                 FileTypesToEncrypt = new ObservableCollection<string>(config.GetCryptExtension() ?? Array.Empty<string>());
                 BusinessApp = new ObservableCollection<string>(config.GetBuisnessApp() ?? Array.Empty<string>());
                 Translation.SelectLanguage(config.GetLanguage());
-                Console.WriteLine("Test");
-                UpdateTranslations(); // Initial update of translations
-
             }
             catch (Exception ex)
             {
                 ShowErrorNotification(ex.Message);
             }
         }
-
+        
+        public Translation Translations => Translation.Instance;
+        
         private string _selectedLanguage;
         public string SelectedLanguage
         {
@@ -231,16 +76,8 @@ namespace AvaloniaApplication.ViewModels
                                 config.SetLanguage("fr");
                                 break;
                         }
-                        UpdateTranslations(); 
-                        Manager.CreateMessage()
-                            .Accent(NotifColors.green)
-                            .Animates(true)
-                            .Background("#333")
-                            .HasBadge("Info")
-                            .HasMessage("La langue a été changée. Merci de redémarrer le logiciel.")
-                            .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
-                            .Queue();
-                        OnPropertyChanged();
+                        Translation.SelectLanguage(config.GetLanguage());
+                        OnPropertyChanged(nameof(Translations)); 
                     }
                 }
                 catch (Exception ex)
@@ -414,7 +251,7 @@ namespace AvaloniaApplication.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        public void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
