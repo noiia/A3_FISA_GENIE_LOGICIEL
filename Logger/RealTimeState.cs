@@ -3,6 +3,7 @@ using System.IO;
 using System;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Logger
 {
@@ -42,6 +43,7 @@ namespace Logger
     
     public class RealTimeState
     {
+        private static string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EasySave", "statefile.log");
         private static List<Counters> counters = new List<Counters>();
         public static void AddCounter(Counters counter)
         {
@@ -70,6 +72,36 @@ namespace Logger
         // fileInfo[0] = fileInfo.Name
         // fileInfo[1] = fileInfo.FullName
         // fileInfo[2] = fileInfo.Lenght
+
+
+        public static void WriteMessage(string message)
+        {
+            try
+            {
+                using (var writer = File.AppendText(filePath))
+                {
+                    writer.WriteLine(message);
+                }
+            }
+            catch (Exception exception)
+            {
+                LoggerUtility.WriteLog(LoggerUtility.Error, exception.Message);
+                switch (exception.GetType().Name)
+                {
+                    case nameof(UnauthorizedAccessException):
+                        Console.WriteLine($"Access denied: {filePath}");
+                        break;
+                    case nameof(FileNotFoundException):
+                        Console.WriteLine(exception.Message);
+                        if (!File.Exists(filePath))
+                        {
+                            CreateFile(filePath);
+                        }
+                        break;
+                }
+            }
+        }
+        
         public static void WriteState(string saveJobName, Counters counter, FileInfo fileInfo, string destinationPathDir, string fileName, string msg, string id)
         {
             const string folderName = "EasySave";
@@ -210,6 +242,50 @@ namespace Logger
                         break;
                 }
             }
+        }
+
+        public static object ReadState(string id)
+        {
+            string output = null;
+            Json deserializedProduct = JsonConvert.DeserializeObject<Json>(output);
+            
+            
+            
+            return null;
+        }
+        
+        
+        public class BackupFile
+        {
+            public string Source { get; set; }
+            public string Destination { get; set; }
+            public string Advancement { get; set; }
+        }
+        
+        public List<BackupFile> GetFilesByBackupId(int backupId)
+        {
+            string folderName = "EasySave";
+            string fileName = "statefile.log";
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName, fileName);
+            if (File.Exists(filePath))
+            {
+                string jsonData = File.ReadAllText(filePath);
+                var backupEntries = JsonConvert.DeserializeObject<List<JObject>>(jsonData);
+
+                var filteredEntries = backupEntries
+                    .Where(entry => entry["BackupID"].Value<int>() == backupId)
+                    .ToList();
+
+                var backupFiles = filteredEntries.Select(entry => new BackupFile
+                {
+                    Source = entry["Source"].Value<string>(),
+                    Destination = entry["Destination"].Value<string>(),
+                    Advancement = entry["Advancement"].Value<string>()
+                }).ToList();
+
+                return backupFiles;
+            }
+            return null;
         }
 
     }
