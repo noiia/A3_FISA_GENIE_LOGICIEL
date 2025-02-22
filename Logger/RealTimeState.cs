@@ -2,8 +2,8 @@
 using System.IO;
 using System;
 using System.Runtime.CompilerServices;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Logger
 {
@@ -143,16 +143,17 @@ namespace Logger
             json.RemainingData = remainingData.ToString();
             json.Advancement = $"{fileInfo.Length} 100%";
 
-            message = JsonSerializer.Serialize(json);
+            message = JsonConvert.SerializeObject(json);
 
             // Json deserializedProduct = JsonConvert.DeserializeObject<Json>(output);
             
             try
             {
-                using (var writer = File.AppendText(filePath))
-                {
-                    writer.WriteLine(message);
-                }
+                // 100%
+                 using (var writer = File.AppendText(filePath))
+                 {
+                     writer.WriteLine(message);
+                 }
             }
             catch (Exception exception)
             {
@@ -171,6 +172,25 @@ namespace Logger
                         break;
                 }
             }
+            //tests
+            
+            //# TODO try pause and resume here before implement
+            
+            // var advancementByBackupId = GetFilesAdvancementByBackupId(Convert.ToInt32(id));
+            // foreach (var advancement in advancementByBackupId)
+            // {
+            //     Console.WriteLine($"advancement : {advancement.Source} {advancement.Destination} {advancement.Advancement}");
+            //     if (advancement.Advancement.EndsWith("100%"))
+            //     {
+            //         Console.WriteLine($"finished job {advancement.Destination}");
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine(advancement.Destination + " : " + advancement.Advancement);
+            //     }
+            // }
+            // ContinueSaveJob(int.Parse(id));
+
         }
         
         
@@ -214,7 +234,7 @@ namespace Logger
             json.RemainingData = remainingData.ToString();
             json.Advancement = advancement.ToString();
 
-            message = JsonSerializer.Serialize(json);
+            message = JsonConvert.SerializeObject(json);
 
             // Json deserializedProduct = JsonConvert.DeserializeObject<Json>(output);
             
@@ -244,62 +264,94 @@ namespace Logger
             }
         }
 
-        public static object ReadState(string id)
-        {
-            string output = null;
-            Json deserializedProduct = JsonSerializer.Deserialize<Json>(output);
-            
-            
-            
-            return null;
-        }
+        // public static object ReadState(string id)
+        // {
+        //     string output = null;
+        //     Json deserializedProduct = JsonConvert.DeserializeObject<Json>(output);
+        //     
+        //     
+        //     
+        //     return null;
+        // }
         
         
         public class BackupFile
         {
-            [JsonPropertyName("BackupID")]
-            public int BackupID { get; set; }
-
-            [JsonPropertyName("Source")]
             public string Source { get; set; }
-
-            [JsonPropertyName("Destination")]
             public string Destination { get; set; }
-
-            [JsonPropertyName("Advancement")]
             public string Advancement { get; set; }
         }
         
-        public List<BackupFile> GetFilesByBackupId(int backupId)
+        public static List<BackupFile> GetFilesAdvancementByBackupId(int backupId)
         {
             string folderName = "EasySave";
             string fileName = "statefile.log";
             string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName, fileName);
+
             if (File.Exists(filePath))
             {
-                string jsonData = File.ReadAllText(filePath);
-                var backupEntries = JsonSerializer.Deserialize<List<BackupFile>>(jsonData, new JsonSerializerOptions
+                try
                 {
-                    PropertyNameCaseInsensitive = true
-                });
-                
-                if (backupEntries == null) return new List<BackupFile>();
-                
-                var filteredEntries = backupEntries
-                    .Where(entry => entry.BackupID == backupId)
-                    .ToList();
+                    var backupEntries = new List<JObject>();
+                    string[] lines = File.ReadAllLines(filePath);
 
-                var backupFiles = filteredEntries.Select(entry => new BackupFile
+                    foreach (var line in lines)
+                    {
+                        if (!string.IsNullOrWhiteSpace(line))
+                        {
+                            var entry = JsonConvert.DeserializeObject<JObject>(line);
+                            backupEntries.Add(entry);
+                        }
+                    }
+
+                    var filteredEntries = backupEntries
+                        .Where(entry => entry["BackupID"].Value<int>() == backupId)
+                        .ToList();
+
+                    var groupedEntries = filteredEntries
+                        .GroupBy(entry => entry["Destination"].Value<string>())
+                        .Select(group =>
+                        {
+                            // Select the last entry in the file for each destination
+                            var lastEntry = group.Last();
+                            return new BackupFile
+                            {
+                                Source = lastEntry["Source"].Value<string>(),
+                                Destination = lastEntry["Destination"].Value<string>(),
+                                Advancement = lastEntry["Advancement"].Value<string>().EndsWith("100%") ? "100%" : lastEntry["Advancement"].Value<string>()
+                            };
+                        })
+                        .ToList();
+
+                    return groupedEntries;
+                }
+                catch (Exception ex)
                 {
-                    Source = entry.Source,
-                    Destination = entry.Destination,
-                    Advancement = entry.Advancement
-                }).ToList();
-
-                return backupFiles;
+                    // Handle exceptions (e.g., log the error)
+                    Console.WriteLine($"Error reading or deserializing the file: {ex.Message}");
+                    return null;
+                }
             }
             return null;
         }
+        
+        
+        
+        public static void ContinueSaveJob(int backupId)
+        {
+            List<BackupFile> backupFiles = GetFilesAdvancementByBackupId(backupId);
 
+            foreach (BackupFile backupFile in backupFiles)
+            {
+                string source = backupFile.Source;
+                string destination = backupFile.Destination;
+                string advancement = backupFile.Advancement;
+                // FileInfo fileInfo = new FileInfo(source);
+                // Counters counter = new Counters(1, 1, true);
+                // counter.FileCount = 1;
+                // counter.DataCount = fileInfo.Length;
+                // WriteState("ContinueSaveJob", counter, fileInfo, destination, "statefile.log", "Continue Save Job", backupId.ToString(), double.Parse(advancement));
+            }
+        }
     }
 }
