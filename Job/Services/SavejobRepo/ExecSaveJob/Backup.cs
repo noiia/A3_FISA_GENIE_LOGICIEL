@@ -1,11 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Diagnostics;
 using Job.Config;
 using Logger;
-using Newtonsoft.Json;
+using System.Text.Json;
 
-namespace ExecSaveJob;
+namespace Job.Services.ExecSaveJob;
 
 public class Json
 {
@@ -351,7 +349,7 @@ public abstract class Backup
             foreach (string content in lines)
             {
                 string output = content;
-                Json? deserializedProduct = JsonConvert.DeserializeObject<Json>(output);
+                Json? deserializedProduct = JsonSerializer.Deserialize<Json>(output);
                 if (deserializedProduct != null)
                 {
                     LastID = Math.Max(LastID, Convert.ToInt32(deserializedProduct.BackupID));

@@ -24,17 +24,17 @@ public class SaveJobRepo
         return (value.Result.Item1, value.Result.Item2);
     }
     
-    public static (int,string) ExecuteSaveJob(string name)
+    public static (int, string, DateTime) ExecuteSaveJob(string name)
     {
         int? id = null;
         var value = _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
-        return (value.Result.Item1, value.Result.Item2);
+        return (value.Result.Item1, value.Result.Item2, value.Result.Item3);
     }
-    public static (int,string) ExecuteSaveJob(int id)
+    public static (int, string, DateTime) ExecuteSaveJob(int id)
     {
         string? name = "";
         var value = _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
-        return (value.Result.Item1, value.Result.Item2);
+        return (value.Result.Item1, value.Result.Item2, value.Result.Item3);
     }
     
     public static (int,string) DeleteSaveJob(int id)

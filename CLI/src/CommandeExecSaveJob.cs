@@ -33,7 +33,7 @@ namespace CLI
             string[] contentSplited = content.Split(separator);
             List<int>  ids = contentSplited.Select(int.Parse).ToList();
         
-            (int returnCode, string message) = Job.Controller.ExecuteSaveJob.Execute(ids, separator);
+            (int returnCode, string message, Dictionary<int, DateTime> endDateTask ) = Job.Controller.ExecuteSaveJob.Execute(ids, separator);
             
             Console.WriteLine(message);
 

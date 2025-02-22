@@ -1,7 +1,6 @@
-﻿using Config;
-using Job.Config;
+﻿using Job.Config;
 
-namespace ExecSaveJob;
+namespace Job.Services.ExecSaveJob;
 
 public class CompleteBackup : Backup
 {

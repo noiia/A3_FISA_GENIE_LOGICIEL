@@ -69,7 +69,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTextColumn Header="{Binding SettingsVM.Translations.LastExecution}" Binding="{Binding LastExec}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="{Binding SettingsVM.Translations.Creation}" Binding="{Binding CreatDate}" Width="100" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="{Binding SettingsVM.Translations.Creation}" Binding="{Binding CreatDate}" Width="110" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100" IsReadOnly="True"/>
                             <DataGridTemplateColumn Header="Type">
                                 <DataGridTemplateColumn.CellTemplate>

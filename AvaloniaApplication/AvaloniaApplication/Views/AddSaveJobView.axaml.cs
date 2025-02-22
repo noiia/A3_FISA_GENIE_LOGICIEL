@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using System;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
@@ -32,12 +33,11 @@ public partial class AddSaveJobView : UserControl
     {
         var dialog = new OpenFolderDialog();
         string result = await dialog.ShowAsync(this.VisualRoot as Window);
-
         if (!string.IsNullOrEmpty(result))
         {
-            if (this.DataContext is AddSaveJobViewModel viewModel)
+            if (DataContext is ParentAddSaveJobViewModel viewModel)
             {
-                viewModel.SourceField = result;
+                viewModel.AddSaveJobVM.SourceField = result;
             }
         }
     }
@@ -46,12 +46,11 @@ public partial class AddSaveJobView : UserControl
     {
         var dialog = new OpenFolderDialog();
         string result = await dialog.ShowAsync(this.VisualRoot as Window);
-
         if (!string.IsNullOrEmpty(result))
         {
-            if (this.DataContext is AddSaveJobViewModel viewModel)
+            if (DataContext is ParentAddSaveJobViewModel viewModel)
             {
-                viewModel.DestinationField = result;
+                viewModel.AddSaveJobVM.DestinationField = result;
             }
         }
     }
