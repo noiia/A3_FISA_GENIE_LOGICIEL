@@ -335,8 +335,6 @@ namespace Logger
             return null;
         }
         
-        
-        
         public static void ContinueSaveJob(int backupId)
         {
             List<BackupFile> backupFiles = GetFilesAdvancementByBackupId(backupId);
