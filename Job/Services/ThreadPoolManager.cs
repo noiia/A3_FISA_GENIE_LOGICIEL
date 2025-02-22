@@ -13,9 +13,9 @@ public class ThreadPoolManager
         _semaphore = new SemaphoreSlim(maxThreads);
     }
 
-    public Task<(int, string)> QueueTask(Func<Task<(int, string)>> task)
+    public Task<(int, string, DateTime)> QueueTask(Func<Task<(int, string, DateTime)>> task)
     {
-        var tcs = new TaskCompletionSource<(int, string)>();
+        var tcs = new TaskCompletionSource<(int, string, DateTime)>();
         _tasks.Enqueue(async () =>
         {
             try

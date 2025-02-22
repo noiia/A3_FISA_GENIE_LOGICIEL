@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -164,7 +165,9 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     private void ExecuteSaveJob(object? args)
     {
         (List<int> ids, string separator) = ListAndConvertIds(args);
-        (int returnCode, string message) = Job.Controller.ExecuteSaveJob.Execute(ids, separator);
+        (int returnCode, string message, Dictionary<int, DateTime> taskEndDates) = Job.Controller.ExecuteSaveJob.Execute(ids, separator);
+        
+        UpdateLastExecDate(ids, taskEndDates);
         
         NotificationMessageManagerSingleton.GenerateNotification(this.Manager, returnCode, message);
     }
@@ -184,11 +187,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         }
         
         NotificationMessageManagerSingleton.GenerateNotification(this.Manager, returnCode, message);
-    }
-    
-    public void AddItem(TableDataModel item)
-    {
-        Dispatcher.UIThread.InvokeAsync(() => TableData.Add(item));
     }
     
     private bool _isEditClicked = true;
@@ -211,22 +209,38 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         foreach (var item in TableData)
         {
             item.IsReadOnly = _isEditClicked;
-            Console.WriteLine(item.Name + ";" + item.IsReadOnly);
         }
-        // LoadSaveJob(_config);
         if ((IsEditClicked == false) || true)
         {
-            Console.WriteLine("in");
             SaveJob[] saveJobs = new SaveJob[]{};
-            Console.WriteLine(TableData.Count);
             foreach (var item in TableData)
             {
-                Console.WriteLine("var item in TableData");
                 SaveJob sj = new SaveJob(item.Id, item.Name, item.SrcPath, item.DestPath, item.LastExec, item.CreatDate, item.Type);
                 saveJobs = saveJobs.Append(sj).ToArray();
             }
-            Console.WriteLine("_config.SetSaveJobs(saveJobs);");
             _configuration.SetSaveJobs(saveJobs);
+        }
+    }
+
+    public void UpdateLastExecDate(List<int> ids, Dictionary<int, DateTime> taskEndDates)
+    {
+        try
+        {
+            List<SaveJob> saveJobs = _configuration.GetSaveJobs().ToList();
+            foreach (int id in ids)
+            {
+                SaveJob sj = saveJobs.FirstOrDefault(i => i.Id == id)!;
+                saveJobs.Remove(sj);
+                sj.LastSave = taskEndDates[id];
+                saveJobs.Add(sj);
+            }
+            _configuration.SetSaveJobs(saveJobs.ToArray());
+            LoadSaveJob();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
     
@@ -247,7 +261,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             {
                 _configuration.LoadConfiguration();
                 Translation.SelectLanguage(_configuration.GetLanguage());
-                
             }
         }
     }
@@ -258,7 +271,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         TableData = new ObservableCollection<TableDataModel>();
         foreach (SaveJob saveJob in _configuration.GetSaveJobs())
         {
-            AddItem(new TableDataModel 
+            TableData.Add(new TableDataModel 
             { 
                 Checked = false,
                 Id = saveJob.Id, 
@@ -280,7 +293,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     {
         Title = "Save job list";
         TableData = new ObservableCollection<TableDataModel>();
-        // config.Load_configuration();
         _configuration = ConfigSingleton.Instance();
         _configuration.LoadConfiguration();
         LoadSaveJob();
