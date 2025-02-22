@@ -2,8 +2,8 @@
 
 namespace AvaloniaApplication.ViewModels;
 
-public class ParentHomeSettingsViewModel(Configuration config)
+public class ParentHomeSettingsViewModel()
 {
-    public HomeViewModel HomeVM { get; } = new(config);
+    public HomeViewModel HomeVM { get; } = new();
     public SettingsViewModel SettingsVM { get; } = new();
 }

@@ -204,4 +204,19 @@
     <data name="Type" xml:space="preserve">
         <value>Type</value>
     </data>
+    <data name="Execute" xml:space="preserve">
+        <value>Exécuter</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Supprimer</value>
+    </data>
+    <data name="Select" xml:space="preserve">
+        <value>Sélectionner</value>
+    </data>
+    <data name="Creation" xml:space="preserve">
+        <value>Création</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Editer</value>
+    </data>
 </root>

@@ -21,15 +21,17 @@ public class ExecuteSaveJob
         switch (separator)
         {
             case ";":
+                string listId = "";
                 foreach (var id in ids)
                 {
                     (returnCode, message) = SaveJobRepo.ExecuteSaveJob(id);
                     if (returnCode is 2)
                     {
-                        return (returnCode, message);
+                        return (returnCode, message + listId);
                     } 
+                    listId += $"{id}, ";
                 }
-                return (1, $"{Translation.Translator.GetString("SjExecSuccesfully")} {ids}");
+                return (1, $"{Translation.Translator.GetString("SjExecSuccesfully")} {listId}");
             
             case  ",":
                 for (int i = ids[0]; i <= ids[1]; i++)
@@ -40,7 +42,7 @@ public class ExecuteSaveJob
                         return (returnCode, message);
                     }
                 }
-                return (1, $"{Translation.Translator.GetString("SjExecSuccesfully")} {ids}");
+                return (1, $"{Translation.Translator.GetString("SjExecSuccesfully")} : {ids[0]} - {ids[1]}");
             
             case "":
                 (returnCode, message) = SaveJobRepo.ExecuteSaveJob(ids[0]);
@@ -48,7 +50,7 @@ public class ExecuteSaveJob
                 {
                     return (returnCode, message);
                 }
-                return (1, $"{Translation.Translator.GetString("SjExecSuccesfully")} {ids[0]}");
+                return (1, $"{message}");
             
             default:
                 return (3, $"{Translation.Translator.GetString("SeparatorNotReco")} {separator}");

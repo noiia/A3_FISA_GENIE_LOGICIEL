@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:AvaloniaApplication.Views"
         xmlns:vm="clr-namespace:AvaloniaApplication.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1800" d:DesignHeight="450"
         x:Class="AvaloniaApplication.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="AvaloniaApplication">
@@ -21,7 +21,7 @@
                                         <TranslateTransform X="-200" Y="350"/>
                                 </Ellipse.RenderTransform>
                                 <Ellipse.Effect>
-                                        <BlurEffect Radius="100"/>
+                                        <BlurEffect Radius="500"/>
                                 </Ellipse.Effect>
                         </Ellipse>
                 </Canvas>
@@ -37,7 +37,7 @@
                                         <TranslateTransform X="1000" Y="0"/>
                                 </Ellipse.RenderTransform>
                                 <Ellipse.Effect>
-                                        <BlurEffect Radius="100"/>
+                                        <BlurEffect Radius="500"/>
                                 </Ellipse.Effect>
                         </Ellipse>
                 </Canvas>
@@ -53,7 +53,7 @@
                                         <TranslateTransform X="300" Y="0"/>
                                 </Ellipse.RenderTransform>
                                 <Ellipse.Effect>
-                                        <BlurEffect Radius="100"/>
+                                        <BlurEffect Radius="500"/>
                                 </Ellipse.Effect>
                         </Ellipse>
                 </Canvas>

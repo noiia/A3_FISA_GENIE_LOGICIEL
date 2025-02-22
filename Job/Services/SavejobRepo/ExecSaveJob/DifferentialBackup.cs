@@ -6,19 +6,19 @@ namespace ExecSaveJob;
 
 public class DifferentialBackup : Backup
 {
-    private static DifferentialBackup instance;
+    // private static DifferentialBackup instance;
 
-    private DifferentialBackup(SaveJob saveJob) : base(saveJob) { }
+    public DifferentialBackup(SaveJob saveJob) : base(saveJob) { }
 
-    public static DifferentialBackup GetInstance(SaveJob saveJob)
-    {
-        if (instance == null)
-        {
-            instance = new DifferentialBackup(saveJob);
-        }
-        
-        return instance;
-    }
+    // public static DifferentialBackup GetInstance(SaveJob saveJob)
+    // {
+    //     if (instance == null)
+    //     {
+    //         instance = new DifferentialBackup(saveJob);
+    //     }
+    //     
+    //     return instance;
+    // }
 
     protected override List<string> GetFiles(string RootDir, List<string> Files)
     {

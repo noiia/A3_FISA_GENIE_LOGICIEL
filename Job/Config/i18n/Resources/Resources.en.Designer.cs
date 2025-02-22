@@ -159,6 +159,24 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creation.
+        /// </summary>
+        internal static string Creation {
+            get {
+                return ResourceManager.GetString("Creation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bad arguments, require Delete-SaveJob &lt;id&gt;.
         /// </summary>
         internal static string DelSjBadArgs {
@@ -213,6 +231,15 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        internal static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter Encryption Key.
         /// </summary>
         internal static string EnterEncryptionKeyWatermark {
@@ -227,6 +254,15 @@ namespace Config.i18n.Ressources {
         internal static string ExecSjBadArgs {
             get {
                 return ResourceManager.GetString("ExecSjBadArgs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute.
+        /// </summary>
+        internal static string Execute {
+            get {
+                return ResourceManager.GetString("Execute", resourceCulture);
             }
         }
         
@@ -407,6 +443,15 @@ namespace Config.i18n.Ressources {
         internal static string SaveAlreadyExist {
             get {
                 return ResourceManager.GetString("SaveAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select.
+        /// </summary>
+        internal static string Select {
+            get {
+                return ResourceManager.GetString("Select", resourceCulture);
             }
         }
         

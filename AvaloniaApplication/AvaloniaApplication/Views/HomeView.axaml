@@ -17,6 +17,18 @@
             <TabItem Header="Home">
                 <Grid Margin="16">
                     <TextBlock Text="{Binding HomeVM.Title}" FontSize="24" Margin="0,0,0,0"/>
+                    <Button Command="{Binding HomeVM.ExecuteListSaveJob}" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding HomeVM.IsAnySelected}" Margin="600,0,0,400">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding SettingsVM.Translations.Execute}" FontSize="16" Margin="0,0,10,0"/>
+                            <Image Source="avares://AvaloniaApplication/Assets/gear.png" Width="30" Height="30"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding HomeVM.DeleteListSaveJob}" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding HomeVM.IsAnySelected}" Margin="900,0,0,400">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding SettingsVM.Translations.Delete}" FontSize="16" Margin="0,0,10,0"/>
+                            <Image Source="avares://AvaloniaApplication/Assets/trash.png" Width="30" Height="30"/>
+                        </StackPanel>
+                    </Button>
                     <DataGrid ItemsSource="{Binding HomeVM.TableData}"
                               AutoGenerateColumns="False"
                               IsReadOnly="False"
@@ -25,12 +37,48 @@
                               BorderThickness="1" 
                               BorderBrush="Gray">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="100" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="{Binding SettingsVM.Translations.NameTranslate}" Binding="{Binding Name}" Width="300" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="{Binding SettingsVM.Translations.LastExecution}" Binding="{Binding LastExec}" Width="200" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="{Binding SettingsVM.Translations.Status}" Binding="{Binding Status}" Width="200" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="{Binding SettingsVM.Translations.Type}" Binding="{Binding Type}" Width="100" IsReadOnly="True"/>
-                            <DataGridTemplateColumn Header="Execute" Width="100">
+                            <DataGridTemplateColumn Header="{Binding SettingsVM.Translations.Select}" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="IsSelected" IsChecked="{Binding Checked}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn> 
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="65" IsReadOnly="True"/>
+                            <DataGridTemplateColumn Header="{Binding SettingsVM.Translations.NameTranslate}" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Name}" IsReadOnly="{Binding IsReadOnly}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Source" Width="300">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding SrcPath}" IsReadOnly="{Binding IsReadOnly}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Destination" Width="300">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding DestPath}" IsReadOnly="{Binding IsReadOnly}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="{Binding SettingsVM.Translations.LastExecution}" Binding="{Binding LastExec}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="{Binding SettingsVM.Translations.Creation}" Binding="{Binding CreatDate}" Width="100" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100" IsReadOnly="True"/>
+                            <DataGridTemplateColumn Header="Type">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Type}" IsReadOnly="{Binding IsReadOnly}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="{Binding SettingsVM.Translations.Execute}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Command="{Binding ExeSaveJob}" CommandParameter="{Binding Id}"
@@ -42,7 +90,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>   
-                            <DataGridTemplateColumn Header="Delete" Width="100">
+                            <DataGridTemplateColumn Header="{Binding SettingsVM.Translations.Delete}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Command="{Binding DelSaveJob}" CommandParameter="{Binding Id}" 
@@ -56,6 +104,12 @@
                             </DataGridTemplateColumn>                        
                         </DataGrid.Columns>
                     </DataGrid>
+                    <Button Command="{Binding HomeVM.ToggleEditClick}" CommandParameter="{Binding HomeVM.TableData} " HorizontalAlignment="Center" VerticalAlignment="Center" Margin="1000,400,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding SettingsVM.Translations.Edit}" VerticalAlignment="Center" FontSize="16" Margin="0,0,10,0"/>
+                            <Image Source="avares://AvaloniaApplication/Assets/gear.png" Width="30" Height="30"/>
+                        </StackPanel>
+                    </Button>
                 </Grid>
             </TabItem>
             <TabItem Header="Add Savejob">

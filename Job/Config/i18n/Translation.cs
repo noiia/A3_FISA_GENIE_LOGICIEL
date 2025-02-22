@@ -50,9 +50,14 @@ public class Translation : INotifyPropertyChanged
         Instance.OnPropertyChanged(nameof(DestPath));
         Instance.OnPropertyChanged(nameof(SelectSaveType));
         Instance.OnPropertyChanged(nameof(Confirm));
+        Instance.OnPropertyChanged(nameof(Execute));
+        Instance.OnPropertyChanged(nameof(Delete));
+        Instance.OnPropertyChanged(nameof(Select));
         Instance.OnPropertyChanged(nameof(LastExecution));
+        Instance.OnPropertyChanged(nameof(Creation));
         Instance.OnPropertyChanged(nameof(Status));
         Instance.OnPropertyChanged(nameof(Type));
+        Instance.OnPropertyChanged(nameof(Edit));
     }
 
     // Settings
@@ -84,8 +89,13 @@ public class Translation : INotifyPropertyChanged
     public string Confirm => Translator.GetString("Confirm") ?? "[Confirm]";
     
     // home
+    public string Execute => Translator.GetString("Execute") ?? "[Execute]";
+    public string Delete => Translator.GetString("Delete") ?? "[Delete]";
+    public string Select => Translator.GetString("Select") ?? "[Select]";
     public string LastExecution => Translator.GetString("LastExecution") ?? "[LastExecution]";
+    public string Creation => Translator.GetString("Creation") ?? "[Creation]";
     public string Status => Translator.GetString("Status") ?? "[Status]";
     public string Type => Translator.GetString("Type") ?? "[Type]";
+    public string Edit => Translator.GetString("Edit") ?? "[Edit]";
 
 }

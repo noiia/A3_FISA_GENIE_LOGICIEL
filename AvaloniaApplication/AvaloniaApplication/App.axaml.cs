@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
@@ -21,10 +20,13 @@ namespace AvaloniaApplication
             AvaloniaXamlLoader.Load(this);
         }
 
+        public static ParentHomeSettingsViewModel ParentHomeViewModelInstance { get; private set; }
+
         public override void OnFrameworkInitializationCompleted()
         {
             Configuration configuration = new Configuration( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
             SaveJobRepo _ = new SaveJobRepo(configuration, 5);
+            ParentHomeViewModelInstance = new ParentHomeSettingsViewModel();
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
@@ -32,17 +34,18 @@ namespace AvaloniaApplication
                 DisableAvaloniaDataAnnotationValidation();
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new ParentHomeSettingsViewModel(configuration)
+                    DataContext = ParentHomeViewModelInstance
                 };
             }
             else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
             {
                 singleViewPlatform.MainView = new HomeView
                 {
-                    DataContext = new HomeViewModel(configuration)
+                    DataContext = new HomeViewModel()
                 };
             }
-            DataContext = new SettingsViewModel();
+
+            if (App.Current != null) App.Current.DataContext = ParentHomeViewModelInstance;
             
             Translation.StaticPropertyChanged += (s, e) =>
             {
