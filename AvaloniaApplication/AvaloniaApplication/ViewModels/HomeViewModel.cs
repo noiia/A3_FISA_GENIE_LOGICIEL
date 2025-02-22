@@ -17,6 +17,7 @@ using Avalonia.Threading;
 using Config;
 using DynamicData;
 using Job.Config;
+using Job.Config.i18n;
 using Job.Services;
 
 namespace AvaloniaApplication.ViewModels;
@@ -93,6 +94,13 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     }
     
     public string Title { get; set; }
+    
+    private string _notification;
+    public string Notification
+    {
+        get => _notification;
+        set => this.RaiseAndSetIfChanged(ref _notification, value);
+    }
     
     public INotificationMessageManager Manager => NotificationMessageManagerSingleton.Instance;
 
@@ -244,6 +252,11 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             {
                 _configuration.LoadConfiguration();
                 LoadSaveJob();
+            } else if (_selectedTabIndex == 1)
+            {
+                _configuration.LoadConfiguration();
+                Translation.SelectLanguage(_configuration.GetLanguage());
+                
             }
         }
     }

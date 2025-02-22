@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Avalonia.Notification;
 using AvaloniaApplication.Views;
 using Job.Config;
+using Job.Config.i18n;
 
 namespace AvaloniaApplication.ViewModels
 {
@@ -14,7 +16,6 @@ namespace AvaloniaApplication.ViewModels
     {
         Configuration config;
         public INotificationMessageManager Manager => NotificationMessageManagerSingleton.Instance;
-
         public SettingsViewModel()
         {
             try
@@ -23,13 +24,16 @@ namespace AvaloniaApplication.ViewModels
                 LoadDefaultSettings();
                 FileTypesToEncrypt = new ObservableCollection<string>(config.GetCryptExtension() ?? Array.Empty<string>());
                 BusinessApp = new ObservableCollection<string>(config.GetBuisnessApp() ?? Array.Empty<string>());
+                Translation.SelectLanguage(config.GetLanguage());
             }
             catch (Exception ex)
             {
                 ShowErrorNotification(ex.Message);
             }
         }
-
+        
+        public Translation Translations => Translation.Instance;
+        
         private string _selectedLanguage;
         public string SelectedLanguage
         {
@@ -72,15 +76,8 @@ namespace AvaloniaApplication.ViewModels
                                 config.SetLanguage("fr");
                                 break;
                         }
-                        Manager.CreateMessage()
-                            .Accent(NotifColors.green)
-                            .Animates(true)
-                            .Background("#333")
-                            .HasBadge("Info")
-                            .HasMessage("La langue a été changée. Merci de redémarrer le logiciel.")
-                            .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
-                            .Queue();
-                        OnPropertyChanged();
+                        Translation.SelectLanguage(config.GetLanguage());
+                        OnPropertyChanged(nameof(Translations)); 
                     }
                 }
                 catch (Exception ex)
@@ -254,7 +251,7 @@ namespace AvaloniaApplication.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        public void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
