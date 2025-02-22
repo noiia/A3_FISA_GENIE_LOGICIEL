@@ -31,7 +31,7 @@ public class TableDataModel : ReactiveObject
         set
         {
             this.RaiseAndSetIfChanged(ref _checked, value);
-            (App.Current.DataContext as HomeViewModel)?.UpdateSelection();
+            (App.Current.DataContext as ParentHomeSettingsViewModel)?.HomeVM.UpdateSelection();
         }
     }
     public required int Id { get; set; }
@@ -84,6 +84,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             if (_isAnySelected != value)
             {
                 _isAnySelected = value;
+                Console.WriteLine(_isAnySelected);
                 OnPropertyChanged(nameof(IsAnySelected));
             }
         }
@@ -94,13 +95,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     }
     
     public string Title { get; set; }
-    
-    private string _notification;
-    public string Notification
-    {
-        get => _notification;
-        set => this.RaiseAndSetIfChanged(ref _notification, value);
-    }
     
     public INotificationMessageManager Manager => NotificationMessageManagerSingleton.Instance;
 
@@ -178,7 +172,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     private void DeleteSaveJob(object? args)
     {
         (List<int> ids, string separator) = ListAndConvertIds(args);
-        Console.WriteLine(ids.Count + separator);
         (int returnCode, string message) = Job.Controller.DeleteSaveJob.Execute(ids, separator);
 
         foreach (int id in ids)
@@ -236,8 +229,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             _configuration.SetSaveJobs(saveJobs);
         }
     }
-    
-    public ICommand EditSaveJobCommand { get; set; }
     
     private int _selectedTabIndex;
     public int SelectedTabIndex

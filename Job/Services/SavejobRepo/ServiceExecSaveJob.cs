@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Job.Config.i18n;
-using ExecSaveJob;
 using Job.Config;
+using Job.Services.ExecSaveJob;
 using Logger;
 
 namespace Job.Services;

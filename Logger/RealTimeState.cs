@@ -2,8 +2,8 @@
 using System.IO;
 using System;
 using System.Runtime.CompilerServices;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Logger
 {
@@ -143,7 +143,7 @@ namespace Logger
             json.RemainingData = remainingData.ToString();
             json.Advancement = $"{fileInfo.Length} 100%";
 
-            message = JsonConvert.SerializeObject(json);
+            message = JsonSerializer.Serialize(json);
 
             // Json deserializedProduct = JsonConvert.DeserializeObject<Json>(output);
             
@@ -214,7 +214,7 @@ namespace Logger
             json.RemainingData = remainingData.ToString();
             json.Advancement = advancement.ToString();
 
-            message = JsonConvert.SerializeObject(json);
+            message = JsonSerializer.Serialize(json);
 
             // Json deserializedProduct = JsonConvert.DeserializeObject<Json>(output);
             
@@ -247,7 +247,7 @@ namespace Logger
         public static object ReadState(string id)
         {
             string output = null;
-            Json deserializedProduct = JsonConvert.DeserializeObject<Json>(output);
+            Json deserializedProduct = JsonSerializer.Deserialize<Json>(output);
             
             
             
@@ -257,8 +257,16 @@ namespace Logger
         
         public class BackupFile
         {
+            [JsonPropertyName("BackupID")]
+            public int BackupID { get; set; }
+
+            [JsonPropertyName("Source")]
             public string Source { get; set; }
+
+            [JsonPropertyName("Destination")]
             public string Destination { get; set; }
+
+            [JsonPropertyName("Advancement")]
             public string Advancement { get; set; }
         }
         
@@ -270,17 +278,22 @@ namespace Logger
             if (File.Exists(filePath))
             {
                 string jsonData = File.ReadAllText(filePath);
-                var backupEntries = JsonConvert.DeserializeObject<List<JObject>>(jsonData);
-
+                var backupEntries = JsonSerializer.Deserialize<List<BackupFile>>(jsonData, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+                
+                if (backupEntries == null) return new List<BackupFile>();
+                
                 var filteredEntries = backupEntries
-                    .Where(entry => entry["BackupID"].Value<int>() == backupId)
+                    .Where(entry => entry.BackupID == backupId)
                     .ToList();
 
                 var backupFiles = filteredEntries.Select(entry => new BackupFile
                 {
-                    Source = entry["Source"].Value<string>(),
-                    Destination = entry["Destination"].Value<string>(),
-                    Advancement = entry["Advancement"].Value<string>()
+                    Source = entry.Source,
+                    Destination = entry.Destination,
+                    Advancement = entry.Advancement
                 }).ToList();
 
                 return backupFiles;
