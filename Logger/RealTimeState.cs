@@ -2,8 +2,10 @@
 using System.IO;
 using System;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
 
 namespace Logger
 {
@@ -20,6 +22,13 @@ namespace Logger
         public Counters(double dataCount, int fileCount, bool isActive)
         {
             Id = _nextId++;
+            DataCount = dataCount;
+            FileCount = fileCount;
+            IsActive = isActive;
+        }
+        public Counters(double dataCount, int fileCount, bool isActive, int iD)
+        {
+            Id = iD;
             DataCount = dataCount;
             FileCount = fileCount;
             IsActive = isActive;
@@ -102,14 +111,14 @@ namespace Logger
             }
         }
         
-        public static void WriteState(string saveJobName, Counters counter, FileInfo fileInfo, string destinationPathDir, string fileName, string msg, string id)
+        public static void WriteState(string saveJobName, Counters counter, FileInfo fileInfo, string destinationPath, string fileName, string msg, string id)
         {
             const string folderName = "EasySave";
 
             bool header = false;
 
-            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName, fileName);
-            var destinationPath = Path.Combine(destinationPathDir, fileInfo.Name);
+            // var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName, fileName);
+            // var destinationPath = Path.Combine(destinationPathDir, fileInfo.Name);
             counter.TransferedFileCount++;
             counter.TransferedData += fileInfo.Length;
 
@@ -142,6 +151,7 @@ namespace Logger
             json.RemainingFiles = remainingFile.ToString();
             json.RemainingData = remainingData.ToString();
             json.Advancement = $"{fileInfo.Length} 100%";
+            
 
             message = JsonConvert.SerializeObject(json);
 
@@ -195,14 +205,15 @@ namespace Logger
         
         
         
-        public static void WriteState(string saveJobName, Counters counter, FileInfo fileInfo, string destinationPathDir, string fileName, string msg, string id, double advancement)
+        public static void WriteState(string saveJobName, Counters counter, FileInfo fileInfo, string destinationPath, string fileName, string msg, string id, double advancement)
         {
             const string folderName = "EasySave";
 
             bool header = false;
 
-            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName, fileName);
-            var destinationPath = Path.Combine(destinationPathDir, fileInfo.Name);
+            
+            // var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName, fileName);
+            // var destinationPath = Path.Combine(destinationPathDir, fileInfo.Name);
             // counter.TransferedFileCount++;
             // counter.TransferedData += fileInfo.Length;
 
@@ -294,7 +305,7 @@ namespace Logger
                 {
                     var backupEntries = new List<JObject>();
                     string[] lines = File.ReadAllLines(filePath);
-
+                    
                     foreach (var line in lines)
                     {
                         if (!string.IsNullOrWhiteSpace(line))
@@ -337,21 +348,6 @@ namespace Logger
         
         
         
-        public static void ContinueSaveJob(int backupId)
-        {
-            List<BackupFile> backupFiles = GetFilesAdvancementByBackupId(backupId);
 
-            foreach (BackupFile backupFile in backupFiles)
-            {
-                string source = backupFile.Source;
-                string destination = backupFile.Destination;
-                string advancement = backupFile.Advancement;
-                // FileInfo fileInfo = new FileInfo(source);
-                // Counters counter = new Counters(1, 1, true);
-                // counter.FileCount = 1;
-                // counter.DataCount = fileInfo.Length;
-                // WriteState("ContinueSaveJob", counter, fileInfo, destination, "statefile.log", "Continue Save Job", backupId.ToString(), double.Parse(advancement));
-            }
-        }
     }
 }

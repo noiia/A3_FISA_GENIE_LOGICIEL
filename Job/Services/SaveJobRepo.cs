@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 using Job.Config;
+using Job.Controller;
 
 namespace Job.Services;
 
@@ -50,4 +51,20 @@ public class SaveJobRepo
         var value = _pool.QueueTask(async () => { return ServiceDeleteSaveJob.Run(_configuration, id, name); });
         return (value.Result.Item1, value.Result.Item2);
     }
+    
+    // public static (int,string) ResumeSaveJob(int id)
+    // {
+        // var value = _pool.QueueTask(async () => { return ServiceResumeSaveJob.Run(_configuration, id); });
+        // return (value.Result.Item1, value.Result.Item2);
+    // }
+    
+    public static (int,string) ResumeSaveJob(int id)
+    {
+        // ServiceResumeSaveJob.GetFilesForResume(_configuration, id);
+        var value = _pool.QueueTask(async () => { return ServiceResumeSaveJob.Run(_configuration, id); });
+        return (value.Result.Item1, value.Result.Item2);
+        return (0,"");
+    }
+
+    
 }

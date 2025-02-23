@@ -26,7 +26,7 @@ public class Infos
     public string SaveJobName { get; set; }
     public string StateFileName { get; set; }
 
-    public string SavesDir { get; set; }
+    public string SaveDir { get; set; }
 
     public FileInfo FileInfo { get; set; }
 
@@ -224,7 +224,7 @@ public abstract class Backup
                 // Calculate progress
                 double progress = (double)totalBytesCopied / fileSize * 100;
                 Console.WriteLine($"Progress: {progress:F2}%");
-                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, infos.SavesDir, infos.StateFileName, "", infos.ID, totalBytesCopied);                
+                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, destinationFilePath, infos.StateFileName, "", infos.ID, totalBytesCopied);                
             }
         }
     }
@@ -245,7 +245,7 @@ public abstract class Backup
             
             //#TODO add offset on the first iteration
  
-            while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
+            while ((bytesRead = sourceStream.Read(buffer, offset, bufferSize)) > 0)
             {
                 destinationStream.Write(buffer, 0, bytesRead);
                 totalBytesCopied += bytesRead;
@@ -253,13 +253,13 @@ public abstract class Backup
                 // Calculate progress
                 double progress = (double)totalBytesCopied / fileSize * 100;
                 Console.WriteLine($"Progress: {progress:F2}%");
-                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, infos.SavesDir, infos.StateFileName, "", infos.ID, totalBytesCopied);                
+                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, destinationFilePath, infos.StateFileName, "", infos.ID, totalBytesCopied);                
             }
         }
     }
     
     
-    protected virtual List<string> GetFiles(string rootDir, List<string> files)
+    public virtual List<string> GetFiles(string rootDir, List<string> files)
     {
         string stateFileName = "statefile.log";
         
@@ -315,7 +315,7 @@ public abstract class Backup
         infos.SaveJobName = this.SaveJob.Name;
         infos.Counters = counters;
         // Infos.FileInfo = new FileInfo(file);
-        infos.SavesDir = SavesDir;
+        infos.SaveDir = SaveDir;
         infos.StateFileName = stateFileName;
         infos.ID = this.ID;
         
@@ -326,7 +326,7 @@ public abstract class Backup
             RealTimeState.AddCounter(counters);
             
             CopyPasteFile(file, file.Replace(RootDir, SaveDir), infos);
-            RealTimeState.WriteState(this.SaveJob.Name, counters, new FileInfo(file), SavesDir, stateFileName, "", this.ID);
+            RealTimeState.WriteState(this.SaveJob.Name, counters, new FileInfo(file), file.Replace(RootDir, SaveDir), stateFileName, "", this.ID);
             turnArchiveBitFalse(file);
         }
         
