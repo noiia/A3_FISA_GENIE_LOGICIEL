@@ -230,7 +230,7 @@ public abstract class Backup
     }
     
     
-    static void CopyFileWithProgress(string sourceFilePath, string destinationFilePath, Infos infos, int offset)
+    public static void CopyFileWithProgress(string sourceFilePath, string destinationFilePath, Infos infos, int offset)
     {
         const int bufferSize = 2 * 1048576; // 2 MB buffer size, you can adjust it as per your requirement
         // const int bufferSize = 1024;

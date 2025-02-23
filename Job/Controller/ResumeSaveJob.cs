@@ -11,7 +11,7 @@ public class ResumeSaveJob
 {
     public static (int, string) Execute(int id)
     {
-        SaveJobRepo.ResumeSaveJob(id);
-        return (0, "");
+        return SaveJobRepo.ResumeSaveJob(id);
+        // return (0, "");
     }
 }

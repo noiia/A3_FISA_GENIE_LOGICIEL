@@ -1,4 +1,5 @@
 ﻿using Config;
+using DynamicData.Kernel;
 using Job.Config;
 using Logger;
 using Newtonsoft.Json;
@@ -10,10 +11,26 @@ public class ResumeBackup : Backup
 {
     private static CompleteBackup instance;
 
-    private string BackupId;
+    // private string BackupId;
+    public ResumeBackup(SaveJob saveJob) : base(saveJob)
+    {
 
-    public ResumeBackup(SaveJob saveJob) : base(saveJob) {}
+        if (Directory.Exists(saveJob.Source))
+        {
+            this.SaveJob = saveJob;
+            this.RootDir = saveJob.Source;
+            this.SavesDir = saveJob.Destination;
+            this.setSaveDir();
+        }
+        else
+        {
+            Console.WriteLine($"{saveJob.Source} doesn't exist");
+        }
 
+    
+    }
+    
+    private static string SaveId;
     public static Counters ResumeCounter { get; private set; }
     
     public static (List<string> filesToSave, List<(string, int)> filesToResume)? GetFilesForResume(Configuration configuration ,int backupId)
@@ -120,6 +137,17 @@ public class ResumeBackup : Backup
                 
                 JObject lastsave = backupEntries.Last();
                 ResumeCounter = new Counters(lastsave.Value<double>("DataCount"), lastsave.Value<int>("FileCount"), true, backupId);
+                
+                Job.Config.SaveJob correspondingSaveJob = configuration.GetSaveJob(lastsave.Value<string>("Name"));
+                string basePath = correspondingSaveJob.Destination;
+                string fullPath = lastsave.Value<string>("Destination");
+                
+                string remainingPath = fullPath.Replace(basePath, string.Empty);
+
+                string[] pathParts = remainingPath.Split('\\');
+
+                SaveId = pathParts[1];
+                
             }
             catch (Exception ex)
             {
@@ -149,11 +177,45 @@ public class ResumeBackup : Backup
         infos.SaveDir = SaveDir;
         infos.StateFileName = "statefile.log";
         infos.ID = backupId.ToString();
+        
+        string exemplefile = filesToSave[0] ?? filesToResume.First().Item1 ;
+        // string SaveID = SaveId;
+        string suffix = exemplefile.Replace(SaveJob.Source, string.Empty);
+        string SourcePrefix = exemplefile.Replace(suffix, string.Empty);
+
+
         foreach (string file in filesToSave)
         {
-            infos.FileInfo = new FileInfo(file);
-            CopyPasteFile(file, file.Replace(SaveJob.Source, SaveJob.Destination), infos);
+            if (filesToResume.Select(x => x.Item1).Contains(file))
+            {
+                int saveIDLength = SaveId.Length;
+                // string source = SaveJob.Source + "\\" + file.Replace(SourcePrefix, string.Empty).Substring(4+saveIDLength); 
+                string source = Path.Combine(SaveJob.Source, file.Replace(SourcePrefix, string.Empty));
+                string relativePath = file.Replace(SourcePrefix, string.Empty).TrimStart('\\');
+                string Destination = Path.Combine(SaveJob.Destination, SaveId, relativePath);
+                // Console.WriteLine($"copy {file} to {Path.Combine(SaveJob.Destination, SaveId, file.Replace(SourcePrefix, string.Empty))}");
+                infos.FileInfo = new FileInfo(file);
+                // Console.WriteLine($"copy {file} to {SaveJob.Destination}\\{SaveID}\\{}");
+                CopyFileWithProgress(file, Destination, infos, filesToResume.Find(x => x.Item1 == file).Item2);
+                RealTimeState.WriteState(this.SaveJob.Name, ResumeCounter, new FileInfo(file), file.Replace(RootDir, SaveDir), infos.StateFileName, "", this.ID);
+            }
+            else
+            {
+                int saveIDLength = SaveId.Length;
+                // string source = SaveJob.Source + "\\" + file.Replace(SourcePrefix, string.Empty).Substring(4+saveIDLength); 
+                string source = Path.Combine(SaveJob.Source, file.Replace(SourcePrefix, string.Empty));
+                string relativePath = file.Replace(SourcePrefix, string.Empty).TrimStart('\\');
+                string Destination = Path.Combine(SaveJob.Destination, SaveId, relativePath);
+                // Console.WriteLine($"copy {file} to {Path.Combine(SaveJob.Destination, SaveId, file.Replace(SourcePrefix, string.Empty))}");
+                infos.FileInfo = new FileInfo(file);
+                // Console.WriteLine($"copy {file} to {SaveJob.Destination}\\{SaveID}\\{}");
+                CopyPasteFile(file, Destination, infos);
+                RealTimeState.WriteState(this.SaveJob.Name, ResumeCounter, new FileInfo(file), file.Replace(RootDir, SaveDir), infos.StateFileName, "", this.ID);
+            }
+            
+
         }
+
     }
 
 
