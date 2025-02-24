@@ -11,6 +11,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Notification;
@@ -19,6 +20,7 @@ using Config;
 using DynamicData;
 using Job.Config;
 using Job.Config.i18n;
+using Job.Controller;
 using Job.Services;
 
 namespace AvaloniaApplication.ViewModels;
@@ -41,7 +43,17 @@ public class TableDataModel : ReactiveObject
     public required string DestPath { get; set; }
     public required DateTime LastExec { get; set; }
     public required DateTime CreatDate { get; set; }
-    public required string Status { get; set; }
+    
+    private string _status;
+    public string Status
+    {
+        get => _status;
+        set
+        {
+            _status = value;
+            OnPropertyChanged(nameof(Status));
+        }  
+    }
     public required string Type { get; set; }
     public required ICommand ExeSaveJob { get; set; }
     public required ICommand DelSaveJob { get; set; }
@@ -115,17 +127,15 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         }
     }
 
-    public void ExecuteListSaveJob()
+    public async Task ExecuteListSaveJob()
     {
-        List<int> ids = new List<int>();
-        ids.AddRange(TableData.Where(item => item.Checked).Select(item => item.Id));
-        ExecuteSaveJob(ids);
+        List<int> ids = TableData.Where(item => item.Checked).Select(item => item.Id).ToList();
+        await ExecuteSaveJob(ids);
     }
     
     public void DeleteListSaveJob()
     {
-        List<int> ids = new List<int>();
-        ids.AddRange(TableData.Where(item => item.Checked).Select(item => item.Id));
+        List<int> ids = TableData.Where(item => item.Checked).Select(item => item.Id).ToList();
         DeleteSaveJob(ids);
     }
 
@@ -162,14 +172,16 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         return (ids, separator);
     }
     
-    private void ExecuteSaveJob(object? args)
+    private async Task ExecuteSaveJob(object? args)
     {
         (List<int> ids, string separator) = ListAndConvertIds(args);
-        (int returnCode, string message, Dictionary<int, DateTime> taskEndDates) = Job.Controller.ExecuteSaveJob.Execute(ids, separator);
+        UpdateStatus(ids,RUNNING);
+        ExecutionTracker executionTracker = new ExecutionTracker();
+        executionTracker.OnTrackerChanged += UpdateLastExecDate;
         
-        UpdateLastExecDate(ids, taskEndDates);
+        var (returnCode, message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker);
         
-        NotificationMessageManagerSingleton.GenerateNotification(this.Manager, returnCode, message);
+        NotificationMessageManagerSingleton.GenerateNotification(Manager, returnCode, message);
     }
     
     private void DeleteSaveJob(object? args)
@@ -215,27 +227,67 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             SaveJob[] saveJobs = new SaveJob[]{};
             foreach (var item in TableData)
             {
-                SaveJob sj = new SaveJob(item.Id, item.Name, item.SrcPath, item.DestPath, item.LastExec, item.CreatDate, item.Type);
+                SaveJob sj = new SaveJob(item.Id, item.Name, item.SrcPath, item.DestPath, item.LastExec, item.CreatDate, item.Status, item.Type);
                 saveJobs = saveJobs.Append(sj).ToArray();
             }
             _configuration.SetSaveJobs(saveJobs);
         }
     }
-
-    public void UpdateLastExecDate(List<int> ids, Dictionary<int, DateTime> taskEndDates)
+    
+    public void UpdateLastExecDate(object sender, TrackerChangedEventArgs eventArgs)
     {
         try
         {
             List<SaveJob> saveJobs = _configuration.GetSaveJobs().ToList();
-            foreach (int id in ids)
+            
+            SaveJob sj = saveJobs.FirstOrDefault(i => i.Id == eventArgs.Id);
+            if (sj != null)
             {
-                SaveJob sj = saveJobs.FirstOrDefault(i => i.Id == id)!;
-                saveJobs.Remove(sj);
-                sj.LastSave = taskEndDates[id];
-                saveJobs.Add(sj);
+                saveJobs.Remove(sj); 
+                sj.LastSave = eventArgs.Timestamp;
+                switch (eventArgs.ReturnCode)
+                {
+                    case 1 :
+                    {
+                        sj.Status = STOP;
+                        break;
+                    }
+                }
+                
+                saveJobs.Add(sj);   
             }
             _configuration.SetSaveJobs(saveJobs.ToArray());
-            LoadSaveJob();
+            LoadSaveJob();   
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private const string STOP = "STOP";
+    private const string PAUSE = "PAUSE";
+    private const string RUNNING = "RUNNING";
+    public string Status;
+    public void UpdateStatus(List<int> ids, string status)
+    {
+        try
+        {
+            foreach (var id in ids)
+            {
+                List<SaveJob> saveJobs = _configuration.GetSaveJobs().ToList();
+            
+                SaveJob sj = saveJobs.FirstOrDefault(i => i.Id == id);
+                if (sj != null)
+                {
+                    saveJobs.Remove(sj);
+                    sj.Status = status;
+                    saveJobs.Add(sj);   
+                }
+                _configuration.SetSaveJobs(saveJobs.ToArray());
+                LoadSaveJob();     
+            }
         }
         catch (Exception e)
         {
@@ -264,8 +316,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             }
         }
     }
-    
-
     public void LoadSaveJob()
     {
         TableData = new ObservableCollection<TableDataModel>();
@@ -280,9 +330,9 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
                 DestPath = saveJob.Destination,
                 LastExec = saveJob.LastSave, 
                 CreatDate = saveJob.Created, 
-                Status = "en cours", 
+                Status = saveJob.Status, 
                 Type = saveJob.Type,
-                ExeSaveJob = new RelayCommand<object>(ExecuteSaveJob),
+                ExeSaveJob = new AsyncRelayCommand<object>(ExecuteSaveJob),
                 DelSaveJob = new RelayCommand<object>(DeleteSaveJob),
             });
         }

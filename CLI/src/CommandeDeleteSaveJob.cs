@@ -15,7 +15,7 @@ namespace CLI;
     {
         public CommandDeleteSaveJob() : base("delete-SaveJob", new string[] { "delete-save-job", "delete-save-jobs", "delete-jobs", "delete-savejobs", "delete-job", "delete-savejob" }) { }
 
-        public override void Action(string[] args)
+        public override Task Action(string[] args)
         {
             string content = args[0];
         
@@ -34,7 +34,7 @@ namespace CLI;
             (int returnCode, string message) = Job.Controller.DeleteSaveJob.Execute(ids, separator);
             
             Console.WriteLine(message);
-
             
+            return Task.CompletedTask;
         }
     }

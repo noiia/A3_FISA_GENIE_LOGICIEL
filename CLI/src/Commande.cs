@@ -47,7 +47,7 @@ namespace CLI
             }
         }
 
-        public virtual void Action(string[] args)
+        public virtual Task Action(string[] args)
         {
             throw new NotImplementedException();
         }
