@@ -248,6 +248,34 @@ namespace AvaloniaApplication.ViewModels
                 }
             }
         }
+        
+        private ObservableCollection<string> _fileExtension;
+        public ObservableCollection<string>? FileExtension
+        {
+            get => _fileExtension;
+            set
+            {
+                if (_fileExtension != value)
+                {
+                    _fileExtension = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        
+        private string _newFileExtension;
+        public string NewFileExtension
+        {
+            get => _newFileExtension;
+            set
+            {
+                if (_newFileExtension != value)
+                {
+                    _newFileExtension = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -290,17 +318,24 @@ namespace AvaloniaApplication.ViewModels
             {
                 if (!string.IsNullOrEmpty(NewFileTypeToEncrypt))
                 {
-                    FileTypesToEncrypt.Add(NewFileTypeToEncrypt);
-                    config.AddCryptExtension(NewFileTypeToEncrypt);
-                    NewFileTypeToEncrypt = string.Empty;
-                    Manager.CreateMessage()
-                        .Accent(NotifColors.green)
-                        .Animates(true)
-                        .Background("#333")
-                        .HasBadge("Info")
-                        .HasMessage("Le type de fichier à chiffrer a été ajouté.")
-                        .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
-                        .Queue();
+                    if (FileTypesToEncrypt.All(fileEncrypt => fileEncrypt != NewFileTypeToEncrypt))
+                    {
+                        FileTypesToEncrypt.Add(NewFileTypeToEncrypt);
+                        config.AddCryptExtension(NewFileTypeToEncrypt);
+                        NewFileTypeToEncrypt = string.Empty;
+                        Manager.CreateMessage()
+                            .Accent(NotifColors.green)
+                            .Animates(true)
+                            .Background("#333")
+                            .HasBadge("Info")
+                            .HasMessage("Le type de fichier à chiffrer a été ajouté.")
+                            .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+                            .Queue();
+                    }
+                    else
+                    {
+                        NotificationMessageManagerSingleton.GenerateNotification(Manager, 2, $"{Translation.Translator.GetString("EncryptFileExists")}");
+                    }
                 }
             }
             catch (Exception ex)
@@ -343,17 +378,24 @@ namespace AvaloniaApplication.ViewModels
             {
                 if (!string.IsNullOrEmpty(NewBusinessApp))
                 {
-                    BusinessApp.Add(NewBusinessApp);
-                    config.AddBuisnessApp(NewBusinessApp);
-                    NewBusinessApp = string.Empty;
-                    Manager.CreateMessage()
-                        .Accent(NotifColors.green)
-                        .Animates(true)
-                        .Background("#333")
-                        .HasBadge("Info")
-                        .HasMessage("L'application métier a été ajoutée.")
-                        .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
-                        .Queue();
+                    if (BusinessApp.All(busiApp => busiApp != NewBusinessApp))
+                    {
+                        BusinessApp.Add(NewBusinessApp);
+                        config.AddBuisnessApp(NewBusinessApp);
+                        NewBusinessApp = string.Empty;
+                        Manager.CreateMessage()
+                            .Accent(NotifColors.green)
+                            .Animates(true)
+                            .Background("#333")
+                            .HasBadge("Info")
+                            .HasMessage("L'application métier a été ajoutée.")
+                            .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+                            .Queue();
+                    }
+                    else
+                    {
+                        NotificationMessageManagerSingleton.GenerateNotification(Manager, 2, $"{Translation.Translator.GetString("BusinessAppExists")}");
+                    }
                 }
                 else
                 {
@@ -446,6 +488,74 @@ namespace AvaloniaApplication.ViewModels
                 .HasMessage(message)
                 .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
                 .Queue();
+        }
+        
+        public void AddFileExtension()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(NewFileExtension))
+                {
+                    FileExtension = FileExtension is null ? new ObservableCollection<string>() : FileExtension;
+                    NewFileExtension = NewFileExtension[0] == '.' ? NewFileExtension : $".{NewFileExtension}";
+                    if (FileExtension.All(fileExt => fileExt != NewFileExtension))
+                    {
+                        FileExtension.Add(NewFileExtension);
+                        config.AddFileExtension(NewFileExtension);
+                        NewFileExtension = string.Empty;
+                        Manager.CreateMessage()
+                            .Accent(NotifColors.green)
+                            .Animates(true)
+                            .Background("#333")
+                            .HasBadge("Info")
+                            .HasMessage($"{Translation.Translator.GetString("AddFileExtension")}")
+                            .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+                            .Queue();   
+                    }
+                    else
+                    {
+                        NotificationMessageManagerSingleton.GenerateNotification(Manager, 2, $"{Translation.Translator.GetString("FileExtensionExists")}");
+                    }
+                }
+                else
+                {
+                    ShowErrorNotification("Field is empty");
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorNotification(ex.Message);
+            }
+        }
+
+        public void RemoveFileExtension(string businessApp)
+        {
+            try
+            {
+                FileExtension = _fileExtension;
+                if (FileExtension.Contains(businessApp))
+                {
+                    FileExtension.Remove(businessApp);
+                    config.RemoveFileExtension(businessApp);
+                    Manager.CreateMessage()
+                        .Accent(NotifColors.green)
+                        .Animates(true)
+                        .Background("#333")
+                        .HasBadge("Info")
+                        .HasMessage($"{Translation.Translator.GetString("DelFileExtension")}")
+                        .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+                        .Queue();
+                    OnPropertyChanged();
+                }
+                else
+                {
+                    ShowErrorNotification("Application dosent exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorNotification(ex.Message);
+            }
         }
     }
 }

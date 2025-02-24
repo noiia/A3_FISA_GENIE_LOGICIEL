@@ -12,8 +12,9 @@ namespace Config
         private string _logType; //json || xml
         private string[]? _cryptExtension;
         private string[]? _buisnessApp;
+        private string[]? _fileExtension;
 
-        public ConfigFile(SaveJob[] saveJobs, string logPath, string cryptoKey, string language, string logType, string[] cryptExtension, string[] buisnessApp)
+        public ConfigFile(SaveJob[] saveJobs, string logPath, string cryptoKey, string language, string logType, string[] cryptExtension, string[] buisnessApp, string[] fileExtension)
         {
             _saveJobs = saveJobs;
             _logPath = logPath;
@@ -29,6 +30,11 @@ namespace Config
             if (_buisnessApp == null)
             {
                 _buisnessApp = new string[0];
+            } 
+            _fileExtension = fileExtension;
+            if (_fileExtension == null)
+            {
+                _fileExtension = new string[0];
             }
         }
 
@@ -72,6 +78,11 @@ namespace Config
         {
             get => _cryptoKey;
             set => _cryptoKey = value ?? throw new ArgumentNullException(nameof(value));
+        }
+        public string[] FileExtension
+        {
+            get => _fileExtension;
+            set => _fileExtension = value ?? throw new ArgumentNullException(nameof(value));
         }
     }
 }

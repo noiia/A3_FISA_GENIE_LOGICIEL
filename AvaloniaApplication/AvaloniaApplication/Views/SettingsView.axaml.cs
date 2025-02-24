@@ -87,6 +87,26 @@ namespace AvaloniaApplication.Views
                 viewModel.CryptKey = viewModel.CryptKey; // Force the update
             }
         }
+        
+        private void OnAddFileExtensionButtonClicked(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is SettingsViewModel viewModel)
+            {
+                viewModel.AddFileExtension();
+            }
+        }
+
+        private void OnRemoveFileExtensionButtonClicked(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is SettingsViewModel viewModel && this.FindControl<ListBox>("FileExtensionListBox") is ListBox listBox)
+            {
+                if (listBox.SelectedItem is string selectedFileType)
+                {
+                    viewModel.RemoveFileExtension(selectedFileType);
+                }
+            }
+        }
+
 
     }
 }
