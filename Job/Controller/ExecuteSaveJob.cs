@@ -8,46 +8,6 @@ using Logger;
 
 namespace Job.Controller;
 
-
-public class ExecutionTracker
-{
-    public event EventHandler<TrackerChangedEventArgs> OnTrackerChanged;
-
-    private Dictionary<int, Dictionary<DateTime, int>> _endGetter = new();
-
-    public Dictionary<int, Dictionary<DateTime, int>> EndGetter
-    {
-        get => _endGetter;
-        private set => _endGetter = value;
-    }
-
-    public void AddOrUpdateExecution(int id, DateTime timestamp, int returnCode)
-    {
-        if (!_endGetter.ContainsKey(id))
-        {
-            _endGetter[id] = new Dictionary<DateTime, int>();
-        }
-
-        _endGetter[id][timestamp] = returnCode;
-
-        OnTrackerChanged?.Invoke(this, new TrackerChangedEventArgs(id, timestamp, returnCode));
-    }
-}
-
-public class TrackerChangedEventArgs : EventArgs
-{
-    public int Id { get; }
-    public DateTime Timestamp { get; }
-    public int ReturnCode { get; }
-
-    public TrackerChangedEventArgs(int id, DateTime timestamp, int returnCode)
-    {
-        Id = id;
-        Timestamp = timestamp;
-        ReturnCode = returnCode;
-    }
-}
-
 public class ExecuteSaveJob
 {
     private static Configuration _configuration;
@@ -71,10 +31,21 @@ public class ExecuteSaveJob
                 {
                     (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(id);
                     tracker.AddOrUpdateExecution(id, DateTime.Now, returnCode);
-                    if (returnCode is 2)
+                    switch (returnCode)
                     {
-                        return (returnCode, message + listId);
-                    } 
+                        case 2:
+                        {
+                            return (returnCode, message + string.Join(", ", listId));
+                        }
+                        case 3:
+                        {
+                            return (returnCode, message + string.Join(", ", listId));
+                        }
+                        case 4:
+                        {
+                            return (returnCode, message);
+                        }
+                    }
                     listId += $"{id}, ";
                 }
                 return (1, $"{Translation.Translator.GetString("SjExecSuccesfully")} {listId}");
@@ -84,9 +55,20 @@ public class ExecuteSaveJob
                 {
                     (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(i);
                     tracker.AddOrUpdateExecution(i, DateTime.Now, returnCode);
-                    if (returnCode is 2)
+                    switch (returnCode)
                     {
-                        return (returnCode, message);
+                        case 2:
+                        {
+                            return (returnCode, $"{message} {ids[0]} - {ids[1]}");
+                        }
+                        case 3:
+                        {
+                            return (returnCode, $"{message} {ids[0]} - {ids[1]}");
+                        }
+                        case 4:
+                        {
+                            return (returnCode, message);
+                        }
                     }
                 }
                 return (1, $"{Translation.Translator.GetString("SjExecSuccesfully")} : {ids[0]} - {ids[1]}");
@@ -94,9 +76,20 @@ public class ExecuteSaveJob
             case "":
                 (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(ids[0]);
                 tracker.AddOrUpdateExecution(ids[0], DateTime.Now, returnCode);
-                if (returnCode is 2)
+                switch (returnCode)
                 {
-                    return (returnCode, message);
+                    case 2:
+                    {
+                        return (returnCode, $"{message} {ids[0]}");
+                    }
+                    case 3:
+                    {
+                        return (returnCode, $"{message} {ids[0]}");
+                    }
+                    case 4:
+                    {
+                        return (returnCode, message);
+                    }
                 }
                 return (1, $"{message}");
             

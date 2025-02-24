@@ -132,6 +132,15 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Business app running, execution locked.
+        /// </summary>
+        internal static string BusinessAppLock {
+            get {
+                return ResourceManager.GetString("BusinessAppLock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to is call with args : .
         /// </summary>
         internal static string CallWithArgs {

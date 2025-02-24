@@ -180,7 +180,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         executionTracker.OnTrackerChanged += UpdateLastExecDate;
         
         var (returnCode, message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker);
-        
+        Console.WriteLine(returnCode + " " + message);
         NotificationMessageManagerSingleton.GenerateNotification(Manager, returnCode, message);
     }
     
@@ -252,6 +252,21 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
                         sj.Status = STOP;
                         break;
                     }
+                    case 2 :
+                    {
+                        sj.Status = WARNING;
+                        break;
+                    }
+                    case 3 :
+                    {
+                        sj.Status = ERROR;
+                        break;
+                    }
+                    case 4 :
+                    {
+                        sj.Status = LOCK;
+                        break;
+                    }
                 }
                 
                 saveJobs.Add(sj);   
@@ -267,6 +282,9 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     }
 
     private const string STOP = "STOP";
+    private const string WARNING = "WARNING";
+    private const string ERROR = "ERROR";
+    private const string LOCK = "LOCK";
     private const string PAUSE = "PAUSE";
     private const string RUNNING = "RUNNING";
     public string Status;

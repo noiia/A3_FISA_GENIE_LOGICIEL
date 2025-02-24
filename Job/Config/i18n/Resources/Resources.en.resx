@@ -219,4 +219,7 @@
     <data name="Edit" xml:space="preserve">
         <value>Edit</value>
     </data>
+    <data name="BusinessAppLock" xml:space="preserve">
+        <value>Business app running, execution locked</value>
+    </data>
 </root>
