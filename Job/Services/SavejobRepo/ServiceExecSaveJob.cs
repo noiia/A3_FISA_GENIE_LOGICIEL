@@ -8,9 +8,11 @@ namespace Job.Services;
 
 public class ServiceExecSaveJob
 {
+    private static Configuration _configuration;
     public static (int, string) Run(Configuration configuration, int? id, string? name)
     {
         SaveJob? saveJob = null;
+        _configuration = ConfigSingleton.Instance();
         if (id is not null ^ name is not "")
         {
             if (id is not null)
@@ -22,7 +24,7 @@ public class ServiceExecSaveJob
                 saveJob = configuration.GetSaveJob(name ?? string.Empty);
             }
 
-            LoggerUtility.WriteLog(LoggerUtility.Info, $"Saving : id: {id.ToString()} name : {saveJob.Name} from ({saveJob.Source}) to ({saveJob.Destination})");
+            LoggerUtility.WriteLog(_configuration.GetLogType(),LoggerUtility.Info, $"Saving : id: {id.ToString()} name : {saveJob.Name} from ({saveJob.Source}) to ({saveJob.Destination})");
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -42,14 +44,14 @@ public class ServiceExecSaveJob
             
             stopwatch.Stop();
             
-            LoggerUtility.WriteLog(LoggerUtility.Info, $"The savejob took {stopwatch.ElapsedMilliseconds} ms");
-            LoggerUtility.WriteLog(LoggerUtility.Info, $"Save : id: {id.ToString()}, name : {saveJob.Name} from ({saveJob.Source}) to ({saveJob.Destination}) is save");
+            LoggerUtility.WriteLog(_configuration.GetLogType(),LoggerUtility.Info, $"The savejob took {stopwatch.ElapsedMilliseconds} ms");
+            LoggerUtility.WriteLog(_configuration.GetLogType(),LoggerUtility.Info, $"Save : id: {id.ToString()}, name : {saveJob.Name} from ({saveJob.Source}) to ({saveJob.Destination}) is save");
             return (1, $"{Translation.Translator.GetString("SjExecSuccesfully") ?? String.Empty} - ID : {id.ToString()}");
         }
         else
         {
             string returnSentence = $"{Translation.Translator.GetString("BadArgsGiven") ?? String.Empty} - ID : {id.ToString()}";
-            LoggerUtility.WriteLog(LoggerUtility.Warning, returnSentence);
+            LoggerUtility.WriteLog(_configuration.GetLogType(),LoggerUtility.Warning, returnSentence);
             return (2, returnSentence);
         }
     }

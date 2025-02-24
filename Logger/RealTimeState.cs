@@ -65,7 +65,7 @@ namespace Logger
         {
             using (File.Create(filePath))
             {
-                LoggerUtility.WriteLog(LoggerUtility.Info, $"Real time state file created at : {filePath}");
+                LoggerUtility.WriteLog(LoggerUtility.JSON,LoggerUtility.Info, $"Real time state file created at : {filePath}");
             }
         }
 
@@ -85,7 +85,7 @@ namespace Logger
             }
             catch (Exception exception)
             {
-                LoggerUtility.WriteLog(LoggerUtility.Error, exception.Message);
+                LoggerUtility.WriteLog(LoggerUtility.JSON,LoggerUtility.Error, exception.Message);
                 switch (exception.GetType().Name)
                 {
                     case nameof(UnauthorizedAccessException):
@@ -157,7 +157,7 @@ namespace Logger
             }
             catch (Exception exception)
             {
-                LoggerUtility.WriteLog(LoggerUtility.Error, exception.Message);
+                LoggerUtility.WriteLog(LoggerUtility.JSON,LoggerUtility.Error, exception.Message);
                 switch (exception.GetType().Name)
                 {
                     case nameof(UnauthorizedAccessException):
@@ -247,7 +247,7 @@ namespace Logger
             }
             catch (Exception exception)
             {
-                LoggerUtility.WriteLog(LoggerUtility.Error, exception.Message);
+                LoggerUtility.WriteLog(LoggerUtility.JSON,LoggerUtility.Error, exception.Message);
                 switch (exception.GetType().Name)
                 {
                     case nameof(UnauthorizedAccessException):

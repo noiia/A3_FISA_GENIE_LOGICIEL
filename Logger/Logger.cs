@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.Json;
+using System.Xml.Serialization;
 
 namespace Logger;
     public class LogStructure
@@ -24,19 +25,23 @@ namespace Logger;
         public const string Warning = "WARNING";
         public const string Info = "INFO";
         public const string Debug = "DEBUG";
+        
+        public const string JSON = "json";
+        public const string XML = "xml";
 
         /// <summary>
         ///     Write your log in a file using JSON data format.
         /// </summary>
+        /// <param name="logFileType"></param>
         /// <param name="type">Add the type of log. (ex: INFO, WARNING, ERROR, DEBUG)</param>
         /// <param name="msg">Add you custom message to the log.</param>
-        public static void WriteLog(string type, string msg)
+        public static void WriteLog(string logFileType, string type, string msg)
         {
             const string folderName = "EasySave";
             var message = new LogStructure { CreateDate = DateTime.Now, LogType = type, Message = msg };
-            var fileName = "log_" + DateTime.Now.Date.ToString("dd-MM-yyyy") + ".log";
+            var fileName = "log_" + DateTime.Now.Date.ToString("dd_MM_yyyy") + "."+logFileType;
                 
-            var filePath = Path.Combine(LogPath, fileName);
+            var filePath = Path.Combine(LogPath,folderName, fileName);
 
             Directory.CreateDirectory(LogPath);
 
@@ -47,9 +52,33 @@ namespace Logger;
                     Console.WriteLine("Log file created at : " + filePath);
                 }
 
-            using (var writer = File.AppendText(filePath))
+            try
             {
-                writer.WriteLine(JsonSerializer.Serialize(message));
+                switch (logFileType)
+                {
+                    case "json":
+                    {
+                        using (var writer = File.AppendText(filePath))
+                        {
+                            writer.WriteLine(JsonSerializer.Serialize(message));
+                            break;
+                        }
+                    }
+                    case "xml":
+                    {
+                        XmlSerializer serializer = new XmlSerializer(typeof(LogStructure));
+                        using (StreamWriter writer = new StreamWriter(filePath, true))
+                        {
+                            serializer.Serialize(writer, message);
+                        }
+                        break;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
     }
