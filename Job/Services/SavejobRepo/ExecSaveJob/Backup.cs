@@ -205,8 +205,8 @@ public abstract class Backup
     //from internet #TODO see if static is necessary and causes no problem to multi thread
     static void CopyFileWithProgress(string sourceFilePath, string destinationFilePath, Infos infos)
     {
-        const int bufferSize = 2 * 1048576; // 2 MB buffer size, you can adjust it as per your requirement
-        // const int bufferSize = 1024;
+        // const int bufferSize = 2 * 1048576; // 2 MB buffer size, you can adjust it as per your requirement
+        const int bufferSize = 1024;
         // const int bufferSize = 1;
         
         using (var sourceStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
@@ -220,6 +220,7 @@ public abstract class Backup
             while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
             {
                 destinationStream.Write(buffer, 0, bytesRead);
+                destinationStream.Flush();
                 totalBytesCopied += bytesRead;
  
                 // Calculate progress
@@ -282,6 +283,7 @@ public abstract class Backup
             while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
             {
                 destinationStream.Write(buffer, 0, bytesRead);
+                destinationStream.Flush();
                 totalBytesCopied += bytesRead;
 
                 // Calculer la progression

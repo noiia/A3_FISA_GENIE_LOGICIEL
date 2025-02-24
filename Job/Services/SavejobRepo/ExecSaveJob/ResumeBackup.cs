@@ -137,7 +137,9 @@ public class ResumeBackup : Backup
                 // return new List<Logger.RealTimeState.BackupFile>(filesToResume);
                 
                 JObject lastsave = backupEntries.Last();
-                ResumeCounter = new Counters(lastsave.Value<double>("DataCount"), lastsave.Value<int>("FileCount"), true, backupId);
+                // ResumeCounter = new Counters(lastsave.Value<double>("RemainingData"), lastsave.Value<int>("RemainingFiles"), true, backupId);
+                ResumeCounter = new Counters(lastsave.Value<double>("RemainingData") + lastsave.Value<double>("Advancement"), lastsave.Value<int>("RemainingFiles"), true, backupId);
+                // ResumeCounter.TransferedFileCount = lastsave.
                 
                 Job.Config.SaveJob correspondingSaveJob = configuration.GetSaveJob(lastsave.Value<string>("Name"));
                 string basePath = correspondingSaveJob.Destination;
@@ -166,7 +168,7 @@ public class ResumeBackup : Backup
     {
         (List<string> filesToSave, List<Logger.RealTimeState.BackupFile> filesToResume) = GetFilesForResume(configuration, backupId) ??
                                                                         (new List<string>(), new List<Logger.RealTimeState.BackupFile>());
-
+        
         Infos infos = new Infos();
         infos.SaveJobName = this.SaveJob.Name;
         infos.Counters = ResumeCounter;
@@ -189,7 +191,8 @@ public class ResumeBackup : Backup
                 infos.FileInfo = new FileInfo(file.Source);
                 // Console.WriteLine($"copy {file} to {SaveJob.Destination}\\{SaveID}\\{}");
                 CopyFileWithProgress(file.Source, file.Destination, infos, Convert.ToInt32(file.Advancement));
-                RealTimeState.WriteState(this.SaveJob.Name, ResumeCounter, new FileInfo(file.Source), file.Destination, infos.StateFileName, "", this.ID);
+                // RealTimeState.WriteState(this.SaveJob.Name, ResumeCounter, new FileInfo(file.Source), file.Destination, infos.StateFileName, "", this.ID);
+                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, file.Destination, infos.StateFileName, "", backupId.ToString());
             }
         }
         catch (Exception e)
@@ -204,21 +207,23 @@ public class ResumeBackup : Backup
             // string SaveID = SaveId;
             string suffix = exemplefile.Replace(SaveJob.Source, string.Empty);
             string SourcePrefix = exemplefile.Replace(suffix, string.Empty);
-            SaveId = (int.Parse(SaveId) + 1).ToString();
+            SaveId = (int.Parse(SaveId)).ToString();
              
             foreach (string file in filesToSave)
             {
+             
                 Console.WriteLine("Save " + file);
                 int saveIDLength = SaveId.Length;
                 // string source = SaveJob.Source + "\\" + file.Replace(SourcePrefix, string.Empty).Substring(4+saveIDLength); 
                 string source = Path.Combine(SaveJob.Source, file.Replace(SourcePrefix, string.Empty));
                 string relativePath = file.Replace(SourcePrefix, string.Empty).TrimStart('\\');
-                string Destination = Path.Combine(SaveJob.Destination, SaveId, relativePath);
+                
+                string Destination = Path.Combine(SaveJob.Destination, SaveId , relativePath);
                 // Console.WriteLine($"copy {file} to {Path.Combine(SaveJob.Destination, SaveId, file.Replace(SourcePrefix, string.Empty))}");
                 infos.FileInfo = new FileInfo(file);
                 // Console.WriteLine($"copy {file} to {SaveJob.Destination}\\{SaveID}\\{}");
                 CopyPasteFile(file, Destination, infos);
-                RealTimeState.WriteState(this.SaveJob.Name, ResumeCounter, new FileInfo(file), file.Replace(RootDir, SaveDir), infos.StateFileName, "", this.ID);
+                RealTimeState.WriteState(this.SaveJob.Name, ResumeCounter, new FileInfo(file), file.Replace(RootDir, SaveDir), infos.StateFileName, "", backupId.ToString());
             }
         }
         catch (Exception e)
