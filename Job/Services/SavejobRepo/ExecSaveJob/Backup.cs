@@ -207,6 +207,7 @@ public abstract class Backup
     {
         const int bufferSize = 2 * 1048576; // 2 MB buffer size, you can adjust it as per your requirement
         // const int bufferSize = 1024;
+        // const int bufferSize = 1;
         
         using (var sourceStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
         using (var destinationStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write))
@@ -230,34 +231,67 @@ public abstract class Backup
     }
     
     
-    public static void CopyFileWithProgress(string sourceFilePath, string destinationFilePath, Infos infos, int offset)
+    // public static void CopyFileWithProgress(string sourceFilePath, string destinationFilePath, Infos infos, int offset)
+    // {
+    //     // const int bufferSize = 2 * 1048576; // 2 MB buffer size, you can adjust it as per your requirement
+    //     const int bufferSize = 1024;
+    //     // const int bufferSize = 1;
+    //     
+    //     using (var sourceStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
+    //     using (var destinationStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write))
+    //     {
+    //         byte[] buffer = new byte[bufferSize];
+    //         int bytesRead;
+    //         long totalBytesCopied = 0;
+    //         long fileSize = sourceStream.Length;
+    //         
+    //         //#TODO add offset on the first iteration
+    //
+    //         while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
+    //         {
+    //             destinationStream.Write(buffer, offset, bytesRead);
+    //             totalBytesCopied += bytesRead;
+    //
+    //             // Calculate progress
+    //             double progress = (double)totalBytesCopied / fileSize * 100;
+    //             Console.WriteLine($"Progress: {progress:F2}%");
+    //             RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, destinationFilePath, infos.StateFileName, "", infos.ID, totalBytesCopied);                
+    //         }
+    //     }
+    // }
+    
+    
+    public static void CopyFileWithProgress(string sourceFilePath, string destinationFilePath, Infos infos, long offset)
     {
-        const int bufferSize = 2 * 1048576; // 2 MB buffer size, you can adjust it as per your requirement
-        // const int bufferSize = 1024;
-        
+        const int bufferSize = 1024;
+
         using (var sourceStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
-        using (var destinationStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write))
+        using (var destinationStream = new FileStream(destinationFilePath, FileMode.Append, FileAccess.Write))
         {
             byte[] buffer = new byte[bufferSize];
             int bytesRead;
-            long totalBytesCopied = 0;
+            long totalBytesCopied = offset;
             long fileSize = sourceStream.Length;
-            
-            //#TODO add offset on the first iteration
- 
-            while ((bytesRead = sourceStream.Read(buffer, offset, bufferSize)) > 0)
+
+            // Positionner le flux source à l'offset
+            sourceStream.Seek(offset, SeekOrigin.Begin);
+
+            // Positionner le flux de destination à la fin du fichier
+            destinationStream.Seek(0, SeekOrigin.End);
+
+            while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
             {
                 destinationStream.Write(buffer, 0, bytesRead);
                 totalBytesCopied += bytesRead;
- 
-                // Calculate progress
+
+                // Calculer la progression
                 double progress = (double)totalBytesCopied / fileSize * 100;
                 Console.WriteLine($"Progress: {progress:F2}%");
-                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, destinationFilePath, infos.StateFileName, "", infos.ID, totalBytesCopied);                
+                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, destinationFilePath, infos.StateFileName, "", infos.ID, totalBytesCopied);
             }
         }
     }
-    
+
     
     public virtual List<string> GetFiles(string rootDir, List<string> files)
     {
