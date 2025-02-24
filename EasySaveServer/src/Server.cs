@@ -6,10 +6,12 @@ namespace EasySaveServer;
 
 class Server
     {
-        
-        List<Socket> clients;
+        ClientList clientList;
+        MessageList messageList;
         private Socket StartServer()
         {
+            clientList = new ClientList();
+            messageList = new MessageList();
             // Crée une nouvelle socket TCP/IP
             Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
@@ -24,11 +26,8 @@ class Server
 
         private Socket AcceptConnection(Socket serverSocket)
         {
-            // Accepte une connexion entrante
             Socket clientSocket = serverSocket.Accept();
-            clients.Add(clientSocket);
-            log("Client connected.");
-            log(clientSocket.RemoteEndPoint.ToString());
+            clientList.Clients.Add(new Client(Guid.NewGuid().ToString(),clientSocket));
             return clientSocket;
         }
 
@@ -75,14 +74,19 @@ class Server
             log("Client disconnected.");
         }
         
-        public void Run()
+        public Task Run()
         {
             Socket serverSocket = StartServer();
+            Output output = new Output(clientList, messageList);
+            Task outputTask = output.rTask();
+            
             while (true)
             {
                 Socket clientSocket = AcceptConnection(serverSocket);
                 ListenToClient(clientSocket);
-                Disconnect(clientSocket);
+                // Disconnect(clientSocket);
             }
+            
+            outputTask.Wait();
         }
     }
