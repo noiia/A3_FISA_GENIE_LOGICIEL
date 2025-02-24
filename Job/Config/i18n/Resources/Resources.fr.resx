@@ -219,4 +219,7 @@
     <data name="Edit" xml:space="preserve">
         <value>Editer</value>
     </data>
+    <data name="BusinessAppLock" xml:space="preserve">
+        <value>Application métier en cours d'exécution, impossible de lancer un travail de sauvegarde</value>
+    </data>
 </root>

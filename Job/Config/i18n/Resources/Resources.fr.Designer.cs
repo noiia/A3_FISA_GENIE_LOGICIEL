@@ -132,6 +132,15 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application métier en cours d&apos;exécution, impossible de lancer un travail de sauvegarde.
+        /// </summary>
+        internal static string BusinessAppLock {
+            get {
+                return ResourceManager.GetString("BusinessAppLock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to est appelé avec les arguments : .
         /// </summary>
         internal static string CallWithArgs {
