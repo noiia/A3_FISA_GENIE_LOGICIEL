@@ -221,7 +221,6 @@ public abstract class Backup
  
                 // Calculate progress
                 double progress = (double)totalBytesCopied / fileSize * 100;
-                Console.WriteLine($"Progress: {progress:F2}%");
                 RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, infos.SavesDir, infos.StateFileName, "", infos.ID, totalBytesCopied);                
             }
         }
@@ -250,7 +249,6 @@ public abstract class Backup
  
                 // Calculate progress
                 double progress = (double)totalBytesCopied / fileSize * 100;
-                Console.WriteLine($"Progress: {progress:F2}%");
                 RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, infos.SavesDir, infos.StateFileName, "", infos.ID, totalBytesCopied);                
             }
         }

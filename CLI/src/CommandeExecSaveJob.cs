@@ -5,6 +5,7 @@ using System.IO;
 using Config.i18n;
 using Config;
 using Job.Config;
+using Job.Controller;
 // using Job.Config.i18n;
 using Logger;
 
@@ -17,7 +18,7 @@ namespace CLI
         //TODO : ajouté le temps du fichier delta du cp 
         public CommandeExecSaveJob() : base("Exec-SaveJob", new string[] { "execsj", "e-sj" }) { }
 
-        public override void Action(string[] args)
+        public override async Task Action(string[] args)
         {
             string content = args[0];
         
@@ -32,8 +33,10 @@ namespace CLI
 
             string[] contentSplited = content.Split(separator);
             List<int>  ids = contentSplited.Select(int.Parse).ToList();
+            
+            ExecutionTracker executionTracker = new ExecutionTracker();
         
-            (int returnCode, string message, Dictionary<int, DateTime> endDateTask ) = Job.Controller.ExecuteSaveJob.Execute(ids, separator);
+            (int returnCode, string message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker);
             
             Console.WriteLine(message);
 

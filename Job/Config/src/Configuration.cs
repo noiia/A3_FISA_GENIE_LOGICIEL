@@ -92,9 +92,9 @@ namespace Job.Config
             }
         }
 
-        public void AddSaveJob(int id, string name, string source, string destination, DateTime lastSave, DateTime created, string type)
+        public void AddSaveJob(int id, string name, string source, string destination, DateTime lastSave, DateTime created, string status, string type)
         {
-            SaveJob newSaveJob = new SaveJob(id, name, source, destination, lastSave, created, type);
+            SaveJob newSaveJob = new SaveJob(id, name, source, destination, lastSave, created, status, type);
             this.AddSaveJob(newSaveJob);
         }
 

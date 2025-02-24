@@ -15,11 +15,13 @@ namespace CLI
     {
         public CommandeAddSaveJob() : base("Add-SaveJob", new string[] { "asj", "a-sj" }) { }
 
-        public override void Action(string[] args)
+        public override Task Action(string[] args)
         {
             (int returnCode, string message) = Job.Controller.AddSaveJob.Execute(args[0], args[1], args[2], args[3]);
 
             Console.WriteLine(message);
+            
+            return Task.CompletedTask;
             
             // Controller.AddSaveJob.Execute(args);
 

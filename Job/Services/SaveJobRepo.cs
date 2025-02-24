@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 using Job.Config;
+using Job.Controller;
 
 namespace Job.Services;
 
@@ -24,17 +25,17 @@ public class SaveJobRepo
         return (value.Result.Item1, value.Result.Item2);
     }
     
-    public static (int, string, DateTime) ExecuteSaveJob(string name)
+    public static async Task<(int, string)> ExecuteSaveJob(string name)
     {
         int? id = null;
-        var value = _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
-        return (value.Result.Item1, value.Result.Item2, value.Result.Item3);
+        var value = await _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
+        return (value.Item1, value.Item2);
     }
-    public static (int, string, DateTime) ExecuteSaveJob(int id)
+    public static async Task<(int, string)> ExecuteSaveJob(int id)
     {
         string? name = "";
-        var value = _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
-        return (value.Result.Item1, value.Result.Item2, value.Result.Item3);
+        var value = await _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
+        return (value.Item1, value.Item2);
     }
     
     public static (int,string) DeleteSaveJob(int id)

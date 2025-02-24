@@ -2,7 +2,7 @@
 
 public class SaveJob
 {
-    public SaveJob( int id, string name, string source, string destination, DateTime lastSave, DateTime created, string type)
+    public SaveJob( int id, string name, string source, string destination, DateTime lastSave, DateTime created, string status, string type)
     {
         Source = source;
         Destination = destination;
@@ -10,6 +10,7 @@ public class SaveJob
         Name = name;
         LastSave = lastSave;
         Created = created;
+        Status = status;
         Type = type;
     }
 
@@ -25,5 +26,6 @@ public class SaveJob
 
     public DateTime Created { get; }
 
+    public string Status { get; set; }
     public string Type { get; }
 }

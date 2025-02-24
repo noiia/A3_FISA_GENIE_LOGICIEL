@@ -8,7 +8,7 @@ namespace Job.Services;
 
 public class ServiceDeleteSaveJob
 {
-    public static (int, string, DateTime) Run(Configuration configuration, int? id, string? name)
+    public static (int, string) Run(Configuration configuration, int? id, string? name)
     {
         if (id is not null ^ name is not "")
         {
@@ -27,18 +27,18 @@ public class ServiceDeleteSaveJob
             {
                 returnSentence = $"{Translation.Translator.GetString("SjExecSuccesfully")}{id})";
                 LoggerUtility.WriteLog(LoggerUtility.Warning, returnSentence);
-                return (2, returnSentence, DateTime.Now);
+                return (2, returnSentence);
             }
             configuration.DeleteSaveJob(saveJob);
             returnSentence = $"{Translation.Translator.GetString("SjDelSuccesfully")}{id})";
             LoggerUtility.WriteLog(LoggerUtility.Info, returnSentence);
-            return (1, returnSentence, DateTime.Now);
+            return (1, returnSentence);
         }
         else
         {
             string returnSentence = $"{Translation.Translator.GetString("BadArgsGiven") ?? String.Empty} {id} {name}";
             LoggerUtility.WriteLog(LoggerUtility.Warning, returnSentence);
-            return (2, returnSentence, DateTime.Now);
+            return (2, returnSentence);
         }
     }
 }
