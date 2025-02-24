@@ -21,7 +21,7 @@ namespace Job.Config
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(this._configPath));
                 string defaultLogPath =
-                    (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\Logs\\")
+                    (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\")
                     .Replace("\\", "/");
                 ConfigFile tempConfigFile = new ConfigFile([], defaultLogPath, "CryptoKey", "en", "json", [],[]);
                 string json = JsonSerializer.Serialize(tempConfigFile);
