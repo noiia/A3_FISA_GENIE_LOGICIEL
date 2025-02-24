@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-
+using Job.Config;
 using Job.Config.i18n;
 using Job.Services;
 using Logger;
@@ -8,9 +8,11 @@ namespace Job.Controller;
 
 public class DeleteSaveJob
 {
+    private static Configuration _configuration;
     public static (int, string) Execute(List<int>  ids, string separator)
     {
-        LoggerUtility.WriteLog(LoggerUtility.Info, Translation.Translator.GetString("DelSjCallWithArgs") + string.Join(" ", ids));
+        _configuration = ConfigSingleton.Instance();
+        LoggerUtility.WriteLog(_configuration.GetLogType(), LoggerUtility.Info, Translation.Translator.GetString("DelSjCallWithArgs") + string.Join(" ", ids));
         if (ids.Count > 1 && separator is "" or " ")
         {
             return (3, $"{Translation.Translator.GetString("TooMuchIdWithoutSep")} {separator} {ids}");

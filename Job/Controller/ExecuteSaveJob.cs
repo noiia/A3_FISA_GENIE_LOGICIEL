@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Collections.Generic;
-
+using Job.Config;
 using Job.Config.i18n;
 using Job.Services;
 using Logger;
@@ -48,12 +48,13 @@ public class TrackerChangedEventArgs : EventArgs
     }
 }
 
-
 public class ExecuteSaveJob
 {
+    private static Configuration _configuration;
     public static async Task<(int, string)> Execute(List<int>  ids, string separator, ExecutionTracker tracker)
     {
-        LoggerUtility.WriteLog(LoggerUtility.Info, $"{Translation.Translator.GetString("SjExecWith")} {string.Join(" ", ids, separator)}");
+        _configuration = ConfigSingleton.Instance();
+        LoggerUtility.WriteLog(_configuration.GetLogType(),LoggerUtility.Info, $"{Translation.Translator.GetString("SjExecWith")} {string.Join(" ", ids, separator)}");
         if (ids.Count > 1 && separator is "" or " ")
         {
             return (3, $"{Translation.Translator.GetString("TooMuchIdWithoutSep")} {separator} {ids}");

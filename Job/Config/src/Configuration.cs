@@ -27,7 +27,7 @@ namespace Job.Config
                 string json = JsonSerializer.Serialize(tempConfigFile);
                 File.WriteAllText(this._configPath, json);
             }
-
+            
             string fileContent = File.ReadAllText(this._configPath);
             this._configFile = JsonSerializer.Deserialize<ConfigFile>(fileContent);
         }
@@ -63,7 +63,7 @@ namespace Job.Config
 
         public void SetSaveJobs(SaveJob[] saveJobs)
         {
-            Logger.LoggerUtility.WriteLog(Logger.LoggerUtility.Info, "SetSaveJobs");
+            Logger.LoggerUtility.WriteLog(GetLogType(), Logger.LoggerUtility.Info, "SetSaveJobs");
             Console.WriteLine("SetSaveJobs");
             foreach (var VARIABLE in saveJobs)
             {
