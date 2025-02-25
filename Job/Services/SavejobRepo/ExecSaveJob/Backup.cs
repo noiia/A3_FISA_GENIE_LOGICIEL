@@ -38,6 +38,8 @@ public abstract class Backup
     public string ID { get; set; }
     public string RootDir { get; set; }
     public string SavesDir { get; protected set; }
+
+    public TimeSpan cryptDuration;
     
     public SaveJob SaveJob { get; set; }
 
@@ -76,6 +78,7 @@ public abstract class Backup
     {
         if (Directory.Exists(saveJob.Source))
         {
+            this.cryptDuration = 0;
             this.SetBackupID();
             this.SaveJob = saveJob;
             this.RootDir = saveJob.Source;
@@ -130,6 +133,8 @@ public abstract class Backup
             string[] extensionCrypt = configuration.GetCryptExtension();
             if (extensionCrypt.Contains(extension))
             {
+                
+                // Control timer
                 string cryptKey = configuration.GetCryptKey();
                 string[] args = ["Crypt", RootFile, ToFile, cryptKey];
                 ProcessStartInfo cryptoSoftStartInfo = new ProcessStartInfo
@@ -142,10 +147,15 @@ public abstract class Backup
                     CreateNoWindow = true
                 };
                 Process processCryptoSoft = new Process { StartInfo = cryptoSoftStartInfo };
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
                 processCryptoSoft.Start();
                 string output = processCryptoSoft.StandardOutput.ReadToEnd();
                 string error = processCryptoSoft.StandardError.ReadToEnd();
                 processCryptoSoft.WaitForExit();
+                stopwatch.Stop();
+                TimeSpan ts = stopwatch.Elapsed;
+                cryptDuration = cryptDuration.Add(ts);
             }
             else
             {
@@ -332,6 +342,9 @@ public abstract class Backup
     public void Save()
     {
         CopyDir();
+        Configuration config = ConfigSingleton.Instance();
+        string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", cryptDuration.Hours, cryptDuration.Minutes, cryptDuration.Seconds, cryptDuration.Milliseconds / 10);
+        LoggerUtility.WriteLog(config.GetLogType(),LoggerUtility.Warning, $"Crypt duration: {elapsedTime}");
     }
 
 
