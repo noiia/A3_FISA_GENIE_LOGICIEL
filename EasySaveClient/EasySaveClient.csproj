@@ -7,8 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="del /S C:\Users\thoma\RiderProjects\A3_FISA_GENIE_LOGICIEL\bin&#xA;&#xA;xcopy C:\Users\thoma\RiderProjects\A3_FISA_GENIE_LOGICIEL\EasySaveServer\bin\Debug\net8.0 C:\Users\thoma\RiderProjects\A3_FISA_GENIE_LOGICIEL\bin&#xA;&#xA;xcopy C:\Users\thoma\RiderProjects\A3_FISA_GENIE_LOGICIEL\EasySaveClient\bin\Debug\net8.0 C:\Users\thoma\RiderProjects\A3_FISA_GENIE_LOGICIEL\bin" />
-  </Target>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
 
 </Project>

@@ -12,52 +12,26 @@ class Server
         {
             clientList = new ClientList();
             messageList = new MessageList();
-            // Crée une nouvelle socket TCP/IP
             Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-            // Définit les points de terminaison locaux et écoute les connexions entrantes
             IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, 11000);
             serverSocket.Bind(localEndPoint);
             serverSocket.Listen(10);
-
             log("Server started and listening on port 11000.");
             return serverSocket;
         }
 
-        private Socket AcceptConnection(Socket serverSocket)
+        private Client  AcceptConnection(Socket serverSocket)
         {
+            Console.WriteLine("Waiting for a connection...");
             Socket clientSocket = serverSocket.Accept();
-            clientList.Clients.Add(new Client(Guid.NewGuid().ToString(),clientSocket));
-            return clientSocket;
-        }
-
-        private void ListenToClient(Socket clientSocket)
-        {
-            // Écoute les données du client
-            byte[] bytes = new byte[1024];
-            int bytesRec = clientSocket.Receive(bytes);
-            string data = Encoding.ASCII.GetString(bytes, 0, bytesRec);
-
-            log("Client: " + data);
-
-            // Répond au client
-            string filePath = @"C:\Users\thoma\Documents\Exemple\progress.txt";
-            string response = "";
-            try
-            {
-                string content = File.ReadAllText(filePath);
-                Console.WriteLine("Contenu du fichier :");
-                Console.WriteLine(content);
-                response = content;
-            }
-            catch (Exception ex)
-            {
-                // Gérer les exceptions possibles (fichier non trouvé, accès refusé, etc.)
-                Console.WriteLine($"Une erreur s'est produite : {ex.Message}");
-                response = $"Une erreur s'est produite : {ex.Message}";
-            }
-            byte[] msg = Encoding.ASCII.GetBytes(response);
-            clientSocket.Send(msg);
+            Console.WriteLine("New client connected.");
+            Console.WriteLine("Ip : " + clientSocket.RemoteEndPoint.ToString());
+            string uuid = Guid.NewGuid().ToString();
+            Console.WriteLine("New uuid : " + uuid);
+            Client c = new Client(uuid, clientSocket);
+            clientList.Clients.Add(c);
+            Console.WriteLine("Aded to client list.");
+            return c;
         }
 
         private void log(string message)
@@ -76,17 +50,36 @@ class Server
         
         public Task Run()
         {
+            Console.WriteLine("Starting server...");
             Socket serverSocket = StartServer();
+            Console.WriteLine("Server started.");
+
             Output output = new Output(clientList, messageList);
-            Task outputTask = output.rTask();
+            Console.WriteLine("Output instance created.");
             
+
+            List<Input> inputTasks = new List<Input>();
+            Console.WriteLine("Input task list initialized.");
+
             while (true)
             {
-                Socket clientSocket = AcceptConnection(serverSocket);
-                ListenToClient(clientSocket);
+                Console.WriteLine("Waiting for new client connection...");
+                Client client = AcceptConnection(serverSocket);
+                Console.WriteLine("New client connection accepted.");
+
+                Input input = new Input(client, clientList, messageList);
+                Console.WriteLine("Input instance created for new client.");
+                
+
+                inputTasks.Add(input);
+                Console.WriteLine("Input task added to the list.");
+
+                // ListenToClient(clientSocket);
                 // Disconnect(clientSocket);
             }
-            
-            outputTask.Wait();
+
+            Console.WriteLine("Waiting for output task to complete...");
+            Console.WriteLine("Output task completed.");
         }
+
     }

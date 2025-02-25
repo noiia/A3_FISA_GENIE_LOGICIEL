@@ -1,32 +1,53 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace EasySaveServer;
-
-public class Output
+namespace EasySaveServer
 {
-    private ClientList clientList;
-    private MessageList messageList;
-
-    public Output(ClientList clientList, MessageList messageList)
+    public class Output
     {
-        this.clientList = clientList;
-        this.messageList = messageList;
-    }
+        private ClientList clientList;
+        private MessageList messageList;
+        private Thread sendThread;
 
-    public Task rTask()
-    {
-        while (true)
+        public Output(ClientList clientList, MessageList messageList)
         {
-            if (messageList.Messages.Count > 0)
+            this.clientList = clientList;
+            Console.WriteLine("Client list initialized in Output.");
+
+            this.messageList = messageList;
+            Console.WriteLine("Message list initialized in Output.");
+
+            // Initialize and start the thread
+            sendThread = new Thread(new ThreadStart(RunTask));
+            sendThread.Start();
+        }
+
+        private void RunTask()
+        {
+            Console.WriteLine("Starting send task...");
+
+            while (true)
             {
-                byte[] msg = Encoding.ASCII.GetBytes(messageList.Messages[0]);
-                foreach (Client client in clientList.Clients)
+                if (messageList.Messages.Count > 0)
                 {
-                    client.socket.Send(msg);
+                    Console.WriteLine("Message found in the list.");
+
+                    byte[] msg = Encoding.ASCII.GetBytes(messageList.Messages[0]);
+                    Console.WriteLine("Message encoded to bytes.");
+
+                    foreach (Client client in clientList.Clients)
+                    {
+                        Console.WriteLine("Sending message to client: " + client.uuid);
+                        client.socket.Send(msg);
+                    }
+
+                    messageList.Messages.RemoveAt(0);
+                    Console.WriteLine("Message sent and removed from the list.");
                 }
-                messageList.Messages.RemoveAt(0);
+                Thread.Sleep(500);
             }
-            Thread.Sleep(500);
         }
     }
 }
