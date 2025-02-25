@@ -243,4 +243,7 @@
     <data name="SaveJobLockBy" xml:space="preserve">
         <value>The save jobs are locked by : </value>
     </data>
+    <data name="Progress" xml:space="preserve">
+        <value>Progress</value>
+    </data>
 </root>

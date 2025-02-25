@@ -101,5 +101,6 @@ public class Translation : INotifyPropertyChanged
     public string Status => Translator.GetString("Status") ?? "[Status]";
     public string Type => Translator.GetString("Type") ?? "[Type]";
     public string Edit => Translator.GetString("Edit") ?? "[Edit]";
+    public string Progress => Translator.GetString("Progress") ?? "[Progress]";
 
 }

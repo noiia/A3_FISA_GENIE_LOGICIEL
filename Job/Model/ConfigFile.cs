@@ -13,8 +13,9 @@ namespace Config
         private string[]? _cryptExtension;
         private string[]? _buisnessApp;
         private string[]? _fileExtension;
+        private int _progress;
 
-        public ConfigFile(SaveJob[] saveJobs, string logPath, string cryptoKey, string language, string logType, string[] cryptExtension, string[] buisnessApp, string[] fileExtension)
+        public ConfigFile(SaveJob[] saveJobs, string logPath, string cryptoKey, string language, string logType, string[] cryptExtension, string[] buisnessApp, string[] fileExtension, int progress = 0)
         {
             _saveJobs = saveJobs;
             _logPath = logPath;
@@ -36,6 +37,7 @@ namespace Config
             {
                 _fileExtension = new string[0];
             }
+            _progress = progress;
         }
 
         public SaveJob[] SaveJobs
@@ -83,6 +85,12 @@ namespace Config
         {
             get => _fileExtension;
             set => _fileExtension = value ?? throw new ArgumentNullException(nameof(value));
+        }
+        
+        public int Progress
+        {
+            get => _progress;
+            set => _progress = value ;
         }
     }
 }
