@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using System.Runtime.InteropServices.JavaScript;
 using System.Text;
+using Client.Commandes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -33,13 +34,9 @@ public class Client
         Console.WriteLine("Disconnected from server.");
     }
 
-    public static void SendMessage (Socket socket, string commande, int id)
+    public static void SendMessage (Socket socket, CMD cmd)
     {
-        JObject json = new JObject();
-        json.Add("commande", commande);
-        json.Add("id", id);
-        string jsonString = JsonConvert.SerializeObject(json);
-        byte[] asciiBytes = Encoding.ASCII.GetBytes(jsonString);
+        byte[] asciiBytes = Encoding.UTF8.GetBytes(cmd.toString());
         int leghtJson = asciiBytes.Length;
         byte[] bytesLenght = BitConverter.GetBytes(leghtJson);
         socket.Send(bytesLenght);
@@ -53,7 +50,7 @@ public class Client
             var clientSocket = ConnectToServer();
 
             
-            SendMessage(clientSocket, "Test", 5);
+            SendMessage(clientSocket, new CMDAddSaveJob("test", "c:\\Users\\thoma\\Desktop\\test.txt", "c:\\Users\\thoma\\Desktop\\test.txt", "full"));
             // Envoie un message au serveur
             // string message = "Hello, Server, send me progress";
             // byte[] msg = Encoding.ASCII.GetBytes(message);

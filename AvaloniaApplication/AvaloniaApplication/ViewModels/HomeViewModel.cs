@@ -155,7 +155,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
                 ids.Add([int.Parse(id)]);
             }
         }
-        
         return (ids, separator);
     }
     

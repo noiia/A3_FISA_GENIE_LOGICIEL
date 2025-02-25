@@ -34,7 +34,7 @@ namespace EasySaveServer
                 {
                     Console.WriteLine("Message found in the list.");
 
-                    byte[] msg = Encoding.ASCII.GetBytes(messageList.Messages[0]);
+                    byte[] msg = Encoding.UTF8.GetBytes(messageList.Messages[0]);
                     Console.WriteLine("Message encoded to bytes.");
 
                     foreach (Client client in clientList.Clients)

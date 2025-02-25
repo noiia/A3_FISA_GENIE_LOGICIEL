@@ -59,7 +59,7 @@ namespace EasySaveServer
                             this.Stop();
                             break;
                         }
-                        string asciiBytes = Encoding.ASCII.GetString(dataBytes);
+                        string asciiBytes = Encoding.UTF8.GetString(dataBytes);
                         Console.WriteLine($"[ {client.uuid} ] Message decoded : { asciiBytes }");
                         try
                         {
