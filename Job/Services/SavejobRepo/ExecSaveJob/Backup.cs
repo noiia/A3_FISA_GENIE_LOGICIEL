@@ -255,11 +255,6 @@ public abstract class Backup
         }
     }
     
-    
-    
-    
-    
-    
     public static void CopyFileWithProgress(string sourceFilePath, string destinationFilePath, Infos infos, long offset)
     {
         const int bufferSize = 2 * 1048576;
@@ -293,14 +288,6 @@ public abstract class Backup
             }
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
     
     public virtual List<string> GetFiles(string rootDir, List<string> files)
     {
