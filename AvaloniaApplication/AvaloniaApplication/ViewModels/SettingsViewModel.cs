@@ -305,6 +305,7 @@ namespace AvaloniaApplication.ViewModels
                 LogPath = config.GetLogPath();
                 FileTypesToEncrypt = new ObservableCollection<string>(config.GetCryptExtension() ?? Array.Empty<string>());
                 BusinessApp = new ObservableCollection<string>(config.GetBuisnessApp() ?? Array.Empty<string>());
+                FileExtension = new ObservableCollection<string>(config.GetFileExtension() ?? Array.Empty<string>());
             }
             catch (Exception ex)
             {
@@ -496,7 +497,6 @@ namespace AvaloniaApplication.ViewModels
             {
                 if (!string.IsNullOrEmpty(NewFileExtension))
                 {
-                    FileExtension = FileExtension is null ? new ObservableCollection<string>() : FileExtension;
                     NewFileExtension = NewFileExtension[0] == '.' ? NewFileExtension : $".{NewFileExtension}";
                     if (FileExtension.All(fileExt => fileExt != NewFileExtension))
                     {
