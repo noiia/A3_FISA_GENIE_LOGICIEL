@@ -11,9 +11,12 @@ namespace Job.Config
 
         public Configuration(string configPath)
         {
+            
             this._configPath = configPath;
             this.LoadConfiguration();
         }
+        
+        
 
         public void LoadConfiguration()
         {
@@ -129,6 +132,17 @@ namespace Job.Config
             }
         }
 
+        public void SetLengthLimit(int lengthLimit)
+        {
+            _configFile.LengthLimit = lengthLimit;
+        }
+
+        public int GetLengthLimit()
+        {
+            return _configFile.LengthLimit;
+        }
+
+        //abuse encore un peu plus la prochaine fois
         public int FindFirstFreeId()
         {
             for (int i = 0; i < 2147483647; i++)

@@ -161,7 +161,20 @@ public abstract class Backup
             }
             else
             {
+                // arbitrary transfer speed
+                int BitsPerSec = 1;
+
                 // File.Copy(RootFile, ToFile, true);
+                if (infos.FileInfo.Length < configuration.GetLengthLimit())
+                {
+                    Console.WriteLine("not limited");
+                    CopyFileWithProgress(RootFile, ToFile, infos);
+                }
+                else
+                {
+                    Console.WriteLine("limited");
+                    // CopyFileWithProgress(RootFile, ToFile, infos, BitsPerSec );
+                }
                 CopyFileWithProgress(RootFile, ToFile, infos);
             }
         }
@@ -218,7 +231,7 @@ public abstract class Backup
         const int bufferSize = 2 * 1048576; // 2 MB buffer size, you can adjust it as per your requirement
         // const int bufferSize = 1024;
         // const int bufferSize = 1;
-        
+        DateTime lastSaveTime = DateTime.Now;        
         using (var sourceStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
         using (var destinationStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write))
         {
@@ -229,6 +242,7 @@ public abstract class Backup
  
             while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
             {
+                
                 destinationStream.Write(buffer, 0, bytesRead);
                 destinationStream.Flush();
                 totalBytesCopied += bytesRead;
@@ -242,11 +256,15 @@ public abstract class Backup
     }
     
     
-   
+    
+    
+    
     
     public static void CopyFileWithProgress(string sourceFilePath, string destinationFilePath, Infos infos, long offset)
     {
-        const int bufferSize = 1024;
+        const int bufferSize = 2 * 1048576;
+
+        // const int bufferSize = 1024;
 
         using (var sourceStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
         using (var destinationStream = new FileStream(destinationFilePath, FileMode.Append, FileAccess.Write))
@@ -275,6 +293,13 @@ public abstract class Backup
             }
         }
     }
+    
+    
+    
+    
+    
+    
+    
     
     
     public virtual List<string> GetFiles(string rootDir, List<string> files)

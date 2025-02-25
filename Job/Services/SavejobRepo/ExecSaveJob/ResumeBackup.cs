@@ -190,8 +190,21 @@ public class ResumeBackup : Backup
                 // string Destination = Path.Combine(SaveJob.Destination, SaveId, relativePath);
                 // Console.WriteLine($"copy {file} to {Path.Combine(SaveJob.Destination, SaveId, file.Replace(SourcePrefix, string.Empty))}");
                 infos.FileInfo = new FileInfo(file.Source);
-                // Console.WriteLine($"copy {file} to {SaveJob.Destination}\\{SaveID}\\{}");
-                CopyFileWithProgress(file.Source, file.Destination, infos, Convert.ToInt32(file.Advancement));
+                
+                // arbitrary transfer speed
+                int BitsPerSec = 1024;
+
+                if (infos.FileInfo.Length < configuration.GetLengthLimit())
+                {
+                    Console.WriteLine("unlimited");
+                    CopyFileWithProgress(file.Source, file.Destination, infos, Convert.ToInt32(file.Advancement));
+                }
+                else
+                {
+                    Console.WriteLine("limited");
+                    // CopyFileWithProgress(file.Source, file.Destination, infos, Convert.ToInt32(file.Advancement), BitsPerSec );
+                }
+                
                 // RealTimeState.WriteState(this.SaveJob.Name, ResumeCounter, new FileInfo(file.Source), file.Destination, infos.StateFileName, "", this.ID);
                 RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, file.Destination, infos.StateFileName, "", backupId.ToString());
             }

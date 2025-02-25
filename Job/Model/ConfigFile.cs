@@ -12,6 +12,7 @@ namespace Config
         private string _logType; //json || xml
         private string[]? _cryptExtension;
         private string[]? _buisnessApp;
+        private int _lengthLimit;
 
         public ConfigFile(SaveJob[] saveJobs, string logPath, string cryptoKey, string language, string logType, string[] cryptExtension, string[] buisnessApp)
         {
@@ -21,6 +22,7 @@ namespace Config
             _language = language;
             _logType = logType;
             _cryptExtension = cryptExtension;
+            _lengthLimit = 100;
             if (_cryptExtension == null)
             {
                 _cryptExtension = new string[0];
@@ -72,6 +74,12 @@ namespace Config
         {
             get => _cryptoKey;
             set => _cryptoKey = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        public int LengthLimit
+        {
+            get => _lengthLimit;
+            set => _lengthLimit = value;
         }
     }
 }
