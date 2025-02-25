@@ -28,5 +28,9 @@
       <ProjectReference Include="..\Logger\Logger.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="DynamicData" Version="9.1.2" />
+    </ItemGroup>
+
 
 </Project>

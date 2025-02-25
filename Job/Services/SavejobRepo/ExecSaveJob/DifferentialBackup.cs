@@ -18,7 +18,7 @@ public class DifferentialBackup : Backup
     //     return instance;
     // }
 
-    protected override List<string> GetFiles(string RootDir, List<string> Files)
+    public override List<string> GetFiles(string RootDir, List<string> Files)
     {
         foreach (string File in Directory.GetFiles(RootDir))
         {

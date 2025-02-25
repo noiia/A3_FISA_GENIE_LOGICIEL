@@ -1,7 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 using Job.Config;
 using Logger;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace Job.Services.ExecSaveJob;
 
@@ -24,7 +26,7 @@ public class Infos
     public string SaveJobName { get; set; }
     public string StateFileName { get; set; }
 
-    public string SavesDir { get; set; }
+    public string SaveDir { get; set; }
 
     public FileInfo FileInfo { get; set; }
 
@@ -78,7 +80,7 @@ public abstract class Backup
     {
         if (Directory.Exists(saveJob.Source))
         {
-            this.cryptDuration = 0;
+            this.cryptDuration = new TimeSpan(0);
             this.SetBackupID();
             this.SaveJob = saveJob;
             this.RootDir = saveJob.Source;
@@ -215,6 +217,7 @@ public abstract class Backup
     {
         const int bufferSize = 2 * 1048576; // 2 MB buffer size, you can adjust it as per your requirement
         // const int bufferSize = 1024;
+        // const int bufferSize = 1;
         
         using (var sourceStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
         using (var destinationStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write))
@@ -227,45 +230,54 @@ public abstract class Backup
             while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
             {
                 destinationStream.Write(buffer, 0, bytesRead);
+                destinationStream.Flush();
                 totalBytesCopied += bytesRead;
  
                 // Calculate progress
                 double progress = (double)totalBytesCopied / fileSize * 100;
-                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, infos.SavesDir, infos.StateFileName, "", infos.ID, totalBytesCopied);                
+                // Console.WriteLine($"Progress: {progress:F2}%");
+                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, destinationFilePath, infos.StateFileName, "", infos.ID, totalBytesCopied);                
             }
         }
     }
     
     
-    static void CopyFileWithProgress(string sourceFilePath, string destinationFilePath, Infos infos, int offset)
+   
+    
+    public static void CopyFileWithProgress(string sourceFilePath, string destinationFilePath, Infos infos, long offset)
     {
-        const int bufferSize = 2 * 1048576; // 2 MB buffer size, you can adjust it as per your requirement
-        // const int bufferSize = 1024;
-        
+        const int bufferSize = 1024;
+
         using (var sourceStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
-        using (var destinationStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write))
+        using (var destinationStream = new FileStream(destinationFilePath, FileMode.Append, FileAccess.Write))
         {
             byte[] buffer = new byte[bufferSize];
             int bytesRead;
-            long totalBytesCopied = 0;
+            long totalBytesCopied = offset;
             long fileSize = sourceStream.Length;
-            
-            //#TODO add offset on the first iteration
- 
+
+            // source at offset
+            sourceStream.Seek(offset, SeekOrigin.Begin);
+
+            // destination at end of file
+            destinationStream.Seek(0, SeekOrigin.End);
+
             while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
             {
                 destinationStream.Write(buffer, 0, bytesRead);
+                destinationStream.Flush();
                 totalBytesCopied += bytesRead;
- 
-                // Calculate progress
+
+                // Calculer la progression
                 double progress = (double)totalBytesCopied / fileSize * 100;
-                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, infos.SavesDir, infos.StateFileName, "", infos.ID, totalBytesCopied);                
+                // Console.WriteLine($"Progress: {progress:F2}%");
+                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, destinationFilePath, infos.StateFileName, "", infos.ID, totalBytesCopied);
             }
         }
     }
     
     
-    protected virtual List<string> GetFiles(string rootDir, List<string> files)
+    public virtual List<string> GetFiles(string rootDir, List<string> files)
     {
         string stateFileName = "statefile.log";
         
@@ -321,7 +333,7 @@ public abstract class Backup
         infos.SaveJobName = this.SaveJob.Name;
         infos.Counters = counters;
         // Infos.FileInfo = new FileInfo(file);
-        infos.SavesDir = SavesDir;
+        infos.SaveDir = SaveDir;
         infos.StateFileName = stateFileName;
         infos.ID = this.ID;
         
@@ -332,7 +344,7 @@ public abstract class Backup
             RealTimeState.AddCounter(counters);
             
             CopyPasteFile(file, file.Replace(RootDir, SaveDir), infos);
-            RealTimeState.WriteState(this.SaveJob.Name, counters, new FileInfo(file), SavesDir, stateFileName, "", this.ID);
+            RealTimeState.WriteState(this.SaveJob.Name, counters, new FileInfo(file), file.Replace(RootDir, SaveDir), stateFileName, "", this.ID);
             turnArchiveBitFalse(file);
         }
         
@@ -360,7 +372,7 @@ public abstract class Backup
             foreach (string content in lines)
             {
                 string output = content;
-                Json? deserializedProduct = JsonSerializer.Deserialize<Json>(output);
+                Json? deserializedProduct = JsonConvert.DeserializeObject<Json>(output);
                 if (deserializedProduct != null)
                 {
                     LastID = Math.Max(LastID, Convert.ToInt32(deserializedProduct.BackupID));

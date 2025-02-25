@@ -51,4 +51,30 @@ public class SaveJobRepo
         var value = _pool.QueueTask(async () => { return ServiceDeleteSaveJob.Run(_configuration, id, name); });
         return (value.Result.Item1, value.Result.Item2);
     }
+    
+    // public static (int,string) ResumeSaveJob(int id)
+    // {
+        // var value = _pool.QueueTask(async () => { return ServiceResumeSaveJob.Run(_configuration, id); });
+        // return (value.Result.Item1, value.Result.Item2);
+    // }
+    
+    public static (int,string) ResumeSaveJob(int id)
+    {
+        // ServiceResumeSaveJob.GetFilesForResume(_configuration, id);
+        try
+        {
+            var value = _pool.QueueTask(async () => { return ServiceResumeSaveJob.Run(_configuration, id); });
+            return (value.Result.Item1, value.Result.Item2);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Probably no backup to resume");
+            // Console.WriteLine(e);
+            // throw;
+        }
+        
+        return (0,"");
+    }
+
+    
 }
