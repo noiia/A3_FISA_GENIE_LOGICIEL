@@ -510,6 +510,15 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Les travaux de sauvegardes sont bloqués par le(s) logiciel(s) : .
+        /// </summary>
+        internal static string SaveJobLockBy {
+            get {
+                return ResourceManager.GetString("SaveJobLockBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sélectionner.
         /// </summary>
         internal static string Select {

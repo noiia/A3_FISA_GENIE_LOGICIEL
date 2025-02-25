@@ -25,16 +25,16 @@ public class SaveJobRepo
         return (value.Result.Item1, value.Result.Item2);
     }
     
-    public static async Task<(int, string)> ExecuteSaveJob(string name)
+    public static async Task<(int, string)> ExecuteSaveJob(string name, LockTracker lockTracker)
     {
         int? id = null;
-        var value = await _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
+        var value = await _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, lockTracker, id, name); });
         return (value.Item1, value.Item2);
     }
-    public static async Task<(int, string)> ExecuteSaveJob(int id)
+    public static async Task<(int, string)> ExecuteSaveJob(int id, LockTracker lockTracker)
     {
         string? name = "";
-        var value = await _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
+        var value = await _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, lockTracker, id, name); });
         return (value.Item1, value.Item2);
     }
     
