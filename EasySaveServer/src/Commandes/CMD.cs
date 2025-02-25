@@ -6,17 +6,17 @@ namespace Client.Commandes;
 
 public class CMD
 {
-    protected string name;
+    protected string commande;
 
-    public CMD(string name)
+    public CMD(string commande)
     {
-        this.name = name;
+        this.commande = commande;
     }
 
     public virtual string toString()
     {
         JObject json = new JObject();
-        json.Add("commande", name);
+        json.Add("commande", commande);
         string jsonString = JsonConvert.SerializeObject(json);
         return jsonString;
     }
@@ -26,9 +26,9 @@ public class CMD
         return;
     }
 
-    public string Name
+    public string Commande
     {
-        get => name;
-        set => name = value ?? throw new ArgumentNullException(nameof(value));
+        get => commande;
+        set => commande = value ?? throw new ArgumentNullException(nameof(value));
     }
 }

@@ -25,7 +25,7 @@ public class CMDSetConfigFile:CMD
     public override string toString()
     {
         JObject json = new JObject();
-        json.Add("commande", base.name);
+        json.Add("commande", base.Command);
         json.Add("logPath", _logPath);
         json.Add("cryptoKey", _cryptoKey);
         json.Add("language", _language);

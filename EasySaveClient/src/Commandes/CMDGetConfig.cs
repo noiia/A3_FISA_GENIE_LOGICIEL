@@ -13,7 +13,7 @@ public class CMDGetConfig : CMD
     public override string toString()
     {
         JObject json = new JObject();
-        json.Add("commande", base.name);
+        json.Add("commande", base.Command);
         string jsonString = JsonConvert.SerializeObject(json);
         return jsonString;
     }

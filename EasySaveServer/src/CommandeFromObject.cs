@@ -18,20 +18,24 @@ public class CommandeFromObject
     public void run()
     {
         CMD cmd = JsonConvert.DeserializeObject<CMD>(asciiMessage);
-        Console.WriteLine(cmd.Name);
-        switch (cmd.Name)
+        Console.WriteLine(cmd.Commande);
+        switch (cmd.Commande)
         {
             case "AddSaveJob":
                 CMDAddSaveJob cmdAddSaveJob = JsonConvert.DeserializeObject<CMDAddSaveJob>(asciiMessage);
+                cmdAddSaveJob.run(messageList);
                 break;
             case "DeleteSaveJob":
                 CMDDeleteSaveJob cmdDeleteSaveJob = JsonConvert.DeserializeObject<CMDDeleteSaveJob>(asciiMessage);
+                cmdDeleteSaveJob.run(messageList);
                 break;
             case "ExecSaveJobs":
                 CMDExecSaveJobs cmdExecSaveJobs = JsonConvert.DeserializeObject<CMDExecSaveJobs>(asciiMessage);
+                cmdExecSaveJobs.run(messageList);
                 break;
             case "GetConfig":
                 CMDGetConfig cmdGetConfig = JsonConvert.DeserializeObject<CMDGetConfig>(asciiMessage);
+                cmdGetConfig.run(messageList);
                 break;
             case "SetConfigFile":
                 CMDSetConfigFile cmdSetConfigFile = JsonConvert.DeserializeObject<CMDSetConfigFile>(asciiMessage);

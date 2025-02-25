@@ -15,6 +15,12 @@ namespace Job.Config
             this.LoadConfiguration();
         }
 
+        public ConfigFile ConfigFile
+        {
+            get => _configFile;
+            set => _configFile = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
         public void LoadConfiguration()
         {
             if (!File.Exists(this._configPath))

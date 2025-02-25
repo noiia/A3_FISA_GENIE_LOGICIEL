@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using EasySaveServer;
+using EasySaveServer.Message;
+using Job.Config;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Client.Commandes;
@@ -25,7 +28,7 @@ public class CMDSetConfigFile:CMD
     public override string toString()
     {
         JObject json = new JObject();
-        json.Add("commande", base.name);
+        json.Add("commande", base.commande);
         json.Add("logPath", _logPath);
         json.Add("cryptoKey", _cryptoKey);
         json.Add("language", _language);
@@ -34,5 +37,29 @@ public class CMDSetConfigFile:CMD
         json["buisnessApp"] = JToken.FromObject(_buisnessApp);
         string jsonString = JsonConvert.SerializeObject(json);
         return jsonString;
-    }   
+    }  
+    
+    public override void run(MessageList messageList)
+    {
+        try
+        {
+            Console.WriteLine("CMDGetConfig.run");
+            Configuration config = ConfigSingleton.Instance();
+            config.SetLogPath(this._logPath);
+            config.SetCryptKey(this._cryptoKey);
+            config.SetLanguage(this._language);
+            config.SetLogType(this._logType);
+            config.SetCryptExtension(this._cryptExtension);
+            config.SetBuisnessApp(this._buisnessApp);
+            MSGConfigFile msgConfigFile = new MSGConfigFile(config.ConfigFile);
+            messageList.Messages.Add(msgConfigFile.toString());
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            Console.WriteLine(ex.StackTrace);
+        }
+
+        return;
+    }
 }

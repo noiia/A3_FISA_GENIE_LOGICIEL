@@ -15,7 +15,7 @@ public class CMDPauseSaveJob:CMD
     public override string toString()
     {
         JObject json = new JObject();
-        json.Add("commande", base.name);
+        json.Add("commande", base.Command);
         json.Add("id", _Id);
         string jsonString = JsonConvert.SerializeObject(json);
         return jsonString;

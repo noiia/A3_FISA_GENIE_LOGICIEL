@@ -5,24 +5,24 @@ namespace Client.Commandes;
 
 public class CMD
 {
-    protected string name;
+    protected string command;
 
-    public CMD(string name)
+    public CMD(string command)
     {
-        this.name = name;
+        this.command = command;
     }
 
     public virtual string toString()
     {
         JObject json = new JObject();
-        json.Add("commande", name);
+        json.Add("commande", command);
         string jsonString = JsonConvert.SerializeObject(json);
         return jsonString;
     }
 
-    public string Name
+    public string Command
     {
-        get => name;
-        set => name = value ?? throw new ArgumentNullException(nameof(value));
+        get => command;
+        set => command = value ?? throw new ArgumentNullException(nameof(value));
     }
 }
