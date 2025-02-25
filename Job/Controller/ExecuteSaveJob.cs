@@ -26,27 +26,35 @@ public class ExecuteSaveJob
         {
             case ";":
                 string listId = "";
-               
+                
+                ImportantSaveJobs importantSaveJobs = new ImportantSaveJobs();
+                
+                importantSaveJobs.SetSaveJobHierarchies(ids.ToArray());
                 foreach (var id in ids)
                 {
-                    (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(id);
-                    tracker.AddOrUpdateExecution(id, DateTime.Now, returnCode);
-                    switch (returnCode)
+                    var mostImportantJob = importantSaveJobs.GetMostImportantSaveJobs(ids);
+                    if (mostImportantJob != null)
                     {
-                        case 2:
+                        (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(mostImportantJob.Id);
+                        importantSaveJobs.SetStatus(mostImportantJob.Id, 1);
+                        tracker.AddOrUpdateExecution(mostImportantJob.Id, DateTime.Now, returnCode);
+                        switch (returnCode)
                         {
-                            return (returnCode, message + string.Join(", ", listId));
+                            case 2:
+                            {
+                                return (returnCode, message + string.Join(", ", listId));
+                            }
+                            case 3:
+                            {
+                                return (returnCode, message + string.Join(", ", listId));
+                            }
+                            case 4:
+                            {
+                                return (returnCode, message);
+                            }
                         }
-                        case 3:
-                        {
-                            return (returnCode, message + string.Join(", ", listId));
-                        }
-                        case 4:
-                        {
-                            return (returnCode, message);
-                        }
+                        listId += $"{mostImportantJob.Id}, ";   
                     }
-                    listId += $"{id}, ";
                 }
                 return (1, $"{Translation.Translator.GetString("SjExecSuccesfully")} {listId}");
             

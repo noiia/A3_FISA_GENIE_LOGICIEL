@@ -222,4 +222,22 @@
     <data name="BusinessAppLock" xml:space="preserve">
         <value>Business app running, execution locked</value>
     </data>
+    <data name="FilePriority" xml:space="preserve">
+        <value>Priority file type</value>
+    </data>
+    <data name="AddFileExtension" xml:space="preserve">
+        <value>File extension added</value>
+    </data>
+    <data name="DelFileExtension" xml:space="preserve">
+        <value>Deletation of file extension</value>
+    </data>
+    <data name="FileExtensionExists" xml:space="preserve">
+        <value>File extension already exists</value>
+    </data>
+    <data name="BusinessAppExists" xml:space="preserve">
+        <value>Business app already exists</value>
+    </data>
+    <data name="EncryptFileExists" xml:space="preserve">
+        <value>File already triggered</value>
+    </data>
 </root>
