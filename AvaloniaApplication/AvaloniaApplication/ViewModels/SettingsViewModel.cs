@@ -557,5 +557,39 @@ namespace AvaloniaApplication.ViewModels
                 ShowErrorNotification(ex.Message);
             }
         }
+        
+        
+        private int _maxFileSize;
+        public int MaxFileSize
+        {
+            get
+            {
+                try
+                {
+                    return config.GetMaxFileSize();
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorNotification(ex.Message);
+                    return 4096;
+                }
+            }
+            set
+            {
+                try
+                {
+                    if (_maxFileSize != value)
+                    {
+                        _maxFileSize = value;
+                        config.SetMaxFileSize(value);
+                        OnPropertyChanged();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorNotification(ex.Message);
+                }
+            }
+        }
     }
 }

@@ -77,6 +77,13 @@
                             </StackPanel>
                         </StackPanel>
                         
+                        <TextBlock Text="{Binding Translations.SetMaxFileSize}" FontSize="18" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBox Watermark="{Binding Translations.MaxFileSizeWatermark}" Width="500"
+                                     Text="{Binding MaxFileSize, Mode=TwoWay}"/>
+                            <Button Content="{Binding Translations.Apply}" Click="OnUpdateMaxFileSizeButtonClicked"/>
+                        </StackPanel>
+                        
                     </StackPanel>
                 </Grid>
             </StackPanel>

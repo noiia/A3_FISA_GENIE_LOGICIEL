@@ -243,4 +243,16 @@
     <data name="SaveJobLockBy" xml:space="preserve">
         <value>Les travaux de sauvegardes sont bloqués par le(s) logiciel(s) : </value>
     </data>
+    <data name="SetMaxFileSize" xml:space="preserve">
+        <value>Définir la taille limite de fichiers à transférer en parallèle</value>
+    </data>
+    <data name="MaxFileSizeWatermark" xml:space="preserve">
+        <value>Ex : 4096</value>
+    </data>
+    <data name="MaxFileSizeModified" xml:space="preserve">
+        <value>La limite de taille de fichier pour les transferts parallélisés à été modifiée</value>
+    </data>
+    <data name="Apply" xml:space="preserve">
+        <value>Appliquer</value>
+    </data>
 </root>
