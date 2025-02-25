@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -54,6 +55,24 @@ public class TableDataModel : ReactiveObject
             OnPropertyChanged(nameof(Status));
         }  
     }
+    
+    public string _saveProgress;
+    public string SaveProgress
+    {
+        get => _saveProgress;
+        set
+        {
+            _saveProgress = value;
+            OnPropertyChanged(nameof(SaveProgress));
+        }  
+    }
+    
+    
+    
+    
+    
+    
+    
     public required string Type { get; set; }
     public required ICommand ExeSaveJob { get; set; }
     public required ICommand DelSaveJob { get; set; }
@@ -172,8 +191,34 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         return (ids, separator);
     }
     
+    
+    
+    
+        
+    private static async Task OnChangedAsync(object source, FileSystemEventArgs e)
+    {
+        await Task.Run(() =>
+        {
+            Console.WriteLine($"Le fichier {e.FullPath} a été modifié à {DateTime.Now}.");
+            
+        });
+    }
+    
     private async Task ExecuteSaveJob(object? args)
     {
+        // string folderName = "EasySave";
+        // string fileName = "statefile.log";
+        // string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName, fileName);
+        // FileSystemWatcher watcher = new FileSystemWatcher
+        // {
+        //     Path = filePath,
+        //     EnableRaisingEvents = true
+        // };
+        // watcher.Changed += async (sender, e) => await OnChangedAsync(sender, e);
+        
+        
+        
+        
         (List<int> ids, string separator) = ListAndConvertIds(args);
         UpdateStatus(ids,RUNNING);
         ExecutionTracker executionTracker = new ExecutionTracker();
@@ -183,6 +228,8 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         Console.WriteLine(returnCode + " " + message);
         NotificationMessageManagerSingleton.GenerateNotification(Manager, returnCode, message);
     }
+    
+
     
     private void DeleteSaveJob(object? args)
     {
@@ -314,6 +361,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         }
     }
     
+    
     private int _selectedTabIndex;
     public int SelectedTabIndex
     {
@@ -348,7 +396,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
                 DestPath = saveJob.Destination,
                 LastExec = saveJob.LastSave, 
                 CreatDate = saveJob.Created, 
-                Status = saveJob.Status, 
+                Status = saveJob.Status,
                 Type = saveJob.Type,
                 ExeSaveJob = new AsyncRelayCommand<object>(ExecuteSaveJob),
                 DelSaveJob = new RelayCommand<object>(DeleteSaveJob),

@@ -222,4 +222,7 @@
     <data name="BusinessAppLock" xml:space="preserve">
         <value>Application métier en cours d'exécution, impossible de lancer un travail de sauvegarde</value>
     </data>
+    <data name="Progress" xml:space="preserve">
+        <value>Progrès</value>
+    </data>
 </root>

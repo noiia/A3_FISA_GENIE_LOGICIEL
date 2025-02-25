@@ -222,4 +222,10 @@
     <data name="BusinessAppLock" xml:space="preserve">
         <value>Business app running, execution locked</value>
     </data>
+    <data name="Progress" xml:space="preserve">
+        <value>Progress</value>
+    </data>
+    <data name="Progress" xml:space="preserve">
+        <value >Progress</value>
+    </data>
 </root>

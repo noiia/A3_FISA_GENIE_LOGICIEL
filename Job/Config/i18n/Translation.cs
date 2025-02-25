@@ -58,9 +58,11 @@ public class Translation : INotifyPropertyChanged
         Instance.OnPropertyChanged(nameof(Status));
         Instance.OnPropertyChanged(nameof(Type));
         Instance.OnPropertyChanged(nameof(Edit));
+        Instance.OnPropertyChanged(nameof(Progress));
     }
 
     // Settings
+    
     public string SettingsTitle => Translator.GetString("SettingsTitle") ?? "[SettingsTitle]";
     public string SelectLanguageTitle => Translator.GetString("SelectLanguageTitle") ?? "[SelectLanguageTitle]";
     public string SelectLanguagePlaceholder => Translator.GetString("SelectLanguagePlaceholder") ?? "[SelectLanguagePlaceholder]";
@@ -97,5 +99,5 @@ public class Translation : INotifyPropertyChanged
     public string Status => Translator.GetString("Status") ?? "[Status]";
     public string Type => Translator.GetString("Type") ?? "[Type]";
     public string Edit => Translator.GetString("Edit") ?? "[Edit]";
-
+    public string Progress => Translator.GetString("Progress") ?? "[Progress]";
 }
