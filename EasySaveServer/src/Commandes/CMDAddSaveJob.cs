@@ -31,4 +31,10 @@ public class CMDAddSaveJob : CMD
         string jsonString = JsonConvert.SerializeObject(json);
         return jsonString;
     }
+    
+    public override void run(MessageList messageList)
+    {
+        
+        return;
+    }
 }

@@ -63,8 +63,7 @@ namespace EasySaveServer
                         Console.WriteLine($"[ {client.uuid} ] Message decoded : { asciiBytes }");
                         try
                         {
-                            CommandeFromObject commandeFromObject = new CommandeFromObject(asciiBytes);
-                            commandeFromObject.init();
+                            CommandeFromObject commandeFromObject = new CommandeFromObject(asciiBytes, messageList);
                             commandeFromObject.run();
                         }
                         catch (Exception e)

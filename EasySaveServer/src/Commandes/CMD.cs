@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EasySaveServer;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Client.Commandes;
@@ -18,6 +19,11 @@ public class CMD
         json.Add("commande", name);
         string jsonString = JsonConvert.SerializeObject(json);
         return jsonString;
+    }
+    
+    public virtual void run(MessageList messageList)
+    {
+        return;
     }
 
     public string Name

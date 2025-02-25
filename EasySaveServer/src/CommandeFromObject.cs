@@ -7,13 +7,15 @@ public class CommandeFromObject
 {
     private string asciiMessage;
     private string commande;
+    private MessageList messageList;
 
-    public CommandeFromObject(string asciiMessage)
+    public CommandeFromObject(string asciiMessage, MessageList messageList)
     {
         this.asciiMessage = asciiMessage;
+        this.messageList = messageList;
     }
 
-    public void init()
+    public void run()
     {
         CMD cmd = JsonConvert.DeserializeObject<CMD>(asciiMessage);
         Console.WriteLine(cmd.Name);
@@ -51,10 +53,5 @@ public class CommandeFromObject
         // {
         //     throw new Exception("No commande recived");
         // }
-    }
-
-    public void run()
-    {
-        
     }
 }
