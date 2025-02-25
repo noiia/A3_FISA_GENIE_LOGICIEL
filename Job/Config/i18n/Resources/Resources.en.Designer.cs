@@ -78,7 +78,7 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File extension added.
+        ///   Looks up a localized string similar to File extension added successfully.
         /// </summary>
         internal static string AddFileExtension {
             get {
@@ -141,7 +141,7 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Business app already exists.
+        ///   Looks up a localized string similar to The business app already exists.
         /// </summary>
         internal static string BusinessAppExists {
             get {
@@ -276,7 +276,7 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File already triggered.
+        ///   Looks up a localized string similar to The file is already tracked.
         /// </summary>
         internal static string EncryptFileExists {
             get {
@@ -312,7 +312,7 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File extension already exists.
+        ///   Looks up a localized string similar to The extension already exists.
         /// </summary>
         internal static string FileExtensionExists {
             get {
@@ -321,7 +321,7 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Priority file type.
+        ///   Looks up a localized string similar to Prioritary file type.
         /// </summary>
         internal static string FilePriority {
             get {
@@ -506,6 +506,15 @@ namespace Config.i18n.Ressources {
         internal static string SaveAlreadyExist {
             get {
                 return ResourceManager.GetString("SaveAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The save jobs are locked by : .
+        /// </summary>
+        internal static string SaveJobLockBy {
+            get {
+                return ResourceManager.GetString("SaveJobLockBy", resourceCulture);
             }
         }
         

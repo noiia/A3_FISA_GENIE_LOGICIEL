@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using Job.Config;
+using Job.Controller;
 using Logger;
 using Newtonsoft.Json;
 
@@ -302,7 +303,7 @@ public abstract class Backup
         return files;
     }
     
-    protected void turnArchiveBitFalse(string filePath)
+    protected void TurnArchiveBitFalse(string filePath)
     {
         // Récupérer les attributs actuels du fichier
         FileAttributes attributes = File.GetAttributes(filePath);
@@ -314,9 +315,20 @@ public abstract class Backup
         File.SetAttributes(filePath, attributes);
     }
 
+    public (bool, string) AnyBusinessAppRunning()
+    {
+        var configuration = ConfigSingleton.Instance();
+        foreach (string process in configuration.GetBuisnessApp())
+        {
+            if (Process.GetProcessesByName(process).Any())
+            {
+                return (true, process);
+            }
+        }
+        return (false, String.Empty);
+    }
     
-    
-    protected void CopyDir()
+    protected void CopyDir(int id, LockTracker lockTracker)
     {
         string stateFileName = "statefile.log";
         List<string> files = new List<string>();
@@ -340,20 +352,34 @@ public abstract class Backup
         
         foreach (string file in files)
         {
-            infos.FileInfo = new FileInfo(file);
-            RealTimeState.AddCounter(counters);
+            lockTracker.AddOrUpdateLockStatus(Convert.ToInt32(id), "", 0);
+            var (isProcessRunning, processName) = AnyBusinessAppRunning();
+            if (!isProcessRunning)
+            {
+                infos.FileInfo = new FileInfo(file);
+                RealTimeState.AddCounter(counters);
             
-            CopyPasteFile(file, file.Replace(RootDir, SaveDir), infos);
-            RealTimeState.WriteState(this.SaveJob.Name, counters, new FileInfo(file), file.Replace(RootDir, SaveDir), stateFileName, "", this.ID);
-            turnArchiveBitFalse(file);
+                CopyPasteFile(file, file.Replace(RootDir, SaveDir), infos);
+                RealTimeState.WriteState(this.SaveJob.Name, counters, new FileInfo(file), file.Replace(RootDir, SaveDir), stateFileName, "", this.ID);
+                TurnArchiveBitFalse(file);   
+            }
+            else
+            {
+                while (isProcessRunning)
+                {
+                    lockTracker.AddOrUpdateLockStatus(Convert.ToInt32(id), processName, 4);
+                    Thread.Sleep(500);
+                    (isProcessRunning, processName) = AnyBusinessAppRunning();
+                }
+            }
         }
         
         // RealTimeState.WriteMessage($"Job {this.SaveJob.Name}, with ID {this.ID} has been saved");
     }
 
-    public void Save()
+    public void Save(int id, LockTracker lockTracker)
     {
-        CopyDir();
+        CopyDir(id, lockTracker);
         Configuration config = ConfigSingleton.Instance();
         string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", cryptDuration.Hours, cryptDuration.Minutes, cryptDuration.Seconds, cryptDuration.Milliseconds / 10);
         LoggerUtility.WriteLog(config.GetLogType(),LoggerUtility.Warning, $"Crypt duration: {elapsedTime}");

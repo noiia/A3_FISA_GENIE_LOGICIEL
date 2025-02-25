@@ -240,4 +240,7 @@
     <data name="EncryptFileExists" xml:space="preserve">
         <value>Le fichier est déjà suivi</value>
     </data>
+    <data name="SaveJobLockBy" xml:space="preserve">
+        <value>Les travaux de sauvegardes sont bloqués par le(s) logiciel(s) : </value>
+    </data>
 </root>
