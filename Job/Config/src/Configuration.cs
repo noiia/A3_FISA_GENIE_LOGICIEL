@@ -246,6 +246,18 @@ namespace Job.Config
             return this._configFile.CryptoKey;
         }
         
+        
+        public void SetFileExtension(string[] fileExtension)
+        {
+            this._configFile.FileExtension = fileExtension;
+            this.SaveConfiguration();
+        }
+
+        public string[] GetFileExtension()
+        {
+            return this._configFile.FileExtension;
+        }
+        
         public void AddFileExtension(string fileExtension)
         {
             if (!this._configFile.FileExtension.Contains(fileExtension))

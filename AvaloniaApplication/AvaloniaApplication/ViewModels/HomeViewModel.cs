@@ -180,7 +180,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         executionTracker.OnTrackerChanged += UpdateLastExecDate;
         
         var (returnCode, message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker);
-        Console.WriteLine(returnCode + " " + message);
         NotificationMessageManagerSingleton.GenerateNotification(Manager, returnCode, message);
     }
     
