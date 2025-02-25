@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using EasySaveServer;
+using Job.Config;
+using Job.Controller;
 
 namespace Client.Commandes;
 
@@ -34,7 +36,9 @@ public class CMDAddSaveJob : CMD
     
     public override void run(MessageList messageList)
     {
-        
+        AddSaveJob.Execute(_Name, _Source, _Destination, _Type);
+        messageList.Messages.Add();
+        messageList.Messages.Add();
         return;
     }
 }

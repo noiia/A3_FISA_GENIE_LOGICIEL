@@ -35,11 +35,14 @@ namespace EasySaveServer
                     Console.WriteLine("Message found in the list.");
 
                     byte[] msg = Encoding.UTF8.GetBytes(messageList.Messages[0]);
+                    int leghtJson = msg.Length;
+                    byte[] bytesLenght = BitConverter.GetBytes(leghtJson);
                     Console.WriteLine("Message encoded to bytes.");
 
                     foreach (Client client in clientList.Clients)
                     {
                         Console.WriteLine("Sending message to client: " + client.uuid);
+                        client.socket.Send(bytesLenght);
                         client.socket.Send(msg);
                     }
 
