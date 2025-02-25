@@ -1,7 +1,10 @@
 using System.Diagnostics;
-using CLI.i18n;
+using System.Globalization;
+using Config.i18n;
 using Config;
-
+using Job.Config;
+using Job.Config.i18n;
+// using Job.Config.i18n;
 using Logger;
 
 namespace CLI
@@ -9,30 +12,37 @@ namespace CLI
     public class CommandeListJobs : Commande
     {
         public CommandeListJobs() : base("list-SaveJob", new string[] { "list-job", "liste-jobs", "liste-job" }) { }
-
+        
+        private static Configuration _configuration;
         public override void Action(Configuration configuration, string[] args)
         {
-            Func<List<string>> languageFunc = Translation.SelectLanguage(configuration.GetLanguage());
-            List<string> language = languageFunc();
+            string language = configuration.GetLanguage() ?? "en"; 
+            CultureInfo culture = new CultureInfo(language);
+            _configuration = ConfigSingleton.Instance();
+            Translation.Translator.GetString("ListSjCallWith", culture);
+
+            LoggerUtility.WriteLog(_configuration.GetLogType(),LoggerUtility.Info, $"{Translation.Translator.GetString("ListSjCallWith", culture)} {string.Join(" ", args)}");
             
-            LoggerUtility.WriteLog(LoggerUtility.Info, $"{language[18]}{string.Join(" ", args)}");
+            // Func<List<string>> languageFunc = Translation.SelectLanguage(configuration.GetLanguage());
+            // List<string> language = languageFunc();
+            
+            LoggerUtility.WriteLog(_configuration.GetLogType(),LoggerUtility.Info, $"{Translation.Translator.GetString("ListSjCallWith")}{string.Join(" ", args)}");
             
             SaveJob[] saveJobs = configuration.GetSaveJobs();
             
             
             if (saveJobs.Length == 0)
             {
-                LoggerUtility.WriteLog(LoggerUtility.Info, $"{language[19]}");
-
+                LoggerUtility.WriteLog(_configuration.GetLogType(),LoggerUtility.Info, $"{Translation.Translator.GetString("NoSjToPrint")}");
             }
             foreach (var saveJob in saveJobs)
             {
-                Console.WriteLine($"{ConsoleColors.Bold} {ConsoleColors.Yellow} {language[19]} {saveJob.Name} {ConsoleColors.Reset}");
-                Console.WriteLine($"{ConsoleColors.Red} {language[20]} {saveJob.Id}");
-                Console.WriteLine($"{ConsoleColors.Blue} {language[21]} {saveJob.LastSave}");
-                Console.WriteLine($"{ConsoleColors.Cyan} {language[22]} {saveJob.Source}");
-                Console.WriteLine($"{ConsoleColors.Cyan} {language[23]} {saveJob.Destination}");
-                Console.WriteLine($"{ConsoleColors.Magenta} {language[24]} {saveJob.Created}");
+                Console.WriteLine($"\t{ConsoleColors.Bold} {ConsoleColors.Yellow} {Translation.Translator.GetString("Name", culture )} {saveJob.Name} {ConsoleColors.Reset}");
+                Console.WriteLine($"\t\t{ConsoleColors.Red} {Translation.Translator.GetString("Id", culture)} {saveJob.Id}");
+                Console.WriteLine($"\t\t{ConsoleColors.Blue} {Translation.Translator.GetString("LastSave", culture)} {saveJob.LastSave}");
+                Console.WriteLine($"\t\t{ConsoleColors.Cyan} {Translation.Translator.GetString("Source", culture)} {saveJob.Source}");
+                Console.WriteLine($"\t\t{ConsoleColors.Cyan} {Translation.Translator.GetString("Destination", culture)} {saveJob.Destination}");
+                Console.WriteLine($"\t\t{ConsoleColors.Magenta} {Translation.Translator.GetString("Created", culture)} {saveJob.Created}");
                 Console.WriteLine(ConsoleColors.Reset);
             }
         }

@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLI", "CLI\CLI.csproj", "{F86F7B7A-0E1D-4690-A224-441868050DC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "Logger\Logger.csproj", "{B0D2E2F4-EDEC-42D6-BAC4-AED577C9E764}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaApplication", "AvaloniaApplication\AvaloniaApplication\AvaloniaApplication.csproj", "{D2B314E0-EBAC-4148-9E01-521C512AE0F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaApplication.Desktop", "AvaloniaApplication\AvaloniaApplication.Desktop\AvaloniaApplication.Desktop.csproj", "{5DE7CBED-55C2-4E59-887F-6AC7BBF0640A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaApplication.Browser", "AvaloniaApplication\AvaloniaApplication.Browser\AvaloniaApplication.Browser.csproj", "{B0A47B91-A093-41B6-8382-B1DEFBAB808D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Job", "Job\Job.csproj", "{6D8865AD-B7F3-4A94-A045-1F8CCD07F909}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSoft", "CryptoSoft\CryptoSoft.csproj", "{D86D542D-0B82-409E-BADC-351FED37BFCB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F86F7B7A-0E1D-4690-A224-441868050DC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F86F7B7A-0E1D-4690-A224-441868050DC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F86F7B7A-0E1D-4690-A224-441868050DC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F86F7B7A-0E1D-4690-A224-441868050DC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0D2E2F4-EDEC-42D6-BAC4-AED577C9E764}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0D2E2F4-EDEC-42D6-BAC4-AED577C9E764}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0D2E2F4-EDEC-42D6-BAC4-AED577C9E764}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0D2E2F4-EDEC-42D6-BAC4-AED577C9E764}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2B314E0-EBAC-4148-9E01-521C512AE0F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2B314E0-EBAC-4148-9E01-521C512AE0F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2B314E0-EBAC-4148-9E01-521C512AE0F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2B314E0-EBAC-4148-9E01-521C512AE0F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DE7CBED-55C2-4E59-887F-6AC7BBF0640A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DE7CBED-55C2-4E59-887F-6AC7BBF0640A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DE7CBED-55C2-4E59-887F-6AC7BBF0640A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DE7CBED-55C2-4E59-887F-6AC7BBF0640A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0A47B91-A093-41B6-8382-B1DEFBAB808D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0A47B91-A093-41B6-8382-B1DEFBAB808D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0A47B91-A093-41B6-8382-B1DEFBAB808D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0A47B91-A093-41B6-8382-B1DEFBAB808D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D8865AD-B7F3-4A94-A045-1F8CCD07F909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D8865AD-B7F3-4A94-A045-1F8CCD07F909}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D8865AD-B7F3-4A94-A045-1F8CCD07F909}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D8865AD-B7F3-4A94-A045-1F8CCD07F909}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D86D542D-0B82-409E-BADC-351FED37BFCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D86D542D-0B82-409E-BADC-351FED37BFCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D86D542D-0B82-409E-BADC-351FED37BFCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D86D542D-0B82-409E-BADC-351FED37BFCB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

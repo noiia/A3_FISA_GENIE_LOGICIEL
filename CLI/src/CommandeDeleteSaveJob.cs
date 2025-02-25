@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-using CLI.i18n;
+using Config.i18n;
 using Config;
+using Job.Config;
+// using Job.Config.i18n;
 using Logger;
-using Services;
 
 namespace CLI;
 
@@ -14,45 +15,26 @@ namespace CLI;
     {
         public CommandDeleteSaveJob() : base("delete-SaveJob", new string[] { "delete-save-job", "delete-save-jobs", "delete-jobs", "delete-savejobs", "delete-job", "delete-savejob" }) { }
 
-        public override void Action(Configuration configuration, string[] args)
+        public override Task Action(string[] args)
         {
-            Func<List<string>> languageFunc = Translation.SelectLanguage(configuration.GetLanguage());
-            List<string> language = languageFunc();
-
-            LoggerUtility.WriteLog(LoggerUtility.Info, language[8] + string.Join(" ", args));
-            
-            ProcessStartInfo serviceAddSaveJob = new ProcessStartInfo
-            {
-                FileName = "..\\..\\..\\..\\DeleteSaveJob\\bin\\Debug\\net8.0\\DeleteSaveJob.exe", // Programme à exécuter
-                Arguments = args[0],           // Arguments optionnels
-                UseShellExecute = false,    // Utiliser le shell Windows (obligatoire pour certaines applications)
-                RedirectStandardOutput = true, // Capture la sortie standard
-                RedirectStandardError = true,  // Capture les erreurs
-                CreateNoWindow = true         // Évite d'afficher une fenêtre
-            };
-            
-            Process processServiceAddSaveJob = new Process { StartInfo = serviceAddSaveJob };
-            processServiceAddSaveJob.Start();
-            string output = processServiceAddSaveJob.StandardOutput.ReadToEnd();
-            string error = processServiceAddSaveJob.StandardError.ReadToEnd();
-            processServiceAddSaveJob.WaitForExit();
-
-            if (!string.IsNullOrWhiteSpace(error))
-            {
-                Console.WriteLine("Error:");
-                Console.WriteLine(error);
+            string content = args[0];
+        
+            string separator;   
+            if (content.Contains(";")) {
+                separator = ";";
+            } else if (content.Contains(",")) {
+                separator = ",";
+            } else {
+                separator = "";
             }
-            switch (processServiceAddSaveJob.ExitCode)
-            {
-                case ReturnCodes.OK:
-                    Console.WriteLine($"{ConsoleColors.Green} {language[10]} {ConsoleColors.Reset}");
-                    return;
-                case ReturnCodes.BAD_ARGS:
-                    Console.WriteLine($"{ConsoleColors.Red} {language[11]} {ConsoleColors.Reset}");
-                    return;
-                case ReturnCodes.JOB_DOES_NOT_EXIST:
-                    Console.WriteLine($"{ConsoleColors.Red} {language[12]}{args[0]}) {ConsoleColors.Reset}");
-                    return;
-            }
+
+            string[] contentSplited = content.Split(separator);
+            List<int> ids = contentSplited.Select(int.Parse).ToList();
+        
+            (int returnCode, string message) = Job.Controller.DeleteSaveJob.Execute(ids, separator);
+            
+            Console.WriteLine(message);
+            
+            return Task.CompletedTask;
         }
     }

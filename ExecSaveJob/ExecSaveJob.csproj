@@ -19,4 +19,8 @@
     </Reference>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(SolutionDir)..\ExecSaveJob\bin\Debug\net8.0\ExecSaveJob.*&quot; &quot;$(SolutionDir)..\CLI\bin\Debug\net8.0\&quot; /Y&#xA;xcopy &quot;$(SolutionDir)..\ExecSaveJob\bin\Debug\net8.0\ExecSaveJob.*&quot; &quot;$(SolutionDir)..\AvaloniaApplication\AvaloniaApplication.Desktop\bin\Debug\net8.0\&quot; /Y" />
+  </Target>
+
 </Project>

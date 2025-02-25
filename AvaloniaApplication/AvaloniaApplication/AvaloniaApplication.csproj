@@ -20,5 +20,23 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="HarfBuzzSharp" />
+    <PackageReference Include="Notification.Avalonia" />
+    <PackageReference Include="ReactiveUI" />
+    <PackageReference Include="SkiaSharp" />
+    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\AddSaveJobView.axaml.cs">
+      <DependentUpon>AddSaveJobView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Job">
+      <HintPath>..\..\Job\bin\Debug\net8.0\Job.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

@@ -20,4 +20,8 @@
     <PackageReference Include="System.Text.Json" Version="8.0.0" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(SolutionDir)..\ServiceLogTreeStructure\bin\Debug\net8.0\ServiceLogTreeStructure.*&quot; &quot;$(SolutionDir)..\CLI\bin\Debug\net8.0\&quot; /Y&#xA;xcopy &quot;$(SolutionDir)..\ServiceLogTreeStructure\bin\Debug\net8.0\ServiceLogTreeStructure.*&quot; &quot;$(SolutionDir)..\AvaloniaApplication\AvaloniaApplication.Desktop\bin\Debug\net8.0\&quot; /Y" />
+  </Target>
+
 </Project>

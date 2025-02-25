@@ -8,15 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Config">
-      <HintPath>..\Config\bin\Debug\net8.0\Config.dll</HintPath>
-    </Reference>
     <Reference Include="Logger">
       <HintPath>..\Logger\bin\Debug\net8.0\Logger.dll</HintPath>
     </Reference>
-    <Reference Include="Services">
-      <HintPath>..\Services\bin\Debug\net8.0\Services.dll</HintPath>
-    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Job\Job.csproj" />
   </ItemGroup>
 
 </Project>

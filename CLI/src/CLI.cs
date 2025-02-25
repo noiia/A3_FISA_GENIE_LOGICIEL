@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Config;
+using Job.Config;
+using Job.Services;
 
 namespace CLI
 {
@@ -24,7 +25,8 @@ namespace CLI
         {
             DisplayEasySave();
             Configuration configuration = new Configuration( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
-            configuration.LoadConfiguration();
+            //threadpool a 5 threads
+            SaveJobRepo saveJobRepo = new SaveJobRepo(configuration, 5);
             if (args.Length == 0)
             {
                 foreach (Commande c in _commandes)
