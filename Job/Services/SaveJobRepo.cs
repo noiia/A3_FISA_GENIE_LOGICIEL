@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 using Job.Config;
+using Job.Controller;
 
 namespace Job.Services;
 
@@ -24,17 +25,17 @@ public class SaveJobRepo
         return (value.Result.Item1, value.Result.Item2);
     }
     
-    public static (int,string) ExecuteSaveJob(string name)
+    public static async Task<(int, string)> ExecuteSaveJob(string name)
     {
         int? id = null;
-        var value = _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
-        return (value.Result.Item1, value.Result.Item2);
+        var value = await _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
+        return (value.Item1, value.Item2);
     }
-    public static (int,string) ExecuteSaveJob(int id)
+    public static async Task<(int, string)> ExecuteSaveJob(int id)
     {
         string? name = "";
-        var value = _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
-        return (value.Result.Item1, value.Result.Item2);
+        var value = await _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
+        return (value.Item1, value.Item2);
     }
     
     public static (int,string) DeleteSaveJob(int id)
@@ -50,4 +51,30 @@ public class SaveJobRepo
         var value = _pool.QueueTask(async () => { return ServiceDeleteSaveJob.Run(_configuration, id, name); });
         return (value.Result.Item1, value.Result.Item2);
     }
+    
+    // public static (int,string) ResumeSaveJob(int id)
+    // {
+        // var value = _pool.QueueTask(async () => { return ServiceResumeSaveJob.Run(_configuration, id); });
+        // return (value.Result.Item1, value.Result.Item2);
+    // }
+    
+    public static (int,string) ResumeSaveJob(int id)
+    {
+        // ServiceResumeSaveJob.GetFilesForResume(_configuration, id);
+        try
+        {
+            var value = _pool.QueueTask(async () => { return ServiceResumeSaveJob.Run(_configuration, id); });
+            return (value.Result.Item1, value.Result.Item2);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Probably no backup to resume");
+            // Console.WriteLine(e);
+            // throw;
+        }
+        
+        return (0,"");
+    }
+
+    
 }

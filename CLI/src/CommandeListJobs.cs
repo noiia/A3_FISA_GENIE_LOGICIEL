@@ -12,27 +12,28 @@ namespace CLI
     public class CommandeListJobs : Commande
     {
         public CommandeListJobs() : base("list-SaveJob", new string[] { "list-job", "liste-jobs", "liste-job" }) { }
-
+        
+        private static Configuration _configuration;
         public override void Action(Configuration configuration, string[] args)
         {
             string language = configuration.GetLanguage() ?? "en"; 
             CultureInfo culture = new CultureInfo(language);
-
+            _configuration = ConfigSingleton.Instance();
             Translation.Translator.GetString("ListSjCallWith", culture);
 
-            LoggerUtility.WriteLog(LoggerUtility.Info, $"{Translation.Translator.GetString("ListSjCallWith", culture)} {string.Join(" ", args)}");
+            LoggerUtility.WriteLog(_configuration.GetLogType(),LoggerUtility.Info, $"{Translation.Translator.GetString("ListSjCallWith", culture)} {string.Join(" ", args)}");
             
             // Func<List<string>> languageFunc = Translation.SelectLanguage(configuration.GetLanguage());
             // List<string> language = languageFunc();
             
-            LoggerUtility.WriteLog(LoggerUtility.Info, $"{Translation.Translator.GetString("ListSjCallWith")}{string.Join(" ", args)}");
+            LoggerUtility.WriteLog(_configuration.GetLogType(),LoggerUtility.Info, $"{Translation.Translator.GetString("ListSjCallWith")}{string.Join(" ", args)}");
             
             SaveJob[] saveJobs = configuration.GetSaveJobs();
             
             
             if (saveJobs.Length == 0)
             {
-                LoggerUtility.WriteLog(LoggerUtility.Info, $"{Translation.Translator.GetString("NoSjToPrint")}");
+                LoggerUtility.WriteLog(_configuration.GetLogType(),LoggerUtility.Info, $"{Translation.Translator.GetString("NoSjToPrint")}");
             }
             foreach (var saveJob in saveJobs)
             {

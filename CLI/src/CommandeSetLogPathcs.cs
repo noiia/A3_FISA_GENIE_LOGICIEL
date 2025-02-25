@@ -15,14 +15,17 @@ namespace CLI
     public class CommandeSetLogPath : Commande
     {
         public CommandeSetLogPath() : base("Set-LogPath", new string[] { "slp", "s-lp" }) { }
-
+        private static Configuration _configuration;
         public override void Action(Configuration configuration, string[] args)
         {
             // Func<List<string>> languageFunc = Translation.SelectLanguage(configuration.GetLanguage());
             // List<string> language = languageFunc();
             string language = configuration.GetLanguage() ?? "en"; 
             CultureInfo culture = new CultureInfo(language);
-            LoggerUtility.WriteLog(LoggerUtility.Info, $"{Translation.Translator.GetString("SetLogPathCallWith", culture)} {string.Join(" ", args)}");
+            
+            _configuration = ConfigSingleton.Instance();
+            
+            LoggerUtility.WriteLog(_configuration.GetLogType(),LoggerUtility.Info, $"{Translation.Translator.GetString("SetLogPathCallWith", culture)} {string.Join(" ", args)}");
             
             int r = SetLogPath.Run(args, configuration);
             switch (r)

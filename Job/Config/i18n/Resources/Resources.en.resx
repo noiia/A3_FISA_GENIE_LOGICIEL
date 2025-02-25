@@ -73,7 +73,7 @@
         <value>There is no SaveJob to print</value>
     </data>
     <data name="Name" xml:space="preserve">
-        <value>Name :</value>
+        <value>Name </value>
     </data>
     <data name="Id" xml:space="preserve">
         <value>Id : </value>
@@ -122,5 +122,122 @@
     </data>
     <data name="MissingArgs" xml:space="preserve">
         <value>Missing arguments  : </value>
+    </data>
+    <data name="SettingsTitle" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="SelectLanguageTitle" xml:space="preserve">
+        <value>Select Language</value>
+    </data>
+    <data name="SelectLanguagePlaceholder" xml:space="preserve">
+        <value>Select Language</value>
+    </data>
+    <data name="SelectLogTypeTitle" xml:space="preserve">
+        <value>Select Log Type</value>
+    </data>
+    <data name="SelectLogTypePlaceholder" xml:space="preserve">
+        <value>Select Log Type</value>
+    </data>
+    <data name="SetLogPathTitle" xml:space="preserve">
+        <value>Set Log Path</value>
+    </data>
+    <data name="SetLogPathWatermark" xml:space="preserve">
+        <value>Set Log Path</value>
+    </data>
+    <data name="BrowseButton" xml:space="preserve">
+        <value>Browse...</value>
+    </data>
+    <data name="ResetButton" xml:space="preserve">
+        <value>Reset</value>
+    </data>
+    <data name="FileTypesToEncryptTitle" xml:space="preserve">
+        <value>File Types to Encrypt</value>
+    </data>
+    <data name="AddFileTypeWatermark" xml:space="preserve">
+        <value>Add File Type</value>
+    </data>
+    <data name="AddButton" xml:space="preserve">
+        <value>Add</value>
+    </data>
+    <data name="RemoveSelectedButton" xml:space="preserve">
+        <value>Remove Selected</value>
+    </data>
+    <data name="BusinessAppBlockingTitle" xml:space="preserve">
+        <value>Business Applications Blocking SJ</value>
+    </data>
+    <data name="AddBusinessAppWatermark" xml:space="preserve">
+        <value>Add Business App</value>
+    </data>
+    <data name="SetEncryptionKeyTitle" xml:space="preserve">
+        <value>Set Encryption Key</value>
+    </data>
+    <data name="EnterEncryptionKeyWatermark" xml:space="preserve">
+        <value>Enter Encryption Key</value>
+    </data>
+    <data name="UpdateKeyButton" xml:space="preserve">
+        <value>Update Key</value>
+    </data>
+    <data name="Confirm" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
+    <data name="Full" xml:space="preserve">
+        <value>Full</value>
+    </data>
+    <data name="SelectSaveType" xml:space="preserve">
+        <value>Select Save Type</value>
+    </data>
+    <data name="Differential" xml:space="preserve">
+        <value>Differential</value>
+    </data>
+    <data name="SrcPath" xml:space="preserve">
+        <value>Source path</value>
+    </data>
+    <data name="DestPath" xml:space="preserve">
+        <value>Destination path</value>
+    </data>
+    <data name="LastExecution" xml:space="preserve">
+        <value>Last Execution</value>
+    </data>
+    <data name="Status" xml:space="preserve">
+        <value>Status</value>
+    </data>
+    <data name="Type" xml:space="preserve">
+        <value>Type</value>
+    </data>
+    <data name="Execute" xml:space="preserve">
+        <value>Execute</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Delete</value>
+    </data>
+    <data name="Select" xml:space="preserve">
+        <value>Select</value>
+    </data>
+    <data name="Creation" xml:space="preserve">
+        <value>Creation</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="BusinessAppLock" xml:space="preserve">
+        <value>Business app running, execution locked</value>
+    </data>
+    <data name="FilePriority" xml:space="preserve">
+        <value>Priority file type</value>
+    </data>
+    <data name="AddFileExtension" xml:space="preserve">
+        <value>File extension added</value>
+    </data>
+    <data name="DelFileExtension" xml:space="preserve">
+        <value>Deletation of file extension</value>
+    </data>
+    <data name="FileExtensionExists" xml:space="preserve">
+        <value>File extension already exists</value>
+    </data>
+    <data name="BusinessAppExists" xml:space="preserve">
+        <value>Business app already exists</value>
+    </data>
+    <data name="EncryptFileExists" xml:space="preserve">
+        <value>File already triggered</value>
     </data>
 </root>

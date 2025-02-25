@@ -7,9 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Notification;
@@ -17,6 +19,8 @@ using Avalonia.Threading;
 using Config;
 using DynamicData;
 using Job.Config;
+using Job.Config.i18n;
+using Job.Controller;
 using Job.Services;
 
 namespace AvaloniaApplication.ViewModels;
@@ -30,7 +34,7 @@ public class TableDataModel : ReactiveObject
         set
         {
             this.RaiseAndSetIfChanged(ref _checked, value);
-            (App.Current.DataContext as HomeViewModel)?.UpdateSelection();
+            (App.Current.DataContext as ParentHomeSettingsViewModel)?.HomeVM.UpdateSelection();
         }
     }
     public required int Id { get; set; }
@@ -39,7 +43,17 @@ public class TableDataModel : ReactiveObject
     public required string DestPath { get; set; }
     public required DateTime LastExec { get; set; }
     public required DateTime CreatDate { get; set; }
-    public required string Status { get; set; }
+    
+    private string _status;
+    public string Status
+    {
+        get => _status;
+        set
+        {
+            _status = value;
+            OnPropertyChanged(nameof(Status));
+        }  
+    }
     public required string Type { get; set; }
     public required ICommand ExeSaveJob { get; set; }
     public required ICommand DelSaveJob { get; set; }
@@ -83,6 +97,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             if (_isAnySelected != value)
             {
                 _isAnySelected = value;
+                Console.WriteLine(_isAnySelected);
                 OnPropertyChanged(nameof(IsAnySelected));
             }
         }
@@ -112,17 +127,15 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         }
     }
 
-    public void ExecuteListSaveJob()
+    public async Task ExecuteListSaveJob()
     {
-        List<int> ids = new List<int>();
-        ids.AddRange(TableData.Where(item => item.Checked).Select(item => item.Id));
-        ExecuteSaveJob(ids);
+        List<int> ids = TableData.Where(item => item.Checked).Select(item => item.Id).ToList();
+        await ExecuteSaveJob(ids);
     }
     
     public void DeleteListSaveJob()
     {
-        List<int> ids = new List<int>();
-        ids.AddRange(TableData.Where(item => item.Checked).Select(item => item.Id));
+        List<int> ids = TableData.Where(item => item.Checked).Select(item => item.Id).ToList();
         DeleteSaveJob(ids);
     }
 
@@ -158,18 +171,20 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         return (ids, separator);
     }
     
-    private void ExecuteSaveJob(object? args)
+    private async Task ExecuteSaveJob(object? args)
     {
         (List<int> ids, string separator) = ListAndConvertIds(args);
-        (int returnCode, string message) = Job.Controller.ExecuteSaveJob.Execute(ids, separator);
+        UpdateStatus(ids,RUNNING);
+        ExecutionTracker executionTracker = new ExecutionTracker();
+        executionTracker.OnTrackerChanged += UpdateLastExecDate;
         
-        NotificationMessageManagerSingleton.GenerateNotification(this.Manager, returnCode, message);
+        var (returnCode, message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker);
+        NotificationMessageManagerSingleton.GenerateNotification(Manager, returnCode, message);
     }
     
     private void DeleteSaveJob(object? args)
     {
         (List<int> ids, string separator) = ListAndConvertIds(args);
-        Console.WriteLine(ids.Count + separator);
         (int returnCode, string message) = Job.Controller.DeleteSaveJob.Execute(ids, separator);
 
         foreach (int id in ids)
@@ -182,11 +197,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         }
         
         NotificationMessageManagerSingleton.GenerateNotification(this.Manager, returnCode, message);
-    }
-    
-    public void AddItem(TableDataModel item)
-    {
-        Dispatcher.UIThread.InvokeAsync(() => TableData.Add(item));
     }
     
     private bool _isEditClicked = true;
@@ -209,26 +219,98 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         foreach (var item in TableData)
         {
             item.IsReadOnly = _isEditClicked;
-            Console.WriteLine(item.Name + ";" + item.IsReadOnly);
         }
-        // LoadSaveJob(_config);
         if ((IsEditClicked == false) || true)
         {
-            Console.WriteLine("in");
             SaveJob[] saveJobs = new SaveJob[]{};
-            Console.WriteLine(TableData.Count);
             foreach (var item in TableData)
             {
-                Console.WriteLine("var item in TableData");
-                SaveJob sj = new SaveJob(item.Id, item.Name, item.SrcPath, item.DestPath, item.LastExec, item.CreatDate, item.Type);
+                SaveJob sj = new SaveJob(item.Id, item.Name, item.SrcPath, item.DestPath, item.LastExec, item.CreatDate, item.Status, item.Type);
                 saveJobs = saveJobs.Append(sj).ToArray();
             }
-            Console.WriteLine("_config.SetSaveJobs(saveJobs);");
             _configuration.SetSaveJobs(saveJobs);
         }
     }
     
-    public ICommand EditSaveJobCommand { get; set; }
+    public void UpdateLastExecDate(object sender, TrackerChangedEventArgs eventArgs)
+    {
+        try
+        {
+            List<SaveJob> saveJobs = _configuration.GetSaveJobs().ToList();
+            
+            SaveJob sj = saveJobs.FirstOrDefault(i => i.Id == eventArgs.Id);
+            if (sj != null)
+            {
+                saveJobs.Remove(sj); 
+                sj.LastSave = eventArgs.Timestamp;
+                switch (eventArgs.ReturnCode)
+                {
+                    case 1 :
+                    {
+                        sj.Status = STOP;
+                        break;
+                    }
+                    case 2 :
+                    {
+                        sj.Status = WARNING;
+                        break;
+                    }
+                    case 3 :
+                    {
+                        sj.Status = ERROR;
+                        break;
+                    }
+                    case 4 :
+                    {
+                        sj.Status = LOCK;
+                        break;
+                    }
+                }
+                
+                saveJobs.Add(sj);   
+            }
+            _configuration.SetSaveJobs(saveJobs.ToArray());
+            LoadSaveJob();   
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private const string STOP = "STOP";
+    private const string WARNING = "WARNING";
+    private const string ERROR = "ERROR";
+    private const string LOCK = "LOCK";
+    private const string PAUSE = "PAUSE";
+    private const string RUNNING = "RUNNING";
+    public string Status;
+    public void UpdateStatus(List<int> ids, string status)
+    {
+        try
+        {
+            foreach (var id in ids)
+            {
+                List<SaveJob> saveJobs = _configuration.GetSaveJobs().ToList();
+            
+                SaveJob sj = saveJobs.FirstOrDefault(i => i.Id == id);
+                if (sj != null)
+                {
+                    saveJobs.Remove(sj);
+                    sj.Status = status;
+                    saveJobs.Add(sj);   
+                }
+                _configuration.SetSaveJobs(saveJobs.ToArray());
+                LoadSaveJob();     
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
     
     private int _selectedTabIndex;
     public int SelectedTabIndex
@@ -243,17 +325,19 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             {
                 _configuration.LoadConfiguration();
                 LoadSaveJob();
+            } else if (_selectedTabIndex == 1)
+            {
+                _configuration.LoadConfiguration();
+                Translation.SelectLanguage(_configuration.GetLanguage());
             }
         }
     }
-    
-
     public void LoadSaveJob()
     {
         TableData = new ObservableCollection<TableDataModel>();
         foreach (SaveJob saveJob in _configuration.GetSaveJobs())
         {
-            AddItem(new TableDataModel 
+            TableData.Add(new TableDataModel 
             { 
                 Checked = false,
                 Id = saveJob.Id, 
@@ -262,9 +346,9 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
                 DestPath = saveJob.Destination,
                 LastExec = saveJob.LastSave, 
                 CreatDate = saveJob.Created, 
-                Status = "en cours", 
+                Status = saveJob.Status, 
                 Type = saveJob.Type,
-                ExeSaveJob = new RelayCommand<object>(ExecuteSaveJob),
+                ExeSaveJob = new AsyncRelayCommand<object>(ExecuteSaveJob),
                 DelSaveJob = new RelayCommand<object>(DeleteSaveJob),
             });
         }
@@ -275,7 +359,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     {
         Title = "Save job list";
         TableData = new ObservableCollection<TableDataModel>();
-        // config.Load_configuration();
         _configuration = ConfigSingleton.Instance();
         _configuration.LoadConfiguration();
         LoadSaveJob();
