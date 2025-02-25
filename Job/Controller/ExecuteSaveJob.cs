@@ -11,7 +11,7 @@ namespace Job.Controller;
 public class ExecuteSaveJob
 {
     private static Configuration _configuration;
-    public static async Task<(int, string)> Execute(List<int>  ids, string separator, ExecutionTracker tracker)
+    public static async Task<(int, string)> Execute(List<int>  ids, string separator, ExecutionTracker execTracker, LockTracker lockTracker)
     {
         _configuration = ConfigSingleton.Instance();
         LoggerUtility.WriteLog(_configuration.GetLogType(),LoggerUtility.Info, $"{Translation.Translator.GetString("SjExecWith")} {string.Join(" ", ids, separator)}");
@@ -26,35 +26,43 @@ public class ExecuteSaveJob
         {
             case ";":
                 string listId = "";
-               
+                
+                ImportantSaveJobs importantSaveJobs = new ImportantSaveJobs();
+                
+                importantSaveJobs.SetSaveJobHierarchies(ids.ToArray());
                 foreach (var id in ids)
                 {
-                    (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(id);
-                    tracker.AddOrUpdateExecution(id, DateTime.Now, returnCode);
-                    switch (returnCode)
+                    var mostImportantJob = importantSaveJobs.GetMostImportantSaveJobs(ids);
+                    if (mostImportantJob != null)
                     {
-                        case 2:
+                        (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(mostImportantJob.Id, lockTracker);
+                        importantSaveJobs.SetStatus(mostImportantJob.Id, 1);
+                        execTracker.AddOrUpdateExecution(mostImportantJob.Id, DateTime.Now, returnCode);
+                        switch (returnCode)
                         {
-                            return (returnCode, message + string.Join(", ", listId));
+                            case 2:
+                            {
+                                return (returnCode, message + string.Join(", ", listId));
+                            }
+                            case 3:
+                            {
+                                return (returnCode, message + string.Join(", ", listId));
+                            }
+                            case 4:
+                            {
+                                return (returnCode, message);
+                            }
                         }
-                        case 3:
-                        {
-                            return (returnCode, message + string.Join(", ", listId));
-                        }
-                        case 4:
-                        {
-                            return (returnCode, message);
-                        }
+                        listId += $"{mostImportantJob.Id}, ";   
                     }
-                    listId += $"{id}, ";
                 }
                 return (1, $"{Translation.Translator.GetString("SjExecSuccesfully")} {listId}");
             
             case  ",":
                 for (int i = ids[0]; i <= ids[1]; i++)
                 {
-                    (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(i);
-                    tracker.AddOrUpdateExecution(i, DateTime.Now, returnCode);
+                    (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(i, lockTracker);
+                    execTracker.AddOrUpdateExecution(i, DateTime.Now, returnCode);
                     switch (returnCode)
                     {
                         case 2:
@@ -74,8 +82,8 @@ public class ExecuteSaveJob
                 return (1, $"{Translation.Translator.GetString("SjExecSuccesfully")} : {ids[0]} - {ids[1]}");
             
             case "":
-                (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(ids[0]);
-                tracker.AddOrUpdateExecution(ids[0], DateTime.Now, returnCode);
+                (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(ids[0], lockTracker);
+                execTracker.AddOrUpdateExecution(ids[0], DateTime.Now, returnCode);
                 switch (returnCode)
                 {
                     case 2:

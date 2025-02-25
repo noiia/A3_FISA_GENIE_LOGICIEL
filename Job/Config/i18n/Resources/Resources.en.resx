@@ -222,4 +222,25 @@
     <data name="BusinessAppLock" xml:space="preserve">
         <value>Business app running, execution locked</value>
     </data>
+    <data name="FilePriority" xml:space="preserve">
+        <value>Prioritary file type</value>
+    </data>
+    <data name="AddFileExtension" xml:space="preserve">
+        <value>File extension added successfully</value>
+    </data>
+    <data name="DelFileExtension" xml:space="preserve">
+        <value>Deletation of file extension</value>
+    </data>
+    <data name="FileExtensionExists" xml:space="preserve">
+        <value>The extension already exists</value>
+    </data>
+    <data name="BusinessAppExists" xml:space="preserve">
+        <value>The business app already exists</value>
+    </data>
+    <data name="EncryptFileExists" xml:space="preserve">
+        <value>The file is already tracked</value>
+    </data>
+    <data name="SaveJobLockBy" xml:space="preserve">
+        <value>The save jobs are locked by : </value>
+    </data>
 </root>

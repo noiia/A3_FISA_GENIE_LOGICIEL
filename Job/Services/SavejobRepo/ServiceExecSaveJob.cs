@@ -7,10 +7,13 @@ using Logger;
 
 namespace Job.Services;
 
-public class ServiceExecSaveJob
+public class ServiceExecSaveJob 
 {
     private static Configuration _configuration;
-    public static (int, string) Run(Configuration configuration, int? id, string? name)
+    
+    
+    
+    public static (int, string) Run(Configuration configuration, LockTracker lockTracker, int? id, string? name)
     {
         SaveJob? saveJob = null;
         _configuration = ConfigSingleton.Instance();
@@ -46,12 +49,12 @@ public class ServiceExecSaveJob
                 if (saveJob.Type == "full")
                 { 
                     CompleteBackup completeBackup = new CompleteBackup(saveJob);
-                    completeBackup.Save();
+                    completeBackup.Save(id ?? -1, lockTracker);
                 }
                 else if (saveJob.Type == "diff")
                 {
                     DifferentialBackup differentialBackup = new DifferentialBackup(saveJob);
-                    differentialBackup.Save();
+                    differentialBackup.Save(id ?? -1, lockTracker);
                 }
                 
                 stopwatch.Stop();

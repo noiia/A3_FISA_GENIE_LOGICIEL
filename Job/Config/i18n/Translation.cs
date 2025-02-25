@@ -44,6 +44,8 @@ public class Translation : INotifyPropertyChanged
         Instance.OnPropertyChanged(nameof(SetEncryptionKeyTitle));
         Instance.OnPropertyChanged(nameof(EnterEncryptionKeyWatermark));
         Instance.OnPropertyChanged(nameof(UpdateKeyButton));
+        Instance.OnPropertyChanged(nameof(FilePriority));
+        Instance.OnPropertyChanged(nameof(AddFileExtension));
         Instance.OnPropertyChanged(nameof(NameTranslate));
         Instance.OnPropertyChanged(nameof(Browse));
         Instance.OnPropertyChanged(nameof(SrcPath));
@@ -79,6 +81,8 @@ public class Translation : INotifyPropertyChanged
     public string SetEncryptionKeyTitle => Translator.GetString("SetEncryptionKeyTitle") ?? "[SetEncryptionKeyTitle]";
     public string EnterEncryptionKeyWatermark => Translator.GetString("EnterEncryptionKeyWatermark") ?? "[EnterEncryptionKeyWatermark]";
     public string UpdateKeyButton => Translator.GetString("UpdateKeyButton") ?? "[UpdateKeyButton]";
+    public string FilePriority => Translator.GetString("FilePriority") ?? "[FilePriority]";
+    public string AddFileExtension => Translator.GetString("AddFileExtension") ?? "[AddFileExtension]";
 
     // addSaveJob
     public string NameTranslate => Translator.GetString("Name") ?? "[Name]";

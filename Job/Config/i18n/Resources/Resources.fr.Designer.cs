@@ -78,6 +78,15 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extension de fichier ajoutée.
+        /// </summary>
+        internal static string AddFileExtension {
+            get {
+                return ResourceManager.GetString("AddFileExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ajouter un type de fichier.
         /// </summary>
         internal static string AddFileTypeWatermark {
@@ -132,6 +141,15 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to L&apos;application métier existe déjà.
+        /// </summary>
+        internal static string BusinessAppExists {
+            get {
+                return ResourceManager.GetString("BusinessAppExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application métier en cours d&apos;exécution, impossible de lancer un travail de sauvegarde.
         /// </summary>
         internal static string BusinessAppLock {
@@ -182,6 +200,15 @@ namespace Config.i18n.Ressources {
         internal static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Suppression de l&apos;extension de fichier.
+        /// </summary>
+        internal static string DelFileExtension {
+            get {
+                return ResourceManager.GetString("DelFileExtension", resourceCulture);
             }
         }
         
@@ -249,6 +276,15 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Le fichier est déjà suivi.
+        /// </summary>
+        internal static string EncryptFileExists {
+            get {
+                return ResourceManager.GetString("EncryptFileExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Entrer la clé de chiffrement.
         /// </summary>
         internal static string EnterEncryptionKeyWatermark {
@@ -272,6 +308,24 @@ namespace Config.i18n.Ressources {
         internal static string Execute {
             get {
                 return ResourceManager.GetString("Execute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to L&apos;extension existe déjà.
+        /// </summary>
+        internal static string FileExtensionExists {
+            get {
+                return ResourceManager.GetString("FileExtensionExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type de fichier prioritaires.
+        /// </summary>
+        internal static string FilePriority {
+            get {
+                return ResourceManager.GetString("FilePriority", resourceCulture);
             }
         }
         
@@ -452,6 +506,15 @@ namespace Config.i18n.Ressources {
         internal static string SaveAlreadyExist {
             get {
                 return ResourceManager.GetString("SaveAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Les travaux de sauvegardes sont bloqués par le(s) logiciel(s) : .
+        /// </summary>
+        internal static string SaveJobLockBy {
+            get {
+                return ResourceManager.GetString("SaveJobLockBy", resourceCulture);
             }
         }
         

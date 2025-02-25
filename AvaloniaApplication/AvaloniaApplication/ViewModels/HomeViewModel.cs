@@ -178,9 +178,10 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         UpdateStatus(ids,RUNNING);
         ExecutionTracker executionTracker = new ExecutionTracker();
         executionTracker.OnTrackerChanged += UpdateLastExecDate;
+        LockTracker lockTracker = new LockTracker();
+        lockTracker.OnTrackerChanged += UpdateStatusOnLock;
         
-        var (returnCode, message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker);
-        Console.WriteLine(returnCode + " " + message);
+        var (returnCode, message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker, lockTracker);
         NotificationMessageManagerSingleton.GenerateNotification(Manager, returnCode, message);
     }
     
@@ -238,41 +239,90 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     {
         try
         {
-            List<SaveJob> saveJobs = _configuration.GetSaveJobs().ToList();
-            
-            SaveJob sj = saveJobs.FirstOrDefault(i => i.Id == eventArgs.Id);
-            if (sj != null)
+            Dispatcher.UIThread.InvokeAsync(() =>
             {
-                saveJobs.Remove(sj); 
-                sj.LastSave = eventArgs.Timestamp;
-                switch (eventArgs.ReturnCode)
+                List<SaveJob> saveJobs = _configuration.GetSaveJobs().ToList();
+            
+                SaveJob sj = saveJobs.FirstOrDefault(i => i.Id == eventArgs.Id);
+                if (sj != null)
                 {
-                    case 1 :
+                    saveJobs.Remove(sj); 
+                    sj.LastSave = eventArgs.Timestamp;
+                    switch (eventArgs.ReturnCode)
                     {
-                        sj.Status = STOP;
-                        break;
+                        case 1 :
+                        {
+                            sj.Status = STOP;
+                            break;
+                        }
+                        case 2 :
+                        {
+                            sj.Status = WARNING;
+                            break;
+                        }
+                        case 3 :
+                        {
+                            sj.Status = ERROR;
+                            break;
+                        }
+                        case 4 :
+                        {
+                            sj.Status = LOCK;
+                            break;
+                        }
                     }
-                    case 2 :
-                    {
-                        sj.Status = WARNING;
-                        break;
-                    }
-                    case 3 :
-                    {
-                        sj.Status = ERROR;
-                        break;
-                    }
-                    case 4 :
-                    {
-                        sj.Status = LOCK;
-                        break;
-                    }
-                }
                 
-                saveJobs.Add(sj);   
-            }
-            _configuration.SetSaveJobs(saveJobs.ToArray());
-            LoadSaveJob();   
+                    saveJobs.Add(sj);   
+                }
+                _configuration.SetSaveJobs(saveJobs.ToArray());
+                LoadSaveJob();  
+            });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private DateTime _lastNotificationDate;
+    public void UpdateStatusOnLock(object sender, TrackerLockEventArgs eventArgs)
+    {
+        try
+        {
+            Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                List<SaveJob> saveJobs = _configuration.GetSaveJobs().ToList();
+            
+                SaveJob sj = saveJobs.FirstOrDefault(i => i.Id == eventArgs.Id);
+                if (sj != null)
+                {
+                    saveJobs.Remove(sj); 
+                    switch (eventArgs.Status)
+                    {
+                        case 0 :
+                        {
+                            sj.Status = RUNNING;
+                            break;
+                        }
+                        case 4 :
+                        {
+                            sj.Status = LOCK;
+                            if ((DateTime.Now - _lastNotificationDate).TotalSeconds >= 7)
+                            {
+                                NotificationMessageManagerSingleton.GenerateNotification(this.Manager, 4, $"{Translation.Translator.GetString("SaveJobLockBy")} {eventArgs.BusinessAppName}");
+                                _lastNotificationDate = DateTime.Now;
+                            }
+                            break;
+                        }
+                    }
+                
+                    saveJobs.Add(sj);   
+                }
+                _configuration.SetSaveJobs(saveJobs.ToArray());
+                LoadSaveJob();   
+            });
+            
         }
         catch (Exception e)
         {

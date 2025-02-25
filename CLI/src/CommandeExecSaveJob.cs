@@ -35,8 +35,9 @@ namespace CLI
             List<int>  ids = contentSplited.Select(int.Parse).ToList();
             
             ExecutionTracker executionTracker = new ExecutionTracker();
+            LockTracker lockTracker = new LockTracker();
         
-            (int returnCode, string message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker);
+            (int returnCode, string message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker, lockTracker);
             
             Console.WriteLine(message);
 
