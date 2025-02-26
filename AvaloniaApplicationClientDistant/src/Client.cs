@@ -5,6 +5,7 @@ using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading;
 using AvaloniaApplicationClientDistant.Commandes;
+using AvaloniaApplicationClientDistant.Message;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -63,12 +64,14 @@ namespace AvaloniaApplicationClientDistant
                         }
 
                         string asciiBytes = Encoding.UTF8.GetString(dataBytes);
-                        JObject jObject = JsonConvert.DeserializeObject<JObject>(asciiBytes);
-                        Console.WriteLine(jObject.message);
-                        switch (jObject.message)
+                        MSG msg = JsonConvert.DeserializeObject<MSG>(asciiBytes);
+                        Console.WriteLine(msg.Name);
+                        switch (msg.Name)
                         {
                             case "configFile":
-                                JsonConvert.DeserializeObject<JObject>(jObject.configFile);
+                                ConfigurationDistant configurationDistant = ConfigurationDistant.GetInstance();
+                                configurationDistant.ConfigFile = (JsonConvert.DeserializeObject<MSGConfigFile>(asciiBytes)).ConfigFile;
+                                break;
                         }
                     }
                     catch (Exception e)

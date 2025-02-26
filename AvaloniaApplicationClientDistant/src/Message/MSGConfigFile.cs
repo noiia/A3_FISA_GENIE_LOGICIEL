@@ -1,4 +1,5 @@
-﻿using Config;
+﻿using System;
+using Config;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -20,5 +21,12 @@ public class MSGConfigFile: MSG
         json["configFile"] = JToken.FromObject(_configFile);
         string jsonString = JsonConvert.SerializeObject(json);
         return jsonString;
+    }
+
+
+    public ConfigFile ConfigFile
+    {
+        get => _configFile;
+        set => _configFile = value ?? throw new ArgumentNullException(nameof(value));
     }
 }

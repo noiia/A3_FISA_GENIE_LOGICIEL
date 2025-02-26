@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -13,7 +14,9 @@ public partial class App : Application
         Client client = Client.GetInstance();
         Console.WriteLine("Client created");
         client.Init();
+        ConfigurationDistant configurationDistant = ConfigurationDistant.GetInstance();
         Console.WriteLine("Client initialized");
+        Thread.Sleep(1000);
         AvaloniaXamlLoader.Load(this);
     }
 

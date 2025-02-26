@@ -10,12 +10,27 @@ namespace AvaloniaApplicationClientDistant;
 
 public class ConfigurationDistant
 {
+    private static ConfigurationDistant _instance;
     private ConfigFile _configFile;
 
-    public ConfigurationDistant()
+    // Constructeur privé pour empêcher l'instanciation directe
+    private ConfigurationDistant()
     {
         Client client = Client.GetInstance();
+        Console.WriteLine("Client client = Client.GetInstance()");
         client.SendMessage(new CMDGetConfig());
+        Console.WriteLine("client.SendMessage(new CMDGetConfig())");
+
+    }
+
+    // Propriété statique pour accéder à l'instance unique
+    public static ConfigurationDistant GetInstance()
+    {
+        if (_instance == null)
+        {
+            _instance = new ConfigurationDistant();
+        }
+        return _instance;
     }
 
     public ConfigFile ConfigFile

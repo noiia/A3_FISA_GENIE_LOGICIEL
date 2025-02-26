@@ -46,6 +46,9 @@ public class CommandeFromObject
             case "ResumeSaveJob":
                 CMDResumeSaveJob cmdResumeSaveJob = JsonConvert.DeserializeObject<CMDResumeSaveJob>(asciiMessage);
                 break;
+            default:
+                Console.WriteLine($"Bad commande : {cmd.Commande}");
+                break;
         }
         
         // if (message.commande)
