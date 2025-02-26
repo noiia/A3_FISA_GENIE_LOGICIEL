@@ -243,6 +243,18 @@
     <data name="SaveJobLockBy" xml:space="preserve">
         <value>The save jobs are locked by : </value>
     </data>
+    <data name="SetMaxFileSize" xml:space="preserve">
+        <value>Define files size limit for parallelized transfert</value>
+    </data>
+    <data name="MaxFileSizeWatermark" xml:space="preserve">
+        <value>Ex : 4096</value>
+    </data>
+    <data name="MaxFileSizeModified" xml:space="preserve">
+        <value>The file size limit on parallelized transfert has been updated</value>
+    </data>
+    <data name="Apply" xml:space="preserve">
+        <value>Apply</value>
+    </data>
     <data name="Progress" xml:space="preserve">
         <value>Progress</value>
     </data>

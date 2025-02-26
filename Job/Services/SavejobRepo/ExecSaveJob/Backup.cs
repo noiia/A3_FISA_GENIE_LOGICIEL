@@ -167,7 +167,20 @@ public abstract class Backup
             }
             else
             {
+                // arbitrary transfer speed
+                int BitsPerSec = 1;
+
                 // File.Copy(RootFile, ToFile, true);
+                if (infos.FileInfo.Length < configuration.GetLengthLimit())
+                {
+                    Console.WriteLine("not limited");
+                    CopyFileWithProgress(RootFile, ToFile, infos);
+                }
+                else
+                {
+                    Console.WriteLine("limited");
+                    // CopyFileWithProgress(RootFile, ToFile, infos, BitsPerSec );
+                }
                 CopyFileWithProgress(RootFile, ToFile, infos);
             }
         }
@@ -262,12 +275,10 @@ public abstract class Backup
 }
 
     
-    
-   
-    
-    public static void CopyFileWithProgress(Configuration configuration ,string sourceFilePath, string destinationFilePath, Infos infos, long offset)
+    public static void CopyFileWithProgress(Configuration configuration, string sourceFilePath, string destinationFilePath, Infos infos, long offset)
     {
-        const int bufferSize = 2 * 1048576; // 2 MB buffer size, you can adjust it as per your requirement
+        const int bufferSize = 2 * 1048576;
+
         // const int bufferSize = 1024;
 
         using (var sourceStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
@@ -393,8 +404,9 @@ public abstract class Backup
         return (false, String.Empty);
     }
     
-    protected void CopyDir(int id, LockTracker lockTracker)
+    protected void CopyDir(int id, LockTracker lockTracker, BigFileTracker bigFileTracker)
     {
+        Configuration _configuration = ConfigSingleton.Instance();
         string stateFileName = "statefile.log";
         List<string> files = new List<string>();
         files = GetFiles(RootDir, files);
@@ -414,20 +426,43 @@ public abstract class Backup
         infos.SaveDir = SaveDir;
         infos.StateFileName = stateFileName;
         infos.ID = this.ID;
-        
-        
+
+        List<string> tooBigFile = new List<string>();
+        Dictionary<int, List<string>> bigFiles = new Dictionary<int, List<string>>();
         foreach (string file in files)
         {
             lockTracker.AddOrUpdateLockStatus(Convert.ToInt32(id), "", 0);
             var (isProcessRunning, processName) = AnyBusinessAppRunning();
             if (!isProcessRunning)
             {
-                infos.FileInfo = new FileInfo(file);
-                RealTimeState.AddCounter(counters);
-            
-                CopyPasteFile(file, file.Replace(RootDir, SaveDir), infos);
-                RealTimeState.WriteState(this.SaveJob.Id.ToString(), counters, new FileInfo(file), file.Replace(RootDir, SaveDir), stateFileName, "", this.ID);
-                TurnArchiveBitFalse(file);   
+                if (file.Length < _configuration.GetLengthLimit())
+                {
+                    infos.FileInfo = new FileInfo(file);
+                    RealTimeState.AddCounter(counters);
+                    CopyPasteFile(file, file.Replace(RootDir, SaveDir), infos);
+                    RealTimeState.WriteState(this.SaveJob.Name, counters, new FileInfo(file), file.Replace(RootDir, SaveDir), stateFileName, "", this.ID);
+                    TurnArchiveBitFalse(file);
+                }
+                else
+                {
+                    tooBigFile.Add(file);
+                    bigFileTracker.AddOrUpdateBigFile(id, tooBigFile);
+                }
+                
+                bigFiles = SaveJobRepo.SchedulingBigFileTransfert();
+                if (bigFiles.TryGetValue(id, out var bigFilesToTransfer) && bigFilesToTransfer.Count > 0)
+                {
+                    foreach (var bigFile in bigFilesToTransfer)
+                    {
+                        infos.FileInfo = new FileInfo(bigFile);
+                        RealTimeState.AddCounter(counters);
+                        CopyPasteFile(bigFile, bigFile.Replace(RootDir, SaveDir), infos);
+                        RealTimeState.WriteState(this.SaveJob.Id.ToString(), counters, new FileInfo(bigFile), bigFile.Replace(RootDir, SaveDir), stateFileName, "", this.ID);
+                        TurnArchiveBitFalse(bigFile);   
+                    }
+
+                    SaveJobRepo.RemoveFileTransfered(id);
+                }
             }
             else
             {
@@ -443,9 +478,9 @@ public abstract class Backup
         // RealTimeState.WriteMessage($"Job {this.SaveJob.Name}, with ID {this.ID} has been saved");
     }
 
-    public void Save(int id, LockTracker lockTracker)
+    public void Save(int id, LockTracker lockTracker, BigFileTracker bigFileTracker)
     {
-        CopyDir(id, lockTracker);
+        CopyDir(id, lockTracker, bigFileTracker);
         Configuration config = ConfigSingleton.Instance();
         string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", cryptDuration.Hours, cryptDuration.Minutes, cryptDuration.Seconds, cryptDuration.Milliseconds / 10);
         LoggerUtility.WriteLog(config.GetLogType(),LoggerUtility.Warning, $"Crypt duration: {elapsedTime}");

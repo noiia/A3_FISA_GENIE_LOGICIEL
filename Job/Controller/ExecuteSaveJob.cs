@@ -40,11 +40,7 @@ public class ExecuteSaveJob
                         execTracker.AddOrUpdateExecution(mostImportantJob.Id, DateTime.Now, returnCode);
                         switch (returnCode)
                         {
-                            case 2:
-                            {
-                                return (returnCode, message + string.Join(", ", listId));
-                            }
-                            case 3:
+                            case 2 or 3:
                             {
                                 return (returnCode, message + string.Join(", ", listId));
                             }
@@ -65,11 +61,7 @@ public class ExecuteSaveJob
                     execTracker.AddOrUpdateExecution(i, DateTime.Now, returnCode);
                     switch (returnCode)
                     {
-                        case 2:
-                        {
-                            return (returnCode, $"{message} {ids[0]} - {ids[1]}");
-                        }
-                        case 3:
+                        case 2 or 3:
                         {
                             return (returnCode, $"{message} {ids[0]} - {ids[1]}");
                         }
@@ -86,11 +78,7 @@ public class ExecuteSaveJob
                 execTracker.AddOrUpdateExecution(ids[0], DateTime.Now, returnCode);
                 switch (returnCode)
                 {
-                    case 2:
-                    {
-                        return (returnCode, $"{message} {ids[0]}");
-                    }
-                    case 3:
+                    case 2 or 3 :
                     {
                         return (returnCode, $"{message} {ids[0]}");
                     }

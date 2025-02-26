@@ -163,7 +163,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             if (_isAnySelected != value)
             {
                 _isAnySelected = value;
-                Console.WriteLine(_isAnySelected);
                 OnPropertyChanged(nameof(IsAnySelected));
             }
         }

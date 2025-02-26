@@ -114,6 +114,15 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Appliquer.
+        /// </summary>
+        internal static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mauvais arguments donnés :.
         /// </summary>
         internal static string BadArgsGiven {
@@ -447,6 +456,24 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to La limite de taille de fichier pour les transferts parallélisés à été modifiée.
+        /// </summary>
+        internal static string MaxFileSizeModified {
+            get {
+                return ResourceManager.GetString("MaxFileSizeModified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ex : 4096.
+        /// </summary>
+        internal static string MaxFileSizeWatermark {
+            get {
+                return ResourceManager.GetString("MaxFileSizeWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Arguments manquants :.
         /// </summary>
         internal static string MissingArgs {
@@ -483,7 +510,7 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Progrès.
+        ///   Looks up a localized string similar to Progrés.
         /// </summary>
         internal static string Progress {
             get {
@@ -623,6 +650,15 @@ namespace Config.i18n.Ressources {
         internal static string SetLogPathWatermark {
             get {
                 return ResourceManager.GetString("SetLogPathWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Définir la taille limite de fichiers à transférer en parallèle.
+        /// </summary>
+        internal static string SetMaxFileSize {
+            get {
+                return ResourceManager.GetString("SetMaxFileSize", resourceCulture);
             }
         }
         
