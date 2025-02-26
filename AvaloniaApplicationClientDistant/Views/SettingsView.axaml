@@ -1,0 +1,85 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AvaloniaApplicationClientDistant.ViewModels"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d"
+             x:Class="AvaloniaApplicationClientDistant.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+    <UserControl.DataContext>
+        <vm:SettingsViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Column="0">
+            <StackPanel>
+                <Grid Margin="16">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="{Binding Translations.SettingsTitle}" FontSize="24" Margin="0,0,0,20"/>
+                        <TextBlock Text="{Binding Translations.SelectLanguageTitle}" FontSize="18" Margin="0,0,0,10"/>
+                        <ComboBox PlaceholderText="{Binding Translations.SelectLanguagePlaceholder}" Width="500"
+                                  SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
+                            <system:String>English</system:String>
+                            <system:String>French</system:String>
+                        </ComboBox>
+                        <TextBlock Text="{Binding Translations.SelectLogTypeTitle}" FontSize="18" Margin="0,0,0,10"/>
+                        <ComboBox PlaceholderText="{Binding Translations.SelectLogTypePlaceholder}" Width="500"
+                                  SelectedItem="{Binding SelectedLogType, Mode=TwoWay}">
+                            <system:String>XML</system:String>
+                            <system:String>JSON</system:String>
+                        </ComboBox>
+                        <TextBlock Text="{Binding Translations.SetLogPathTitle}" FontSize="18" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBox Watermark="{Binding Translations.SetLogPathWatermark}" Width="500"
+                                     Text="{Binding LogPath, Mode=TwoWay}"/>
+                            <Button Content="{Binding Translations.BrowseButton}" Click="OnBrowseButtonClicked"/>
+                            <Button Content="{Binding Translations.ResetButton}" Click="OnResetButtonClicked"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" Spacing="10">
+                            <TextBlock Text="{Binding Translations.FileTypesToEncryptTitle}" FontSize="18" Margin="0,0,0,10"/>
+                            <ListBox HorizontalAlignment="Left" ItemsSource="{Binding FileTypesToEncrypt}" Width="500" Height="120" Name="FileTypesListBox"/>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <TextBox Watermark="{Binding Translations.AddFileTypeWatermark}" Width="350" Text="{Binding NewFileTypeToEncrypt, Mode=TwoWay}"/>
+                                <Button Content="{Binding Translations.AddButton}" Click="OnAddFileTypeButtonClicked"/>
+                                <Button Content="{Binding Translations.RemoveSelectedButton}" Click="OnRemoveFileTypeButtonClicked"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" Spacing="10">
+                            <TextBlock Text="{Binding Translations.BusinessAppBlockingTitle}" FontSize="18" Margin="0,0,0,10"/>
+                            <ListBox HorizontalAlignment="Left" ItemsSource="{Binding BusinessApp}" Width="500" Height="120" Name="BusinessAppListBox"/>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <TextBox Watermark="{Binding Translations.AddBusinessAppWatermark}" Width="350" Text="{Binding NewBusinessApp, Mode=TwoWay}"/>
+                                <Button Content="{Binding Translations.AddButton}" Click="OnAddBusinessAppButtonClicked"/>
+                                <Button Content="{Binding Translations.RemoveSelectedButton}" Click="OnRemoveBusinessAppButtonClicked"/>
+                            </StackPanel>
+                        </StackPanel>
+                        
+                        <TextBlock Text="{Binding Translations.SetEncryptionKeyTitle}" FontSize="18" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBox Watermark="{Binding Translations.EnterEncryptionKeyWatermark}" Width="500"
+                                     Text="{Binding CryptKey, Mode=TwoWay}"/>
+                            <Button Content="{Binding Translations.UpdateKeyButton}" Click="OnUpdateCryptKeyButtonClicked"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" Spacing="10">
+                            <TextBlock Text="{Binding Translations.FilePriority}" FontSize="18" Margin="0,0,0,10"/>
+                            <ListBox HorizontalAlignment="Left" ItemsSource="{Binding FileExtension}" Width="500" Height="120" Name="FileExtensionListBox"/>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <TextBox Watermark="{Binding Translations.AddFileExtension}" Width="350" Text="{Binding NewFileExtension, Mode=TwoWay}"/>
+                                <Button Content="{Binding Translations.AddButton}" Click="OnAddFileExtensionButtonClicked"/>
+                                <Button Content="{Binding Translations.RemoveSelectedButton}" Click="OnRemoveFileExtensionButtonClicked"/>
+                            </StackPanel>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
