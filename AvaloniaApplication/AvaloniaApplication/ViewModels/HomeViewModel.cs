@@ -132,9 +132,20 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     {
         Dispatcher.UIThread.InvokeAsync(() =>
         {
-            Console.WriteLine("timer");
+            // Console.WriteLine("timer");
             LoadSaveJob();
         });
+    }
+    
+    public void StopTimer()
+    {
+        if (timer != null)
+        {
+            // Dispose the timer to stop it
+            timer.Dispose();
+            timer = null; // Optionally set to null to indicate it's stopped
+            isInitialized = false; // Reset the initialization flag
+        }
     }
     
     public new event PropertyChangedEventHandler? PropertyChanged;
@@ -238,6 +249,8 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         
         var (returnCode, message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker, lockTracker);
         NotificationMessageManagerSingleton.GenerateNotification(Manager, returnCode, message);
+        
+        StopTimer();
     }
     
     private void DeleteSaveJob(object? args)

@@ -61,7 +61,7 @@ namespace AvaloniaApplication.ViewModels
             {
                 try
                 {
-                    Console.WriteLine($"Setting Language to: {value}");
+                    // Console.WriteLine($"Setting Language to: {value}");
 
                     if (_selectedLanguage != value)
                     {
@@ -114,7 +114,7 @@ namespace AvaloniaApplication.ViewModels
             {
                 try
                 {
-                    Console.WriteLine($"Setting Log Type to: {value}");
+                    // Console.WriteLine($"Setting Log Type to: {value}");
 
                     if (_selectedLogType != value)
                     {
@@ -169,7 +169,7 @@ namespace AvaloniaApplication.ViewModels
             {
                 try
                 {
-                    Console.WriteLine($"Setting Log Path to: {value}");
+                    // Console.WriteLine($"Setting Log Path to: {value}");
 
                     if (_logPath != value)
                     {

@@ -11,7 +11,8 @@ namespace Job.Services.ExecSaveJob;
 public class Json
 {
     public string BackupID { get; set; }
-    public string Name { get; set; }
+    // public string Name { get; set; }
+    public string SaveJobID { get; set; }
     public string IsActive { get; set; }
     public string DateTime { get; set; }
     public string Source { get; set; }
@@ -25,6 +26,7 @@ public class Infos
     public Infos() { }
     public string ID { get; set; }
     public string SaveJobName { get; set; }
+    public string SaveJobID { get; set; }
     public string StateFileName { get; set; }
 
     public string SaveDir { get; set; }
@@ -39,6 +41,7 @@ public class Infos
 public abstract class Backup
 {
     public static List<string> BackupFiles { get; set; }
+    public static int MillisecondForWriteProgressInConfig { get; set; } = 10000;
     
     public string ID { get; set; }
     public string RootDir { get; set; }
@@ -231,7 +234,7 @@ public abstract class Backup
 
         DateTime LastUpload = infos.lastSave;
         Configuration configuration = ConfigSingleton.Instance();
-        Config.SaveJob sj = configuration.GetSaveJob(infos.SaveJobName);
+        Config.SaveJob sj = configuration.GetSaveJob(int.Parse(infos.SaveJobID));
 
         while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
         {
@@ -243,14 +246,14 @@ public abstract class Backup
             // double progress = (double)totalBytesCopied / fileSize * 100;
             RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, destinationFilePath, infos.StateFileName, "", infos.ID, totalBytesCopied);
 
-            if ((DateTime.Now - LastUpload) > TimeSpan.FromMicroseconds(0))
+            if ((DateTime.Now - LastUpload) > TimeSpan.FromMicroseconds(MillisecondForWriteProgressInConfig))
             {
                 
                 Counters counter = infos.Counters;
                     
                 int progress = (int)((counter.TransferedData + totalBytesCopied) / counter.DataCount * 100);
                 
-                Console.WriteLine($"Progress: {progress:F2}%");
+                // Console.WriteLine($"Progress: {progress:F2}%");
                 UpdateConfigProgress(configuration, sj, progress);
                 infos.lastSave = DateTime.Now;
             }
@@ -283,7 +286,7 @@ public abstract class Backup
             
             DateTime LastUpload = infos.lastSave;
 
-            Config.SaveJob sj = configuration.GetSaveJob(infos.SaveJobName);
+            Config.SaveJob sj = configuration.GetSaveJob(int.Parse(infos.SaveJobID));
             
             while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
             {
@@ -296,7 +299,7 @@ public abstract class Backup
                 
                 RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, destinationFilePath, infos.StateFileName, "", infos.ID, totalBytesCopied);
 
-                if ((DateTime.Now - LastUpload) > TimeSpan.FromSeconds(0))
+                if ((DateTime.Now - LastUpload) > TimeSpan.FromSeconds(MillisecondForWriteProgressInConfig))
                 {
                     Counters counter = infos.Counters;
                     
@@ -404,7 +407,8 @@ public abstract class Backup
         Counters counters = new Counters(DataCount, files.Count, true);
         
         Infos infos = new Infos();
-        infos.SaveJobName = this.SaveJob.Name;
+        // infos.SaveJobName = this.SaveJob.Name;
+        infos.SaveJobID = this.SaveJob.Id.ToString();
         infos.Counters = counters;
         // Infos.FileInfo = new FileInfo(file);
         infos.SaveDir = SaveDir;
@@ -422,7 +426,7 @@ public abstract class Backup
                 RealTimeState.AddCounter(counters);
             
                 CopyPasteFile(file, file.Replace(RootDir, SaveDir), infos);
-                RealTimeState.WriteState(this.SaveJob.Name, counters, new FileInfo(file), file.Replace(RootDir, SaveDir), stateFileName, "", this.ID);
+                RealTimeState.WriteState(this.SaveJob.Id.ToString(), counters, new FileInfo(file), file.Replace(RootDir, SaveDir), stateFileName, "", this.ID);
                 TurnArchiveBitFalse(file);   
             }
             else
