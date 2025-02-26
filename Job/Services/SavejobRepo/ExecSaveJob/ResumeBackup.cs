@@ -172,11 +172,13 @@ public class ResumeBackup : Backup
         
         Infos infos = new Infos();
         infos.SaveJobName = this.SaveJob.Name;
+        infos.ID = backupId.ToString();
         infos.Counters = ResumeCounter;
         // Infos.FileInfo = new FileInfo(file);
         infos.SaveDir = SaveDir;
         infos.StateFileName = "statefile.log";
-        infos.ID = backupId.ToString();
+        infos.SaveJobID = this.SaveJob.Id.ToString();
+        infos.lastSave = DateTime.MinValue;
 
         try
         {
@@ -190,23 +192,11 @@ public class ResumeBackup : Backup
                 // string Destination = Path.Combine(SaveJob.Destination, SaveId, relativePath);
                 // Console.WriteLine($"copy {file} to {Path.Combine(SaveJob.Destination, SaveId, file.Replace(SourcePrefix, string.Empty))}");
                 infos.FileInfo = new FileInfo(file.Source);
-                
-                // arbitrary transfer speed
-                int BitsPerSec = 1024;
-
-                if (infos.FileInfo.Length < configuration.GetLengthLimit())
-                {
-                    Console.WriteLine("unlimited");
-                    CopyFileWithProgress(file.Source, file.Destination, infos, Convert.ToInt32(file.Advancement));
-                }
-                else
-                {
-                    Console.WriteLine("limited");
-                    // CopyFileWithProgress(file.Source, file.Destination, infos, Convert.ToInt32(file.Advancement), BitsPerSec );
-                }
-                
+                // Console.WriteLine($"copy {file} to {SaveJob.Destination}\\{SaveID}\\{}");
+                CopyFileWithProgress(configuration ,file.Source, file.Destination, infos, Convert.ToInt32(file.Advancement));
                 // RealTimeState.WriteState(this.SaveJob.Name, ResumeCounter, new FileInfo(file.Source), file.Destination, infos.StateFileName, "", this.ID);
-                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, file.Destination, infos.StateFileName, "", backupId.ToString());
+                
+                RealTimeState.WriteState(infos.SaveJobID.ToString(), infos.Counters, infos.FileInfo, file.Destination, infos.StateFileName, "", backupId.ToString());
             }
         }
         catch (Exception e)
@@ -237,7 +227,7 @@ public class ResumeBackup : Backup
                 infos.FileInfo = new FileInfo(file);
                 // Console.WriteLine($"copy {file} to {SaveJob.Destination}\\{SaveID}\\{}");
                 CopyPasteFile(file, Destination, infos);
-                RealTimeState.WriteState(this.SaveJob.Name, ResumeCounter, new FileInfo(file), file.Replace(RootDir, SaveDir), infos.StateFileName, "", backupId.ToString());
+                RealTimeState.WriteState(this.SaveJob.Id.ToString(), ResumeCounter, new FileInfo(file), file.Replace(RootDir, SaveDir), infos.StateFileName, "", backupId.ToString());
             }
         }
         catch (Exception e)

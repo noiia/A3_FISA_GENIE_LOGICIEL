@@ -67,11 +67,11 @@ namespace Job.Config
         public void SetSaveJobs(SaveJob[] saveJobs)
         {
             Logger.LoggerUtility.WriteLog(GetLogType(), Logger.LoggerUtility.Info, "SetSaveJobs");
-            Console.WriteLine("SetSaveJobs");
-            foreach (var VARIABLE in saveJobs)
-            {
-                Console.WriteLine($"Saving job {VARIABLE.Name}");
-            }
+            // Console.WriteLine("SetSaveJobs");
+            // foreach (var VARIABLE in saveJobs)
+            // {
+            //     Console.WriteLine($"Saving job {VARIABLE.Name}");
+            // }
             _configFile.SaveJobs = saveJobs;
             SaveConfiguration();
         }
