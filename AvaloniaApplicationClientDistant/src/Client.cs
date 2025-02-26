@@ -63,13 +63,12 @@ namespace AvaloniaApplicationClientDistant
                         }
 
                         string asciiBytes = Encoding.UTF8.GetString(dataBytes);
-                        try
+                        JObject jObject = JsonConvert.DeserializeObject<JObject>(asciiBytes);
+                        Console.WriteLine(jObject.message);
+                        switch (jObject.message)
                         {
-                            Console.WriteLine(asciiBytes);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine($"{e.Message}");
+                            case "configFile":
+                                JsonConvert.DeserializeObject<JObject>(jObject.configFile);
                         }
                     }
                     catch (Exception e)

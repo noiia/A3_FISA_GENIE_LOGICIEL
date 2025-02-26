@@ -26,25 +26,26 @@ public class ConfigurationDistant
 
     public void LoadConfiguration()
     {
-        if (!File.Exists(this._configPath))
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(this._configPath));
-            string defaultLogPath =
-                (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\")
-                .Replace("\\", "/");
-            ConfigFile tempConfigFile = new ConfigFile([], defaultLogPath, "CryptoKey", "en", "json", [], [], []);
-            string json = JsonSerializer.Serialize(tempConfigFile);
-            File.WriteAllText(this._configPath, json);
-        }
-
-        string fileContent = File.ReadAllText(this._configPath);
-        this._configFile = JsonSerializer.Deserialize<ConfigFile>(fileContent);
+        // if (!File.Exists(this._configPath))
+        // {
+        //     Directory.CreateDirectory(Path.GetDirectoryName(this._configPath));
+        //     string defaultLogPath =
+        //         (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\")
+        //         .Replace("\\", "/");
+        //     ConfigFile tempConfigFile = new ConfigFile([], defaultLogPath, "CryptoKey", "en", "json", [], [], []);
+        //     string json = JsonSerializer.Serialize(tempConfigFile);
+        //     File.WriteAllText(this._configPath, json);
+        // }
+        //
+        // string fileContent = File.ReadAllText(this._configPath);
+        // this._configFile = JsonSerializer.Deserialize<ConfigFile>(fileContent);
     }
 
     public void SaveConfiguration()
     {
         string json = JsonSerializer.Serialize(this._configFile);
-        File.WriteAllText(this._configPath, json);
+        Client client = Client.GetInstance();
+        client.SendMessage(new CMDSetConfigFile(_configFile.SaveJobs ,_configFile.LogPath, _configFile.CryptoKey, _configFile.Language, _configFile.LogType, _configFile.CryptExtension, _configFile.BuisnessApp));
     }
 
     public SaveJob GetSaveJob(int id)
@@ -294,4 +295,6 @@ public class ConfigurationDistant
             this.SaveConfiguration();
         }
     }
+    
+    
 }
