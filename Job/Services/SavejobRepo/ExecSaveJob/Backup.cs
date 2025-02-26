@@ -363,7 +363,7 @@ public abstract class Backup
         infos.ID = this.ID;
 
         List<string> tooBigFile = new List<string>();
-        
+        Dictionary<int, List<string>> bigFiles = new Dictionary<int, List<string>>();
         foreach (string file in files)
         {
             lockTracker.AddOrUpdateLockStatus(Convert.ToInt32(id), "", 0);
@@ -380,8 +380,23 @@ public abstract class Backup
                 }
                 else
                 {
-                    tooBigFile.Add(infos.FileInfo.FullName);
+                    tooBigFile.Add(file);
                     bigFileTracker.AddOrUpdateBigFile(id, tooBigFile);
+                }
+                
+                bigFiles = SaveJobRepo.SchedulingBigFileTransfert();
+                if (bigFiles.TryGetValue(id, out var bigFilesToTransfer) && bigFilesToTransfer.Count > 0)
+                {
+                    foreach (var bigFile in bigFilesToTransfer)
+                    {
+                        infos.FileInfo = new FileInfo(bigFile);
+                        RealTimeState.AddCounter(counters);
+                        CopyPasteFile(bigFile, bigFile.Replace(RootDir, SaveDir), infos);
+                        RealTimeState.WriteState(this.SaveJob.Name, counters, new FileInfo(bigFile), bigFile.Replace(RootDir, SaveDir), stateFileName, "", this.ID);
+                        TurnArchiveBitFalse(bigFile);   
+                    }
+
+                    SaveJobRepo.RemoveFileTransfered(id);
                 }
             }
             else
