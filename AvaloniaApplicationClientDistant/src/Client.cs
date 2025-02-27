@@ -64,9 +64,11 @@ namespace AvaloniaApplicationClientDistant
                         }
 
                         string asciiBytes = Encoding.UTF8.GetString(dataBytes);
+                        Console.WriteLine(asciiBytes);
                         MSG msg = JsonConvert.DeserializeObject<MSG>(asciiBytes);
-                        Console.WriteLine(msg.Name);
-                        switch (msg.Name)
+                        Console.WriteLine("New Message ! ");
+                        Console.WriteLine(msg.Message);
+                        switch (msg.Message)
                         {
                             case "configFile":
                                 ConfigurationDistant configurationDistant = ConfigurationDistant.GetInstance();

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using AvaloniaApplicationClientDistant.Commandes;
 using Config;
 using Job.Config;
@@ -21,6 +22,14 @@ public class ConfigurationDistant
         client.SendMessage(new CMDGetConfig());
         Console.WriteLine("client.SendMessage(new CMDGetConfig())");
 
+    }
+
+    public void WaitLoad()
+    {
+        while (_configFile == null)
+        {
+            Thread.Sleep(500);
+        }
     }
 
     // Propriété statique pour accéder à l'instance unique

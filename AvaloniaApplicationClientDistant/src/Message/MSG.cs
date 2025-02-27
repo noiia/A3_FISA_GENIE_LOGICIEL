@@ -6,25 +6,25 @@ namespace AvaloniaApplicationClientDistant.Message;
 
 public class MSG
 {
-    protected string name;
+    protected string message;
 
-    public MSG(string name)
+    public MSG(string message)
     {
-        this.name = name;
+        this.message = message;
     }
 
     public virtual string toString()
     {
         JObject json = new JObject();
-        json.Add("message", name);
+        json.Add("message", message);
         string jsonString = JsonConvert.SerializeObject(json);
         return jsonString;
     }
     
 
-    public string Name
+    public string Message
     {
-        get => name;
-        set => name = value ?? throw new ArgumentNullException(nameof(value));
+        get => message;
+        set => message = value ?? throw new ArgumentNullException(nameof(value));
     }
 }

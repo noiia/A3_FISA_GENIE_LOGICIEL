@@ -17,7 +17,7 @@ public class MSGConfigFile: MSG
     public override string toString()
     {
         JObject json = new JObject();
-        json.Add("message", name);
+        json.Add("message", message);
         json["configFile"] = JToken.FromObject(_configFile);
         string jsonString = JsonConvert.SerializeObject(json);
         return jsonString;

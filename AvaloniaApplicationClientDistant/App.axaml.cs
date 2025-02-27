@@ -17,6 +17,15 @@ public partial class App : Application
         ConfigurationDistant configurationDistant = ConfigurationDistant.GetInstance();
         Console.WriteLine("Client initialized");
         Thread.Sleep(1000);
+        configurationDistant.WaitLoad();
+        Console.WriteLine(configurationDistant.GetLanguage());
+        Console.WriteLine(configurationDistant.GetLanguage());
+        Console.WriteLine(configurationDistant.GetLanguage());
+        Console.WriteLine(configurationDistant.GetLanguage());
+        Console.WriteLine(configurationDistant.GetLanguage());
+        Console.WriteLine(configurationDistant.GetLanguage());
+        Console.WriteLine(configurationDistant.GetLanguage());
+        Console.WriteLine(configurationDistant.GetLanguage());
         AvaloniaXamlLoader.Load(this);
     }
 
