@@ -11,7 +11,7 @@ namespace Job.Controller;
 public class ExecuteSaveJob
 {
     private static Configuration _configuration;
-    public static async Task<(int, string)> Execute(List<int>  ids, string separator, ExecutionTracker tracker)
+    public static async Task<(int, string)> Execute(List<int>  ids, string separator, ExecutionTracker execTracker, LockTracker lockTracker)
     {
         _configuration = ConfigSingleton.Instance();
         LoggerUtility.WriteLog(_configuration.GetLogType(),LoggerUtility.Info, $"{Translation.Translator.GetString("SjExecWith")} {string.Join(" ", ids, separator)}");
@@ -35,16 +35,12 @@ public class ExecuteSaveJob
                     var mostImportantJob = importantSaveJobs.GetMostImportantSaveJobs(ids);
                     if (mostImportantJob != null)
                     {
-                        (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(mostImportantJob.Id);
+                        (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(mostImportantJob.Id, lockTracker);
                         importantSaveJobs.SetStatus(mostImportantJob.Id, 1);
-                        tracker.AddOrUpdateExecution(mostImportantJob.Id, DateTime.Now, returnCode);
+                        execTracker.AddOrUpdateExecution(mostImportantJob.Id, DateTime.Now, returnCode);
                         switch (returnCode)
                         {
-                            case 2:
-                            {
-                                return (returnCode, message + string.Join(", ", listId));
-                            }
-                            case 3:
+                            case 2 or 3:
                             {
                                 return (returnCode, message + string.Join(", ", listId));
                             }
@@ -61,15 +57,11 @@ public class ExecuteSaveJob
             case  ",":
                 for (int i = ids[0]; i <= ids[1]; i++)
                 {
-                    (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(i);
-                    tracker.AddOrUpdateExecution(i, DateTime.Now, returnCode);
+                    (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(i, lockTracker);
+                    execTracker.AddOrUpdateExecution(i, DateTime.Now, returnCode);
                     switch (returnCode)
                     {
-                        case 2:
-                        {
-                            return (returnCode, $"{message} {ids[0]} - {ids[1]}");
-                        }
-                        case 3:
+                        case 2 or 3:
                         {
                             return (returnCode, $"{message} {ids[0]} - {ids[1]}");
                         }
@@ -82,15 +74,11 @@ public class ExecuteSaveJob
                 return (1, $"{Translation.Translator.GetString("SjExecSuccesfully")} : {ids[0]} - {ids[1]}");
             
             case "":
-                (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(ids[0]);
-                tracker.AddOrUpdateExecution(ids[0], DateTime.Now, returnCode);
+                (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(ids[0], lockTracker);
+                execTracker.AddOrUpdateExecution(ids[0], DateTime.Now, returnCode);
                 switch (returnCode)
                 {
-                    case 2:
-                    {
-                        return (returnCode, $"{message} {ids[0]}");
-                    }
-                    case 3:
+                    case 2 or 3 :
                     {
                         return (returnCode, $"{message} {ids[0]}");
                     }

@@ -13,7 +13,7 @@ public class ServiceExecSaveJob
     
     
     
-    public static (int, string) Run(Configuration configuration, int? id, string? name)
+    public static (int, string) Run(Configuration configuration, LockTracker lockTracker, BigFileTracker bigFileTracker, int? id, string? name)
     {
         SaveJob? saveJob = null;
         _configuration = ConfigSingleton.Instance();
@@ -49,12 +49,12 @@ public class ServiceExecSaveJob
                 if (saveJob.Type == "full")
                 { 
                     CompleteBackup completeBackup = new CompleteBackup(saveJob);
-                    completeBackup.Save();
+                    completeBackup.Save(id ?? -1, lockTracker, bigFileTracker);
                 }
                 else if (saveJob.Type == "diff")
                 {
                     DifferentialBackup differentialBackup = new DifferentialBackup(saveJob);
-                    differentialBackup.Save();
+                    differentialBackup.Save(id ?? -1, lockTracker, bigFileTracker);
                 }
                 
                 stopwatch.Stop();

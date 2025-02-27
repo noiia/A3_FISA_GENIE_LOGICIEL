@@ -78,7 +78,7 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File extension added.
+        ///   Looks up a localized string similar to File extension added successfully.
         /// </summary>
         internal static string AddFileExtension {
             get {
@@ -114,6 +114,15 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply.
+        /// </summary>
+        internal static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bad arguments given :.
         /// </summary>
         internal static string BadArgsGiven {
@@ -141,7 +150,7 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Business app already exists.
+        ///   Looks up a localized string similar to The business app already exists.
         /// </summary>
         internal static string BusinessAppExists {
             get {
@@ -276,7 +285,7 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File already triggered.
+        ///   Looks up a localized string similar to The file is already tracked.
         /// </summary>
         internal static string EncryptFileExists {
             get {
@@ -312,7 +321,7 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File extension already exists.
+        ///   Looks up a localized string similar to The extension already exists.
         /// </summary>
         internal static string FileExtensionExists {
             get {
@@ -321,7 +330,7 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Priority file type.
+        ///   Looks up a localized string similar to Prioritary file type.
         /// </summary>
         internal static string FilePriority {
             get {
@@ -447,6 +456,24 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The file size limit on parallelized transfert has been updated.
+        /// </summary>
+        internal static string MaxFileSizeModified {
+            get {
+                return ResourceManager.GetString("MaxFileSizeModified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ex : 4096.
+        /// </summary>
+        internal static string MaxFileSizeWatermark {
+            get {
+                return ResourceManager.GetString("MaxFileSizeWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Missing arguments  : .
         /// </summary>
         internal static string MissingArgs {
@@ -483,6 +510,15 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Progress.
+        /// </summary>
+        internal static string Progress {
+            get {
+                return ResourceManager.GetString("Progress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove Selected.
         /// </summary>
         internal static string RemoveSelectedButton {
@@ -506,6 +542,15 @@ namespace Config.i18n.Ressources {
         internal static string SaveAlreadyExist {
             get {
                 return ResourceManager.GetString("SaveAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The save jobs are locked by : .
+        /// </summary>
+        internal static string SaveJobLockBy {
+            get {
+                return ResourceManager.GetString("SaveJobLockBy", resourceCulture);
             }
         }
         
@@ -605,6 +650,15 @@ namespace Config.i18n.Ressources {
         internal static string SetLogPathWatermark {
             get {
                 return ResourceManager.GetString("SetLogPathWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Define files size limit for parallelized transfert.
+        /// </summary>
+        internal static string SetMaxFileSize {
+            get {
+                return ResourceManager.GetString("SetMaxFileSize", resourceCulture);
             }
         }
         

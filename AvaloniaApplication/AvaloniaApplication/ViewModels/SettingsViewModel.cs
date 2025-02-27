@@ -61,7 +61,7 @@ namespace AvaloniaApplication.ViewModels
             {
                 try
                 {
-                    Console.WriteLine($"Setting Language to: {value}");
+                    // Console.WriteLine($"Setting Language to: {value}");
 
                     if (_selectedLanguage != value)
                     {
@@ -114,7 +114,7 @@ namespace AvaloniaApplication.ViewModels
             {
                 try
                 {
-                    Console.WriteLine($"Setting Log Type to: {value}");
+                    // Console.WriteLine($"Setting Log Type to: {value}");
 
                     if (_selectedLogType != value)
                     {
@@ -169,7 +169,7 @@ namespace AvaloniaApplication.ViewModels
             {
                 try
                 {
-                    Console.WriteLine($"Setting Log Path to: {value}");
+                    // Console.WriteLine($"Setting Log Path to: {value}");
 
                     if (_logPath != value)
                     {
@@ -555,6 +555,40 @@ namespace AvaloniaApplication.ViewModels
             catch (Exception ex)
             {
                 ShowErrorNotification(ex.Message);
+            }
+        }
+        
+        
+        private int _maxFileSize;
+        public int MaxFileSize
+        {
+            get
+            {
+                try
+                {
+                    return config.GetMaxFileSize();
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorNotification(ex.Message);
+                    return 4096;
+                }
+            }
+            set
+            {
+                try
+                {
+                    if (_maxFileSize != value)
+                    {
+                        _maxFileSize = value;
+                        config.SetMaxFileSize(value);
+                        OnPropertyChanged();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorNotification(ex.Message);
+                }
             }
         }
     }

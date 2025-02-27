@@ -12,11 +12,37 @@ public class SaveJobRepo
     public SaveJobRepo(Configuration config, int threads)
     {
         _configuration = config;
-        // #TODO verif fonctionnel, set une seule fois  
         if (_pool == null)
         {
             _pool = new ThreadPoolManager(threads);
         }
+    }
+
+    
+    private static List<BigFileTracker> listBigFileTrackers = new List<BigFileTracker>();
+    private static Dictionary<int, Dictionary<int, List<string>>> listBigFile = new Dictionary<int, Dictionary<int, List<string>>>();
+
+    private static void GetBigFiles(object sender, TrackerBigFileEventArgs eventArgs)
+    {
+        int importance = eventArgs.TooBigFiles.Values.SelectMany(files => files).Count(files => _configuration.GetFileExtension().Contains(Path.GetExtension(files)));
+        listBigFile[importance] = eventArgs.TooBigFiles;
+    }
+
+    public static Dictionary<int, List<string>> SchedulingBigFileTransfert()
+    {
+        if (listBigFile.Count == 0)
+        {
+            return new Dictionary<int, List<string>>() ;
+        }
+
+        var highestPriorityJob = listBigFile.OrderByDescending(x => x).First();
+        
+        return new Dictionary<int, List<string>> {{highestPriorityJob.Value.Keys.First(), highestPriorityJob.Value.Values.SelectMany(files => files).ToList()}};
+    }
+
+    public static bool RemoveFileTransfered(int id)
+    {
+        return listBigFile.Remove(listBigFile.Keys.FirstOrDefault(x => x == id));
     }
     
     public static (int, string) AddSaveJob(string name, string sourcePath, string destinationPath, string saveType)
@@ -25,16 +51,24 @@ public class SaveJobRepo
         return (value.Result.Item1, value.Result.Item2);
     }
     
-    public static async Task<(int, string)> ExecuteSaveJob(string name)
+    public static async Task<(int, string)> ExecuteSaveJob(string name, LockTracker lockTracker)
     {
         int? id = null;
-        var value = await _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
+        BigFileTracker bigFileTracker = new BigFileTracker();
+        listBigFileTrackers.Add(bigFileTracker);
+        bigFileTracker.OnTrackerChanged += GetBigFiles;
+        
+        var value = await _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, lockTracker, bigFileTracker, id, name); });
         return (value.Item1, value.Item2);
     }
-    public static async Task<(int, string)> ExecuteSaveJob(int id)
+    public static async Task<(int, string)> ExecuteSaveJob(int id, LockTracker lockTracker)
     {
         string? name = "";
-        var value = await _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, id, name); });
+        BigFileTracker bigFileTracker = new BigFileTracker();
+        listBigFileTrackers.Add(bigFileTracker);
+        bigFileTracker.OnTrackerChanged += GetBigFiles;
+
+        var value = await _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, lockTracker, bigFileTracker, id, name); });
         return (value.Item1, value.Item2);
     }
     
