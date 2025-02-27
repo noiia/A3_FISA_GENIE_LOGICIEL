@@ -8,6 +8,8 @@ namespace Job.Config
     {
         private string _configPath;
         private ConfigFile _configFile;
+        private readonly Mutex _mutex = new Mutex();
+
 
         public Configuration(string configPath)
         {
@@ -26,25 +28,41 @@ namespace Job.Config
 
         public void LoadConfiguration()
         {
-            if (!File.Exists(this._configPath))
+            _mutex.WaitOne();
+            try
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(this._configPath));
-                string defaultLogPath =
-                    (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\")
-                    .Replace("\\", "/");
-                ConfigFile tempConfigFile = new ConfigFile([], defaultLogPath, "CryptoKey", "en", "json", [],[],[]);
-                string json = JsonSerializer.Serialize(tempConfigFile);
-                File.WriteAllText(this._configPath, json);
+                if (!File.Exists(this._configPath))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(this._configPath));
+                    string defaultLogPath =
+                        (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\")
+                        .Replace("\\", "/");
+                    ConfigFile tempConfigFile = new ConfigFile([], defaultLogPath, "CryptoKey", "en", "json", [],[],[]);
+                    string json = JsonSerializer.Serialize(tempConfigFile);
+                    File.WriteAllText(this._configPath, json);
+                }
+
+                string fileContent = File.ReadAllText(this._configPath);
+                this._configFile = JsonSerializer.Deserialize<ConfigFile>(fileContent);
             }
-            
-            string fileContent = File.ReadAllText(this._configPath);
-            this._configFile = JsonSerializer.Deserialize<ConfigFile>(fileContent);
+            finally
+            {
+                _mutex.ReleaseMutex();
+            }
         }
 
         public void SaveConfiguration()
         {
-            string json = JsonSerializer.Serialize(this._configFile);
-            File.WriteAllText(this._configPath, json);
+            _mutex.WaitOne();
+            try
+            {
+                string json = JsonSerializer.Serialize(this._configFile);
+                File.WriteAllText(this._configPath, json);
+            }
+            finally
+            {
+                _mutex.ReleaseMutex();
+            }
         }
 
         public SaveJob GetSaveJob(int id)
