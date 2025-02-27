@@ -24,6 +24,8 @@ using Job.Config.i18n;
 using Job.Controller;
 using Job.Services;
 using System.Threading;
+using Avalonia.Logging;
+using ExecSaveJob;
 using Timer = System.Threading.Timer;
 
 namespace AvaloniaApplication.ViewModels;
@@ -79,7 +81,7 @@ public class TableDataModel : ReactiveObject
     
     
     public required string Type { get; set; }
-    public required ICommand ExeSaveJob { get; set; }
+    public required ICommand PauseResume { get; set; }
     public required ICommand DelSaveJob { get; set; }
     private bool _isReadOnly;
 
@@ -123,7 +125,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     {
         if (!isInitialized)
         {
-            timer = new Timer(TimerCallback, null, 0, 10000);
+            timer = new Timer(TimerCallback, null, 0, 500);
             isInitialized = true;
         }
     }
@@ -251,6 +253,55 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         NotificationMessageManagerSingleton.GenerateNotification(Manager, returnCode, message);
         
         StopTimer();
+    }
+    
+    
+    private async void PauseResumeSaveJob(object? args)
+    {
+        (List<int> ids, string separator) = ListAndConvertIds(args);
+
+        if (ids.Count == 1)
+        {
+            SaveJob saveJob = _configuration.GetSaveJobs().FirstOrDefault(i => i.Id == ids.FirstOrDefault());
+            ExecutionTracker executionTracker = new ExecutionTracker();
+            executionTracker.OnTrackerChanged += UpdateLastExecDate;
+            LockTracker lockTracker = new LockTracker();
+            lockTracker.OnTrackerChanged += UpdateStatusOnLock;
+            
+            if(saveJob.Status == STOP)
+            {
+                
+                Initialize();
+                Console.WriteLine("exec");
+                UpdateStatus(ids,RUNNING);
+
+        
+                var (returnCode, message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker, lockTracker);
+            }
+            else if (saveJob.Status == RUNNING)
+            {
+                Console.WriteLine("PauseSaveJob");
+                UpdateStatus(ids,PAUSE);
+                LoadSaveJob();
+            }
+            else if (saveJob.Status == PAUSE)
+            {
+                UpdateStatus(ids,RUNNING);
+                
+                (int returnCode,string message) = await Job.Controller.ResumeSaveJob.Execute(saveJob.Id);
+                Console.WriteLine("ended ResumeSaveJob");
+                LoadSaveJob();
+                
+                // var (returnCode, message) = Job.Controller.ResumeSaveJob.Execute(saveJob.Id);
+                // ResumeBackup resumeBackup = new ResumeBackup(saveJob);
+                // resumeBackup.Resume(_configuration, saveJob.Id);
+            }
+        } 
+        
+        // var (returnCode, message) = await Job.Controller.ResumeSaveJob.Execute(ids.FirstOrDefault());
+        
+        // var (returnCode, message) = await Job.Controller.PauseResumeSaveJob.Execute(ids, separator);
+        // NotificationMessageManagerSingleton.GenerateNotification(Manager, returnCode, message);
     }
     
     private void DeleteSaveJob(object? args)
@@ -469,7 +520,8 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
                 CreatDate = saveJob.Created, 
                 Status = saveJob.Status, 
                 Type = saveJob.Type,
-                ExeSaveJob = new AsyncRelayCommand<object>(ExecuteSaveJob),
+                // PauseResume = new AsyncRelayCommand<object>(ExecuteSaveJob),
+                PauseResume = new RelayCommand<object>(PauseResumeSaveJob),
                 DelSaveJob = new RelayCommand<object>(DeleteSaveJob),
                 Progress = saveJob.Progress.ToString()
             });

@@ -349,7 +349,42 @@ namespace Logger
             return null;
         }
         
-        
+        public static int GetBackupIdBySaveJobId(int saveJobId)
+        {
+            string folderName = "EasySave";
+            string fileName = "statefile.log";
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName, fileName);
+
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    var backupEntries = new List<JObject>();
+                    string[] lines = File.ReadAllLines(filePath);
+
+                    foreach (var line in lines)
+                    {
+                        if (!string.IsNullOrWhiteSpace(line))
+                        {
+                            var entry = JsonConvert.DeserializeObject<JObject>(line);
+                            backupEntries.Add(entry);
+                        }
+                    }
+
+                    var filteredEntries = backupEntries
+                        .Where(entry => entry["SaveJobID"].Value<int>() == saveJobId).Last()["BackupID"].Value<int>();
+                    
+                    return filteredEntries;
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions (e.g., log the error)
+                    Console.WriteLine($"Error reading or deserializing the file: {ex.Message}");
+                    return 0;
+                }
+            }
+            return 0;
+        }
         
 
     }

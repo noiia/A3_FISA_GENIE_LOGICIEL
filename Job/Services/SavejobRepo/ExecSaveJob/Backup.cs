@@ -41,7 +41,7 @@ public class Infos
 public abstract class Backup
 {
     public static List<string> BackupFiles { get; set; }
-    public static int MillisecondForWriteProgressInConfig { get; set; } = 10000;
+    public static int MillisecondForWriteProgressInConfig { get; set; } = 5000;
     
     public string ID { get; set; }
     public string RootDir { get; set; }
@@ -50,6 +50,8 @@ public abstract class Backup
     public TimeSpan cryptDuration;
     
     public SaveJob SaveJob { get; set; }
+    
+    protected static bool Pause = false;
 
     public void setSavesDir(string savesDir)
     {
@@ -223,6 +225,7 @@ public abstract class Backup
 {
     const int bufferSize = 2 * 1048576; // 2 MB buffer size, you can adjust it as per your requirement
     // const int bufferSize = 1024;
+    Pause = false;
     
     using (var sourceStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
     using (var destinationStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write))
@@ -231,32 +234,49 @@ public abstract class Backup
         int bytesRead;
         long totalBytesCopied = 0;
         long fileSize = sourceStream.Length;
-
+        
         DateTime LastUpload = infos.lastSave;
         Configuration configuration = ConfigSingleton.Instance();
         Config.SaveJob sj = configuration.GetSaveJob(int.Parse(infos.SaveJobID));
-
+        
         while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
         {
-            destinationStream.Write(buffer, 0, bytesRead);
-            destinationStream.Flush();
-            totalBytesCopied += bytesRead;
-
-            // Calculate progress
-            // double progress = (double)totalBytesCopied / fileSize * 100;
-            RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, destinationFilePath, infos.StateFileName, "", infos.ID, totalBytesCopied);
-
-            if ((DateTime.Now - LastUpload) > TimeSpan.FromMicroseconds(MillisecondForWriteProgressInConfig))
+            if (!Pause)
             {
+                destinationStream.Write(buffer, 0, bytesRead);
+                destinationStream.Flush();
+                totalBytesCopied += bytesRead;
+
+                // Calculate progress
+                // double progress = (double)totalBytesCopied / fileSize * 100;
+                RealTimeState.WriteState(infos.SaveJobID, infos.Counters, infos.FileInfo, destinationFilePath, infos.StateFileName, "", infos.ID, totalBytesCopied);
+
+                if ((DateTime.Now - LastUpload) > TimeSpan.FromMicroseconds(0))
+                {
                 
-                Counters counter = infos.Counters;
+                    Counters counter = infos.Counters;
                     
-                int progress = (int)((counter.TransferedData + totalBytesCopied) / counter.DataCount * 100);
+                    int progress = (int)((counter.TransferedData + totalBytesCopied) / counter.DataCount * 100);
                 
-                // Console.WriteLine($"Progress: {progress:F2}%");
-                UpdateConfigProgress(configuration, sj, progress);
-                infos.lastSave = DateTime.Now;
+                    Console.WriteLine($"Progress: {progress:F2}%");
+                    UpdateConfigProgress(configuration, sj, progress);
+                    infos.lastSave = DateTime.Now;
+                
+                    if (sj.Status == "PAUSE")
+                    {
+                        Pause = true;
+                    }
+                    else
+                    {
+                        Pause = false;
+                    }
+                }    
             }
+            else
+            {
+                Thread.Sleep(500);
+            }
+            
         }
     }
 }
@@ -290,28 +310,34 @@ public abstract class Backup
             
             while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
             {
-                
-                destinationStream.Write(buffer, 0, bytesRead);
-                destinationStream.Flush();
-                totalBytesCopied += bytesRead;
-
-                // Calculer la progression
-                
-                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, destinationFilePath, infos.StateFileName, "", infos.ID, totalBytesCopied);
-
-                if ((DateTime.Now - LastUpload) > TimeSpan.FromSeconds(MillisecondForWriteProgressInConfig))
+                if (!Pause)
                 {
-                    Counters counter = infos.Counters;
-                    
-                    int progress = (int)(counter.TransferedData + totalBytesCopied / counter.DataCount * 100);
-                    // Console.WriteLine($"Progress: {progress:F2}%");
-                    // sj.Progress = (int)progress;
-                    UpdateConfigProgress(configuration, sj, progress );
-                    // configuration.LoadConfiguration();
-                    LastUpload = DateTime.Now;
+                    destinationStream.Write(buffer, 0, bytesRead);
+                    destinationStream.Flush();
+                    totalBytesCopied += bytesRead;
+
+                    // Calculer la progression
+
+                    RealTimeState.WriteState(infos.SaveJobID, infos.Counters, infos.FileInfo, destinationFilePath,
+                        infos.StateFileName, "", infos.ID, totalBytesCopied);
+
+                    if ((DateTime.Now - LastUpload) > TimeSpan.FromMilliseconds(0))
+                    {
+                        Counters counter = infos.Counters;
+
+                        int progress = (int)(counter.TransferedData + totalBytesCopied / counter.DataCount * 100);
+                        Console.WriteLine($"Progress: {progress:F2}%");
+                        // sj.Progress = (int)progress;
+                        UpdateConfigProgress(configuration, sj, progress);
+                        // configuration.LoadConfiguration();
+                        LastUpload = DateTime.Now;
+                    }
                 }
-                
-                
+                else
+                {
+                    Thread.Sleep(500); 
+                }
+
             }
         }
     }
@@ -420,6 +446,8 @@ public abstract class Backup
         {
             lockTracker.AddOrUpdateLockStatus(Convert.ToInt32(id), "", 0);
             var (isProcessRunning, processName) = AnyBusinessAppRunning();
+            
+            
             if (!isProcessRunning)
             {
                 infos.FileInfo = new FileInfo(file);

@@ -38,7 +38,7 @@ public class ResumeBackup : Backup
     {
         string folderName = "EasySave";
         string fileName = "statefile.log";
-        string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName, fileName);
+        string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName, fileName); 
     
         List<Logger.RealTimeState.BackupFile> filesToResume = new List<Logger.RealTimeState.BackupFile>();
         List<string> filesToSave = new List<string>();
@@ -64,9 +64,9 @@ public class ResumeBackup : Backup
                     .Where(entry => entry["BackupID"].Value<int>() == backupId)
                     .First();
                 
-                Console.WriteLine($"resume {filteredEntries["Name"]}");
+                Console.WriteLine($"resume {filteredEntries["SaveJobID"]}");
                 
-                SaveJob saveJob = configuration.GetSaveJob(filteredEntries["Name"].Value<string>());
+                SaveJob saveJob = configuration.GetSaveJob(filteredEntries["SaveJobID"].Value<int>());
                 if (saveJob.Type == "full")
                 {
                     CompleteBackup completeBackup = new CompleteBackup(saveJob);
@@ -142,7 +142,7 @@ public class ResumeBackup : Backup
                 ResumeCounter = new Counters(lastsave.Value<double>("RemainingData") + lastsave.Value<double>("Advancement"), lastsave.Value<int>("RemainingFiles"), true, backupId);
                 // ResumeCounter.TransferedFileCount = lastsave.
                 
-                Job.Config.SaveJob correspondingSaveJob = configuration.GetSaveJob(lastsave.Value<string>("Name"));
+                Job.Config.SaveJob correspondingSaveJob = configuration.GetSaveJob(lastsave.Value<int>("SaveJobID"));
                 string basePath = correspondingSaveJob.Destination;
                 string fullPath = lastsave.Value<string>("Destination");
                 

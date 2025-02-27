@@ -60,6 +60,8 @@ public class Translation : INotifyPropertyChanged
         Instance.OnPropertyChanged(nameof(Status));
         Instance.OnPropertyChanged(nameof(Type));
         Instance.OnPropertyChanged(nameof(Edit));
+        Instance.OnPropertyChanged(nameof(Resume));
+        
     }
 
     // Settings
@@ -102,5 +104,5 @@ public class Translation : INotifyPropertyChanged
     public string Type => Translator.GetString("Type") ?? "[Type]";
     public string Edit => Translator.GetString("Edit") ?? "[Edit]";
     public string Progress => Translator.GetString("Progress") ?? "[Progress]";
-
+    public string Resume => Translator.GetString("Resume") ?? "[Resume]";
 }

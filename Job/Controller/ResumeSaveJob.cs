@@ -9,9 +9,10 @@ namespace Job.Controller;
 
 public class ResumeSaveJob
 {
-    public static (int, string) Execute(int id)
+    public async static Task<(int, string)> Execute(int id)
     {
-        return SaveJobRepo.ResumeSaveJob(id);
-        // return (0, "");
+        
+        SaveJobRepo.ResumeSaveJob(id);
+        return (0, "");
     }
 }

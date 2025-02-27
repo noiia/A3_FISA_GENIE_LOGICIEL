@@ -87,13 +87,25 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="{Binding SettingsVM.Translations.Execute}">
+                            <!-- <DataGridTemplateColumn Header="{Binding SettingsVM.Translations.Execute}"> -->
+                            <!--     <DataGridTemplateColumn.CellTemplate> -->
+                            <!--         <DataTemplate> -->
+                            <!--             <Button Command="{Binding ExeSaveJob}" CommandParameter="{Binding Id}" -->
+                            <!--                     HorizontalAlignment="Center" VerticalAlignment="Center"> -->
+                            <!--                 <StackPanel Orientation="Horizontal"> -->
+                            <!--                     <Image Source="avares://AvaloniaApplication/Assets/gear.png" Width="20" Height="20"/> -->
+                            <!--                 </StackPanel> -->
+                            <!--             </Button> -->
+                            <!--         </DataTemplate> -->
+                            <!--     </DataGridTemplateColumn.CellTemplate> -->
+                            <!-- </DataGridTemplateColumn> -->
+                            <DataGridTemplateColumn Header="{Binding SettingsVM.Translations.Resume}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Command="{Binding ExeSaveJob}" CommandParameter="{Binding Id}"
+                                        <Button Command="{Binding PauseResume}" CommandParameter="{Binding Id}"
                                                 HorizontalAlignment="Center" VerticalAlignment="Center">
                                             <StackPanel Orientation="Horizontal">
-                                                <Image Source="avares://AvaloniaApplication/Assets/gear.png" Width="20" Height="20"/>
+                                                <Image Source="avares://AvaloniaApplication/Assets/ResumePause.png" Width="20" Height="20"/>
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>

@@ -246,4 +246,7 @@
     <data name="Progress" xml:space="preserve">
         <value>Progrès</value>
     </data>
+    <data name="Resume" xml:space="preserve">
+        <value>Reprendre</value>
+    </data>
 </root>

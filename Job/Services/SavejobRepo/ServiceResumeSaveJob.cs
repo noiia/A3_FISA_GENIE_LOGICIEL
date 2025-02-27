@@ -15,8 +15,11 @@ public class ServiceResumeSaveJob
 
     public static (int, string) Run(Configuration configuration, int id)
     {
+        int backupId = RealTimeState.GetBackupIdBySaveJobId(id);
+        // Console.WriteLine("1");
         ResumeBackup resumeBackup = new ResumeBackup(configuration.GetSaveJob(id));
-        resumeBackup.Resume(configuration, id);
+        // Console.WriteLine("2");
+        resumeBackup.Resume(configuration, backupId);
         return (0, "");
     }
 

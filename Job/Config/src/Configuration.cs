@@ -34,8 +34,15 @@ namespace Job.Config
 
         public void SaveConfiguration()
         {
-            string json = JsonSerializer.Serialize(this._configFile);
-            File.WriteAllText(this._configPath, json);
+            try
+            {
+                string json = JsonSerializer.Serialize(this._configFile);
+                File.WriteAllText(this._configPath, json);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         public SaveJob GetSaveJob(int id)
