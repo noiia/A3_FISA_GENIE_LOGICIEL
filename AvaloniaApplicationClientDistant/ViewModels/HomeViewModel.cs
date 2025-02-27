@@ -236,8 +236,10 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         LockTracker lockTracker = new LockTracker();
         lockTracker.OnTrackerChanged += UpdateStatusOnLock;
         
-        var (returnCode, message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker, lockTracker);
-        NotificationMessageManagerSingleton.GenerateNotification(Manager, returnCode, message);
+        Client client = Client.GetInstance();
+        client.SendMessage(new CMDExecSaveJobs(ids));
+        //var (returnCode, message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker, lockTracker);
+        //NotificationMessageManagerSingleton.GenerateNotification(Manager, returnCode, message);
         
         StopTimer();
     }

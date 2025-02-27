@@ -47,7 +47,7 @@ public class SaveJobRepo
     
     public static (int, string) AddSaveJob(string name, string sourcePath, string destinationPath, string saveType)
     {
-        var value = _pool.QueueTask(async () => { return ServiceAddSaveJob.Run(_configuration, name, sourcePath, destinationPath, saveType); });
+        var value = _pool.QueueTask(() => Task.FromResult(ServiceAddSaveJob.Run(_configuration, name, sourcePath, destinationPath, saveType)));
         return (value.Result.Item1, value.Result.Item2);
     }
     
@@ -58,7 +58,7 @@ public class SaveJobRepo
         listBigFileTrackers.Add(bigFileTracker);
         bigFileTracker.OnTrackerChanged += GetBigFiles;
         
-        var value = await _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, lockTracker, bigFileTracker, id, name); });
+        var value = await _pool.QueueTask(() => Task.FromResult(ServiceExecSaveJob.Run(_configuration, lockTracker, bigFileTracker, id, name)));
         return (value.Item1, value.Item2);
     }
     public static async Task<(int, string)> ExecuteSaveJob(int id, LockTracker lockTracker)
@@ -68,21 +68,21 @@ public class SaveJobRepo
         listBigFileTrackers.Add(bigFileTracker);
         bigFileTracker.OnTrackerChanged += GetBigFiles;
 
-        var value = await _pool.QueueTask(async () => { return ServiceExecSaveJob.Run(_configuration, lockTracker, bigFileTracker, id, name); });
+        var value = await _pool.QueueTask(() => Task.FromResult(ServiceExecSaveJob.Run(_configuration, lockTracker, bigFileTracker, id, name)));
         return (value.Item1, value.Item2);
     }
     
     public static (int,string) DeleteSaveJob(int id)
     {
         string? name = "";
-        var value = _pool.QueueTask(async () => { return ServiceDeleteSaveJob.Run(_configuration, id, name); });
+        var value = _pool.QueueTask(() => Task.FromResult(ServiceDeleteSaveJob.Run(_configuration, id, name)));
         return (value.Result.Item1, value.Result.Item2);
     }
     
     public static (int,string) DeleteSaveJob(string name)
     {
         int? id = null;
-        var value = _pool.QueueTask(async () => { return ServiceDeleteSaveJob.Run(_configuration, id, name); });
+        var value = _pool.QueueTask(() => Task.FromResult(ServiceDeleteSaveJob.Run(_configuration, id, name)));
         return (value.Result.Item1, value.Result.Item2);
     }
     
@@ -97,7 +97,7 @@ public class SaveJobRepo
         // ServiceResumeSaveJob.GetFilesForResume(_configuration, id);
         try
         {
-            var value = _pool.QueueTask(async () => { return ServiceResumeSaveJob.Run(_configuration, id); });
+            var value = _pool.QueueTask(() => Task.FromResult(ServiceResumeSaveJob.Run(_configuration, id)));
             return (value.Result.Item1, value.Result.Item2);
         }
         catch (Exception e)
