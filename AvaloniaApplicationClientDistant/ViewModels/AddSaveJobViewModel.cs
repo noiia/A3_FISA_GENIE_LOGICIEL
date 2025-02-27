@@ -67,14 +67,13 @@ public partial class AddSaveJobViewModel : ReactiveObject
     public string _destinationField;
     public string _sourceField;
     private string _notification;    
-    private Configuration config = ConfigSingleton.Instance();
+    private ConfigurationDistant config = ConfigurationDistant.GetInstance();
     
     public AddSaveJobViewModel()
     {
         Name = "AddSaveJob";
         DestinationPath = "Destination path";
         SourcePath = "Source path";
-        config.LoadConfiguration();
     }
 
     [RelayCommand]

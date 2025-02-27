@@ -104,16 +104,7 @@ public class TableDataModel : ReactiveObject
 
 public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
 {
-    private Configuration _configuration;
-    
-    // private Timer _timer = new Timer(TimerCallback, null, 0, 5000);
-    //
-    // private static void TimerCallback(object state)
-    // {
-    //     // Code to execute on each tick
-    //     Console.WriteLine("1s");
-    // }
-    
+    private ConfigurationDistant _configuration;
     
     private bool isInitialized = false;
 
@@ -441,17 +432,17 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             
             if (_selectedTabIndex == 0)
             {
-                _configuration.LoadConfiguration();
                 LoadSaveJob();
             } else if (_selectedTabIndex == 1)
             {
-                _configuration.LoadConfiguration();
                 Translation.SelectLanguage(_configuration.GetLanguage());
             }
         }
     }
     public void LoadSaveJob()
     {
+        Console.WriteLine("LoadSaveJob");
+        Console.WriteLine(_configuration.GetSaveJobs().Length);
         TableData = new ObservableCollection<TableDataModel>();
         foreach (SaveJob saveJob in _configuration.GetSaveJobs())
         {
@@ -478,8 +469,8 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     {
         Title = "Save job list";
         TableData = new ObservableCollection<TableDataModel>();
-        _configuration = ConfigSingleton.Instance();
-        _configuration.LoadConfiguration();
+        _configuration = ConfigurationDistant.GetInstance();
+        // _configuration.LoadConfiguration();
         LoadSaveJob();
         Initialize();
     }
