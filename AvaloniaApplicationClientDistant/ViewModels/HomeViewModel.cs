@@ -18,6 +18,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Notification;
 using Avalonia.Threading;
 using AvaloniaApplicationClientDistant;
+using AvaloniaApplicationClientDistant.Commandes;
 using Config;
 using DynamicData;
 using Job.Config;
@@ -244,18 +245,20 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     private void DeleteSaveJob(object? args)
     {
         (List<int> ids, string separator) = ListAndConvertIds(args);
-        (int returnCode, string message) = Job.Controller.DeleteSaveJob.Execute(ids, separator);
+        // (int returnCode, string message) = Job.Controller.DeleteSaveJob.Execute(ids, separator);
+        Client client = Client.GetInstance();
+        client.SendMessage(new CMDExecSaveJobs(ids));
 
-        foreach (int id in ids)
-        {
-            var itemToRemove = TableData.FirstOrDefault(i => i.Id == id);
-            if (itemToRemove != null)
-            {
-                TableData.Remove(itemToRemove);
-            }
-        }
+        // foreach (int id in ids)
+        // {
+        //     var itemToRemove = TableData.FirstOrDefault(i => i.Id == id);
+        //     if (itemToRemove != null)
+        //     {
+        //         TableData.Remove(itemToRemove);
+        //     }
+        // }
         
-        NotificationMessageManagerSingleton.GenerateNotification(this.Manager, returnCode, message);
+        NotificationMessageManagerSingleton.GenerateNotification(this.Manager, 1, "Execution des saveJob envoyer !");
     }
     
     private bool _isEditClicked = true;
@@ -443,9 +446,11 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     {
         Console.WriteLine("LoadSaveJob");
         Console.WriteLine(_configuration.GetSaveJobs().Length);
+
         TableData = new ObservableCollection<TableDataModel>();
         foreach (SaveJob saveJob in _configuration.GetSaveJobs())
         {
+            Console.WriteLine($"{saveJob.Name} : [{saveJob.Id}] : [{saveJob.Status}]");
             TableData.Add(new TableDataModel 
             { 
                 Checked = false,
