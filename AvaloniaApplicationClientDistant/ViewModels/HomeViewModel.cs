@@ -309,6 +309,8 @@ public class HomeViewModel : ReactiveObject, INotifyPropertyChanged
 
                 //TODO: send msg to srever
                 // var (returnCode, message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker, lockTracker);
+                var client = Client.GetInstance();
+                client.SendMessage(new CMDResumeSaveJob(saveJob.Id));
             }
             else if (saveJob.Status == RUNNING)
             {
@@ -320,8 +322,8 @@ public class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             {
                 UpdateStatus(ids, RUNNING);
 
-                //TODO: send msg to srever
-                // (int returnCode,string message) = await Job.Controller.ResumeSaveJob.Execute(saveJob.Id);
+                var client = Client.GetInstance();
+                client.SendMessage(new CMDResumeSaveJob(saveJob.Id));
                 Console.WriteLine("ended ResumeSaveJob");
                 LoadSaveJob();
             }

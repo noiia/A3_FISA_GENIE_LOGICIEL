@@ -102,8 +102,7 @@
                                         <Button Command="{Binding PauseResume}" CommandParameter="{Binding Id}"
                                                 HorizontalAlignment="Center" VerticalAlignment="Center">
                                             <StackPanel Orientation="Horizontal">
-                                                <Image Source="avares://AvaloniaApplicationClientDistant/Assets/RP.png"
-                                                       Width="20" Height="20" />
+                                                <Image Source="avares://AvaloniaApplicationClientDistant/Assets/avatar.png" Width="20" Height="20" />
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>
