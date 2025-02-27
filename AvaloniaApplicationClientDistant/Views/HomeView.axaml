@@ -20,13 +20,13 @@
                     <Button Command="{Binding HomeVM.ExecuteListSaveJob}" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding HomeVM.IsAnySelected}" Margin="600,0,0,400">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding SettingsVM.Translations.Execute}" FontSize="16" Margin="0,0,10,0"/>
-                            <Image Source="avares://AvaloniaApplication/Assets/gear.png" Width="30" Height="30"/>
+                            <Image Source="avares://AvaloniaApplicationClientDistant/Assets/gear.png" Width="30" Height="30"/>
                         </StackPanel>
                     </Button>
                     <Button Command="{Binding HomeVM.DeleteListSaveJob}" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding HomeVM.IsAnySelected}" Margin="900,0,0,400">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding SettingsVM.Translations.Delete}" FontSize="16" Margin="0,0,10,0"/>
-                            <Image Source="avares://AvaloniaApplication/Assets/trash.png" Width="30" Height="30"/>
+                            <Image Source="avares://AvaloniaApplicationClientDistant/Assets/trash.png" Width="30" Height="30"/>
                         </StackPanel>
                     </Button>
                     <DataGrid ItemsSource="{Binding HomeVM.TableData}"
@@ -93,7 +93,7 @@
                                         <Button Command="{Binding ExeSaveJob}" CommandParameter="{Binding Id}"
                                                 HorizontalAlignment="Center" VerticalAlignment="Center">
                                             <StackPanel Orientation="Horizontal">
-                                                <Image Source="avares://AvaloniaApplication/Assets/gear.png" Width="20" Height="20"/>
+                                                <Image Source="avares://AvaloniaApplicationClientDistant/Assets/gear.png" Width="20" Height="20"/>
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>
@@ -105,7 +105,7 @@
                                         <Button Command="{Binding DelSaveJob}" CommandParameter="{Binding Id}" 
                                                 HorizontalAlignment="Center" VerticalAlignment="Center">
                                             <StackPanel Orientation="Horizontal">
-                                                <Image Source="avares://AvaloniaApplication/Assets/trash.png" Width="20" Height="20"/>
+                                                <Image Source="avares://AvaloniaApplicationClientDistant/Assets/trash.png" Width="20" Height="20"/>
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>
@@ -116,7 +116,7 @@
                     <Button Command="{Binding HomeVM.ToggleEditClick}" CommandParameter="{Binding HomeVM.TableData} " HorizontalAlignment="Center" VerticalAlignment="Center" Margin="1000,400,0,0">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding SettingsVM.Translations.Edit}" VerticalAlignment="Center" FontSize="16" Margin="0,0,10,0"/>
-                            <Image Source="avares://AvaloniaApplication/Assets/gear.png" Width="30" Height="30"/>
+                            <Image Source="avares://AvaloniaApplicationClientDistant/Assets/gear.png" Width="30" Height="30"/>
                         </StackPanel>
                     </Button>
                 </Grid>
