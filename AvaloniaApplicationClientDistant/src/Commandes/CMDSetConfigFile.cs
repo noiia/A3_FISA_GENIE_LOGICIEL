@@ -4,17 +4,18 @@ using Newtonsoft.Json.Linq;
 
 namespace AvaloniaApplicationClientDistant.Commandes;
 
-public class CMDSetConfigFile:CMD
+public class CMDSetConfigFile : CMD
 {
-    private SaveJob[] _saveJob;
-    private string _logPath;
-    private string _cryptoKey;
-    private string _language; //fr || en
-    private string _logType; //json || xml
-    private string[]? _cryptExtension;
-    private string[]? _buisnessApp;
+    private readonly string[]? _buisnessApp;
+    private readonly string[]? _cryptExtension;
+    private readonly string _cryptoKey;
+    private readonly string _language; //fr || en
+    private readonly string _logPath;
+    private readonly string _logType; //json || xml
+    private readonly SaveJob[] _saveJob;
 
-    public CMDSetConfigFile(SaveJob[] saveJob, string logPath, string cryptoKey, string language, string logType, string[]? cryptExtension, string[]? buisnessApp) : base("SetConfigFile")
+    public CMDSetConfigFile(SaveJob[] saveJob, string logPath, string cryptoKey, string language, string logType,
+        string[]? cryptExtension, string[]? buisnessApp) : base("SetConfigFile")
     {
         _saveJob = saveJob;
         _logPath = logPath;
@@ -27,16 +28,16 @@ public class CMDSetConfigFile:CMD
 
     public override string toString()
     {
-        JObject json = new JObject();
-        json.Add("commande", base.Command);
-        json["saveJob"] =  JToken.FromObject(_saveJob);
+        var json = new JObject();
+        json.Add("commande", Command);
+        json["saveJob"] = JToken.FromObject(_saveJob);
         json.Add("logPath", _logPath);
         json.Add("cryptoKey", _cryptoKey);
         json.Add("language", _language);
         json.Add("logType", _logType);
         json["cryptExtension"] = JToken.FromObject(_cryptExtension);
         json["buisnessApp"] = JToken.FromObject(_buisnessApp);
-        string jsonString = JsonConvert.SerializeObject(json);
+        var jsonString = JsonConvert.SerializeObject(json);
         return jsonString;
-    }   
+    }
 }

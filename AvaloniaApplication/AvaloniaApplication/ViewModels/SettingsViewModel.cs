@@ -1,20 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Avalonia.Notification;
-using AvaloniaApplication.Views;
 using Job.Config;
 using Job.Config.i18n;
 
 namespace AvaloniaApplication.ViewModels;
+
 public class SettingsViewModel : INotifyPropertyChanged
 {
-    Configuration config;
-    public INotificationMessageManager Manager => NotificationMessageManagerSingleton.Instance;
+    private readonly Configuration config;
+
+    private ObservableCollection<string> _businessApp;
+
+    private string _cryptKey;
+
+    private ObservableCollection<string> _fileExtension;
+
+    private ObservableCollection<string> _fileTypesToEncrypt;
+
+    private string _logPath;
+
+
+    private int _maxFileSize;
+
+    private string _newBusinessApp;
+
+    private string _newFileExtension;
+
+    private string _newFileTypeToEncrypt;
+
+    private string _selectedLanguage;
+
+    private string _selectedLogType;
+
     public SettingsViewModel()
     {
         try
@@ -30,17 +51,18 @@ public class SettingsViewModel : INotifyPropertyChanged
             ShowErrorNotification(ex.Message);
         }
     }
-    
+
+    public INotificationMessageManager Manager => NotificationMessageManagerSingleton.Instance;
+
     public Translation Translations => Translation.Instance;
-    
-    private string _selectedLanguage;
+
     public string SelectedLanguage
     {
         get
         {
             try
             {
-                string currentLanguageCode = config.GetLanguage();
+                var currentLanguageCode = config.GetLanguage();
                 Console.WriteLine($"Current Language Code: {currentLanguageCode}");
 
                 return currentLanguageCode switch
@@ -75,8 +97,9 @@ public class SettingsViewModel : INotifyPropertyChanged
                             config.SetLanguage("fr");
                             break;
                     }
+
                     Translation.SelectLanguage(config.GetLanguage());
-                    OnPropertyChanged(nameof(Translations)); 
+                    OnPropertyChanged(nameof(Translations));
                 }
             }
             catch (Exception ex)
@@ -86,14 +109,13 @@ public class SettingsViewModel : INotifyPropertyChanged
         }
     }
 
-    private string _selectedLogType;
     public string SelectedLogType
     {
         get
         {
             try
             {
-                string currentLogType = config.GetLogType();
+                var currentLogType = config.GetLogType();
                 Console.WriteLine($"Current Log Type: {currentLogType}");
 
                 return currentLogType switch
@@ -128,6 +150,7 @@ public class SettingsViewModel : INotifyPropertyChanged
                             config.SetLogType("json");
                             break;
                     }
+
                     Manager.CreateMessage()
                         .Accent(NotifColors.green)
                         .Animates(true)
@@ -146,14 +169,13 @@ public class SettingsViewModel : INotifyPropertyChanged
         }
     }
 
-    private string _logPath;
     public string LogPath
     {
         get
         {
             try
             {
-                string currentLogPath = config.GetLogPath();
+                var currentLogPath = config.GetLogPath();
                 Console.WriteLine($"Current Log Path: {currentLogPath}");
 
                 return currentLogPath;
@@ -192,7 +214,6 @@ public class SettingsViewModel : INotifyPropertyChanged
         }
     }
 
-    private ObservableCollection<string> _fileTypesToEncrypt;
     public ObservableCollection<string>? FileTypesToEncrypt
     {
         get => _fileTypesToEncrypt;
@@ -206,7 +227,6 @@ public class SettingsViewModel : INotifyPropertyChanged
         }
     }
 
-    private ObservableCollection<string> _businessApp;
     public ObservableCollection<string>? BusinessApp
     {
         get => _businessApp;
@@ -220,7 +240,6 @@ public class SettingsViewModel : INotifyPropertyChanged
         }
     }
 
-    private string _newFileTypeToEncrypt;
     public string NewFileTypeToEncrypt
     {
         get => _newFileTypeToEncrypt;
@@ -234,7 +253,6 @@ public class SettingsViewModel : INotifyPropertyChanged
         }
     }
 
-    private string _newBusinessApp;
     public string NewBusinessApp
     {
         get => _newBusinessApp;
@@ -247,8 +265,7 @@ public class SettingsViewModel : INotifyPropertyChanged
             }
         }
     }
-    
-    private ObservableCollection<string> _fileExtension;
+
     public ObservableCollection<string>? FileExtension
     {
         get => _fileExtension;
@@ -261,8 +278,7 @@ public class SettingsViewModel : INotifyPropertyChanged
             }
         }
     }
-    
-    private string _newFileExtension;
+
     public string NewFileExtension
     {
         get => _newFileExtension;
@@ -272,6 +288,78 @@ public class SettingsViewModel : INotifyPropertyChanged
             {
                 _newFileExtension = value;
                 OnPropertyChanged();
+            }
+        }
+    }
+
+    public string CryptKey
+    {
+        get
+        {
+            try
+            {
+                return config.GetCryptKey();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorNotification(ex.Message);
+                return string.Empty;
+            }
+        }
+        set
+        {
+            try
+            {
+                if (_cryptKey != value)
+                {
+                    _cryptKey = value;
+                    config.SetCryptKey(value);
+                    Manager.CreateMessage()
+                        .Accent(NotifColors.green)
+                        .Animates(true)
+                        .Background("#333")
+                        .HasBadge("Info")
+                        .HasMessage("La clef de chiffrement a été modifiée.")
+                        .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+                        .Queue();
+                    OnPropertyChanged();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorNotification(ex.Message);
+            }
+        }
+    }
+
+    public int MaxFileSize
+    {
+        get
+        {
+            try
+            {
+                return config.GetMaxFileSize();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorNotification(ex.Message);
+                return 4096;
+            }
+        }
+        set
+        {
+            try
+            {
+                if (_maxFileSize != value)
+                {
+                    _maxFileSize = value;
+                    config.SetMaxFileSize(value);
+                    OnPropertyChanged();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorNotification(ex.Message);
             }
         }
     }
@@ -287,7 +375,7 @@ public class SettingsViewModel : INotifyPropertyChanged
     {
         try
         {
-            Console.WriteLine(config.GetLanguage() as string);
+            Console.WriteLine(config.GetLanguage());
             switch (config.GetLanguage())
             {
                 case "en":
@@ -300,6 +388,7 @@ public class SettingsViewModel : INotifyPropertyChanged
                     SelectedLanguage = string.Empty;
                     break;
             }
+
             SelectedLogType = config.GetLogType();
             LogPath = config.GetLogPath();
             FileTypesToEncrypt = new ObservableCollection<string>(config.GetCryptExtension() ?? Array.Empty<string>());
@@ -334,7 +423,8 @@ public class SettingsViewModel : INotifyPropertyChanged
                 }
                 else
                 {
-                    NotificationMessageManagerSingleton.GenerateNotification(Manager, 2, $"{Translation.Translator.GetString("EncryptFileExists")}");
+                    NotificationMessageManagerSingleton.GenerateNotification(Manager, 2,
+                        $"{Translation.Translator.GetString("EncryptFileExists")}");
                 }
             }
         }
@@ -394,7 +484,8 @@ public class SettingsViewModel : INotifyPropertyChanged
                 }
                 else
                 {
-                    NotificationMessageManagerSingleton.GenerateNotification(Manager, 2, $"{Translation.Translator.GetString("BusinessAppExists")}");
+                    NotificationMessageManagerSingleton.GenerateNotification(Manager, 2,
+                        $"{Translation.Translator.GetString("BusinessAppExists")}");
                 }
             }
             else
@@ -437,47 +528,6 @@ public class SettingsViewModel : INotifyPropertyChanged
         }
     }
 
-    private string _cryptKey;
-    public string CryptKey
-    {
-        get
-        {
-            try
-            {
-                return config.GetCryptKey();
-            }
-            catch (Exception ex)
-            {
-                ShowErrorNotification(ex.Message);
-                return string.Empty;
-            }
-        }
-        set
-        {
-            try
-            {
-                if (_cryptKey != value)
-                {
-                    _cryptKey = value;
-                    config.SetCryptKey(value);
-                    Manager.CreateMessage()
-                        .Accent(NotifColors.green)
-                        .Animates(true)
-                        .Background("#333")
-                        .HasBadge("Info")
-                        .HasMessage("La clef de chiffrement a été modifiée.")
-                        .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
-                        .Queue();
-                    OnPropertyChanged();
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowErrorNotification(ex.Message);
-            }
-        }
-    }
-
     private void ShowErrorNotification(string message)
     {
         Manager.CreateMessage()
@@ -489,7 +539,7 @@ public class SettingsViewModel : INotifyPropertyChanged
             .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
             .Queue();
     }
-    
+
     public void AddFileExtension()
     {
         try
@@ -509,11 +559,12 @@ public class SettingsViewModel : INotifyPropertyChanged
                         .HasBadge("Info")
                         .HasMessage($"{Translation.Translator.GetString("AddFileExtension")}")
                         .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
-                        .Queue();   
+                        .Queue();
                 }
                 else
                 {
-                    NotificationMessageManagerSingleton.GenerateNotification(Manager, 2, $"{Translation.Translator.GetString("FileExtensionExists")}");
+                    NotificationMessageManagerSingleton.GenerateNotification(Manager, 2,
+                        $"{Translation.Translator.GetString("FileExtensionExists")}");
                 }
             }
             else
@@ -556,39 +607,4 @@ public class SettingsViewModel : INotifyPropertyChanged
             ShowErrorNotification(ex.Message);
         }
     }
-    
-    
-    private int _maxFileSize;
-    public int MaxFileSize
-    {
-        get
-        {
-            try
-            {
-                return config.GetMaxFileSize();
-            }
-            catch (Exception ex)
-            {
-                ShowErrorNotification(ex.Message);
-                return 4096;
-            }
-        }
-        set
-        {
-            try
-            {
-                if (_maxFileSize != value)
-                {
-                    _maxFileSize = value;
-                    config.SetMaxFileSize(value);
-                    OnPropertyChanged();
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowErrorNotification(ex.Message);
-            }
-        }
-    }
 }
-

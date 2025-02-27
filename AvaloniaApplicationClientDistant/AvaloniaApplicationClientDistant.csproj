@@ -18,64 +18,64 @@
             <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-        <PackageReference Include="Notification.Avalonia" Version="2.1.0" />
-        <PackageReference Include="ReactiveUI" Version="20.1.63" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
+        <PackageReference Include="Notification.Avalonia" Version="2.1.0"/>
+        <PackageReference Include="ReactiveUI" Version="20.1.63"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Views\AddSaveJobView.axaml.cs">
-        <DependentUpon>AddSaveJobView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\HomeView.axaml.cs">
-        <DependentUpon>HomeView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\MainWindow.axaml.cs">
-        <DependentUpon>MainWindow.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\SettingsView.axaml.cs">
-        <DependentUpon>SettingsView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\AddSaveJobView.axaml.cs">
-        <DependentUpon>AddSaveJobView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\HomeView.axaml.cs">
-        <DependentUpon>HomeView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\MainWindow.axaml.cs">
-        <DependentUpon>MainWindow.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\SettingsView.axaml.cs">
-        <DependentUpon>SettingsView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
+        <Compile Update="Views\AddSaveJobView.axaml.cs">
+            <DependentUpon>AddSaveJobView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\HomeView.axaml.cs">
+            <DependentUpon>HomeView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\MainWindow.axaml.cs">
+            <DependentUpon>MainWindow.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\SettingsView.axaml.cs">
+            <DependentUpon>SettingsView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\AddSaveJobView.axaml.cs">
+            <DependentUpon>AddSaveJobView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\HomeView.axaml.cs">
+            <DependentUpon>HomeView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\MainWindow.axaml.cs">
+            <DependentUpon>MainWindow.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\SettingsView.axaml.cs">
+            <DependentUpon>SettingsView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="Views\AddSaveJobView.axaml" />
-      <AdditionalFiles Include="Views\HomeView.axaml" />
-      <AdditionalFiles Include="Views\MainWindow.axaml" />
-      <AdditionalFiles Include="Views\SettingsView.axaml" />
+        <AdditionalFiles Include="Views\AddSaveJobView.axaml"/>
+        <AdditionalFiles Include="Views\HomeView.axaml"/>
+        <AdditionalFiles Include="Views\MainWindow.axaml"/>
+        <AdditionalFiles Include="Views\SettingsView.axaml"/>
     </ItemGroup>
 
     <ItemGroup>
-      <AvaloniaResource Include="Assets\avalonia-logo.ico" />
-      <AvaloniaResource Include="Assets\avatar.png" />
-      <AvaloniaResource Include="Assets\checked-svgrepo-com.svg" />
-      <AvaloniaResource Include="Assets\checked.png" />
-      <AvaloniaResource Include="Assets\gear.png" />
-      <AvaloniaResource Include="Assets\trash-alt-svgrepo-com.svg" />
-      <AvaloniaResource Include="Assets\trash.png" />
+        <AvaloniaResource Include="Assets\avalonia-logo.ico"/>
+        <AvaloniaResource Include="Assets\avatar.png"/>
+        <AvaloniaResource Include="Assets\checked-svgrepo-com.svg"/>
+        <AvaloniaResource Include="Assets\checked.png"/>
+        <AvaloniaResource Include="Assets\gear.png"/>
+        <AvaloniaResource Include="Assets\trash-alt-svgrepo-com.svg"/>
+        <AvaloniaResource Include="Assets\trash.png"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Job\Job.csproj" />
+        <ProjectReference Include="..\Job\Job.csproj"/>
     </ItemGroup>
 </Project>

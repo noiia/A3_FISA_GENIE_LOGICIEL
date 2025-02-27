@@ -1,20 +1,20 @@
 ﻿using EasySaveServer.Message;
-using Job.Config;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace EasySaveServer.Commandes;
 
-public class CMDSetConfigFile:CMD
+public class CMDSetConfigFile : CMD
 {
-    private string _logPath;
-    private string _cryptoKey;
-    private string _language; //fr || en
-    private string _logType; //json || xml
-    private string[]? _cryptExtension;
-    private string[]? _buisnessApp;
+    private readonly string[]? _buisnessApp;
+    private readonly string[]? _cryptExtension;
+    private readonly string _cryptoKey;
+    private readonly string _language; //fr || en
+    private readonly string _logPath;
+    private readonly string _logType; //json || xml
 
-    public CMDSetConfigFile(string logPath, string cryptoKey, string language, string logType, string[]? cryptExtension, string[]? buisnessApp) : base("SetConfigFile")
+    public CMDSetConfigFile(string logPath, string cryptoKey, string language, string logType, string[]? cryptExtension,
+        string[]? buisnessApp) : base("SetConfigFile")
     {
         _logPath = logPath;
         _cryptoKey = cryptoKey;
@@ -26,31 +26,31 @@ public class CMDSetConfigFile:CMD
 
     public override string toString()
     {
-        JObject json = new JObject();
-        json.Add("commande", base.commande);
+        var json = new JObject();
+        json.Add("commande", commande);
         json.Add("logPath", _logPath);
         json.Add("cryptoKey", _cryptoKey);
         json.Add("language", _language);
         json.Add("logType", _logType);
         json["cryptExtension"] = JToken.FromObject(_cryptExtension);
         json["buisnessApp"] = JToken.FromObject(_buisnessApp);
-        string jsonString = JsonConvert.SerializeObject(json);
+        var jsonString = JsonConvert.SerializeObject(json);
         return jsonString;
-    }  
-    
+    }
+
     public override Task run(MessageList messageList)
     {
         try
         {
             Console.WriteLine("CMDGetConfig.run");
-            Configuration config = ConfigSingleton.Instance();
-            config.SetLogPath(this._logPath);
-            config.SetCryptKey(this._cryptoKey);
-            config.SetLanguage(this._language);
-            config.SetLogType(this._logType);
-            config.SetCryptExtension(this._cryptExtension);
-            config.SetBuisnessApp(this._buisnessApp);
-            MSGConfigFile msgConfigFile = new MSGConfigFile(config.ConfigFile);
+            var config = ConfigSingleton.Instance();
+            config.SetLogPath(_logPath);
+            config.SetCryptKey(_cryptoKey);
+            config.SetLanguage(_language);
+            config.SetLogType(_logType);
+            config.SetCryptExtension(_cryptExtension);
+            config.SetBuisnessApp(_buisnessApp);
+            var msgConfigFile = new MSGConfigFile(config.ConfigFile);
             messageList.Messages.Add(msgConfigFile.toString());
         }
         catch (Exception ex)

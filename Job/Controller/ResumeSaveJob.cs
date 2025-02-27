@@ -1,9 +1,4 @@
-﻿using Job.Config;
-using Job.Services;
-using Logger;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
+﻿using Job.Services;
 
 namespace Job.Controller;
 

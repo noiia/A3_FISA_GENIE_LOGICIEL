@@ -1,329 +1,314 @@
 using System.Text.Json;
 using Config;
-using Job.Model;
+using Logger;
 
-namespace Job.Config
+namespace Job.Config;
+
+public class Configuration
 {
-    public class Configuration
+    private readonly string _configPath;
+    private readonly Mutex _mutex = new();
+    private ConfigFile _configFile;
+
+
+    public Configuration(string configPath)
     {
-        private string _configPath;
-        private ConfigFile _configFile;
-        private readonly Mutex _mutex = new Mutex();
+        _configPath = configPath;
+        LoadConfiguration();
+    }
 
 
-        public Configuration(string configPath)
+    public ConfigFile ConfigFile
+    {
+        get => _configFile;
+        set => _configFile = value ?? throw new ArgumentNullException(nameof(value));
+    }
+
+    public void LoadConfiguration()
+    {
+        _mutex.WaitOne();
+        try
         {
-            
-            this._configPath = configPath;
-            this.LoadConfiguration();
-        }
-        
-        
-
-        public ConfigFile ConfigFile
-        {
-            get => _configFile;
-            set => _configFile = value ?? throw new ArgumentNullException(nameof(value));
-        }
-
-        public void LoadConfiguration()
-        {
-            _mutex.WaitOne();
-            try
+            if (!File.Exists(_configPath))
             {
-                if (!File.Exists(this._configPath))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(this._configPath));
-                    string defaultLogPath =
-                        (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\")
-                        .Replace("\\", "/");
-                    ConfigFile tempConfigFile = new ConfigFile([], defaultLogPath, "CryptoKey", "en", "json", [],[],[]);
-                    string json = JsonSerializer.Serialize(tempConfigFile);
-                    File.WriteAllText(this._configPath, json);
-                }
+                Directory.CreateDirectory(Path.GetDirectoryName(_configPath));
+                var defaultLogPath =
+                    (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\")
+                    .Replace("\\", "/");
+                var tempConfigFile = new ConfigFile([], defaultLogPath, "CryptoKey", "en", "json", [], [], []);
+                var json = JsonSerializer.Serialize(tempConfigFile);
+                File.WriteAllText(_configPath, json);
+            }
 
-                string fileContent = File.ReadAllText(this._configPath);
-                this._configFile = JsonSerializer.Deserialize<ConfigFile>(fileContent);
-            }
-            finally
-            {
-                _mutex.ReleaseMutex();
-            }
+            var fileContent = File.ReadAllText(_configPath);
+            _configFile = JsonSerializer.Deserialize<ConfigFile>(fileContent);
         }
-
-        public void SaveConfiguration()
+        finally
         {
-            _mutex.WaitOne();
-            try
-            {
-                string json = JsonSerializer.Serialize(this._configFile);
-                File.WriteAllText(this._configPath, json);
-            }
-            finally
-            {
-                _mutex.ReleaseMutex();
-            }
+            _mutex.ReleaseMutex();
         }
+    }
 
-        public SaveJob GetSaveJob(int id)
+    public void SaveConfiguration()
+    {
+        _mutex.WaitOne();
+        try
         {
-            if (_configFile == null || _configFile.SaveJobs == null)
-            {
-                return null;
-            }
-            return _configFile.SaveJobs.FirstOrDefault(job => job.Id == id);
+            var json = JsonSerializer.Serialize(_configFile);
+            File.WriteAllText(_configPath, json);
         }
-
-        public SaveJob GetSaveJob(string name)
+        finally
         {
-            if (_configFile == null || _configFile.SaveJobs == null)
-            {
-                return null;
-            }
-            return _configFile.SaveJobs.FirstOrDefault(job => job.Name == name);
+            _mutex.ReleaseMutex();
         }
+    }
 
-        public SaveJob[] GetSaveJobs()
-        {
-            return _configFile.SaveJobs;
-        }
+    public SaveJob GetSaveJob(int id)
+    {
+        if (_configFile == null || _configFile.SaveJobs == null) return null;
+        return _configFile.SaveJobs.FirstOrDefault(job => job.Id == id);
+    }
 
-        public void SetSaveJobs(SaveJob[] saveJobs)
+    public SaveJob GetSaveJob(string name)
+    {
+        if (_configFile == null || _configFile.SaveJobs == null) return null;
+        return _configFile.SaveJobs.FirstOrDefault(job => job.Name == name);
+    }
+
+    public SaveJob[] GetSaveJobs()
+    {
+        return _configFile.SaveJobs;
+    }
+
+    public void SetSaveJobs(SaveJob[] saveJobs)
+    {
+        LoggerUtility.WriteLog(GetLogType(), LoggerUtility.Info, "SetSaveJobs");
+        // Console.WriteLine("SetSaveJobs");
+        // foreach (var VARIABLE in saveJobs)
+        // {
+        //     Console.WriteLine($"Saving job {VARIABLE.Name}");
+        // }
+        _configFile.SaveJobs = saveJobs;
+        SaveConfiguration();
+    }
+
+    public void AddSaveJob(SaveJob saveJob)
+    {
+        if (GetSaveJob(saveJob.Id) == null && GetSaveJob(saveJob.Name) == null)
         {
-            Logger.LoggerUtility.WriteLog(GetLogType(), Logger.LoggerUtility.Info, "SetSaveJobs");
-            // Console.WriteLine("SetSaveJobs");
-            // foreach (var VARIABLE in saveJobs)
-            // {
-            //     Console.WriteLine($"Saving job {VARIABLE.Name}");
-            // }
-            _configFile.SaveJobs = saveJobs;
+            _configFile.SaveJobs = _configFile.SaveJobs.Append(saveJob).ToArray();
             SaveConfiguration();
         }
+        else
+        {
+            if (GetSaveJob(saveJob.Id) != null) throw new Exception("A SaveJob already exists with the same ID");
 
-        public void AddSaveJob(SaveJob saveJob)
-        {
-            if (this.GetSaveJob(saveJob.Id) == null && this.GetSaveJob(saveJob.Name) == null){
-                _configFile.SaveJobs = _configFile.SaveJobs.Append(saveJob).ToArray();
-                this.SaveConfiguration();
-            }
-            else
-            {
-                if (this.GetSaveJob(saveJob.Id) != null)
-                {
-                    throw new Exception("A SaveJob already exists with the same ID");
-                }
-                else
-                {
-                    throw new Exception("A SaveJob already exists with the same Name");
-                }
-            }
+            throw new Exception("A SaveJob already exists with the same Name");
         }
+    }
 
-        public void AddSaveJob(int id, string name, string source, string destination, DateTime lastSave, DateTime created, string status, string type)
-        {
-            SaveJob newSaveJob = new SaveJob(id, name, source, destination, lastSave, created, status, type);
-            this.AddSaveJob(newSaveJob);
-        }
+    public void AddSaveJob(int id, string name, string source, string destination, DateTime lastSave, DateTime created,
+        string status, string type)
+    {
+        var newSaveJob = new SaveJob(id, name, source, destination, lastSave, created, status, type);
+        AddSaveJob(newSaveJob);
+    }
 
-        public void DeleteSaveJob(SaveJob dsaveJob)
-        {
-            this.DeleteSaveJob(dsaveJob.Id);
-        }
+    public void DeleteSaveJob(SaveJob dsaveJob)
+    {
+        DeleteSaveJob(dsaveJob.Id);
+    }
 
-        public void DeleteSaveJob(int id)
+    public void DeleteSaveJob(int id)
+    {
+        if (GetSaveJob(id) != null)
         {
-            if (this.GetSaveJob(id) != null)
-            {
-                _configFile.SaveJobs = _configFile.SaveJobs.Where(job => job.Id != id).ToArray();
-                this.SaveConfiguration();
-            }
-            else
-            {
-                throw new Exception("There is no SaveJob with this ID");
-            }
+            _configFile.SaveJobs = _configFile.SaveJobs.Where(job => job.Id != id).ToArray();
+            SaveConfiguration();
         }
+        else
+        {
+            throw new Exception("There is no SaveJob with this ID");
+        }
+    }
 
-        public void DeleteSaveJob(string name)
+    public void DeleteSaveJob(string name)
+    {
+        if (GetSaveJob(name) != null)
         {
-            if (this.GetSaveJob(name) != null)
-            {
-                _configFile.SaveJobs = _configFile.SaveJobs.Where(job => job.Name != name).ToArray();
-                this.SaveConfiguration();
-            }
-            else
-            {
-                throw new Exception("There is no SaveJob with this name");
-            }
+            _configFile.SaveJobs = _configFile.SaveJobs.Where(job => job.Name != name).ToArray();
+            SaveConfiguration();
         }
+        else
+        {
+            throw new Exception("There is no SaveJob with this name");
+        }
+    }
 
-        public void SetLengthLimit(int lengthLimit)
-        {
-            _configFile.LengthLimit = lengthLimit;
-        }
+    public void SetLengthLimit(int lengthLimit)
+    {
+        _configFile.LengthLimit = lengthLimit;
+    }
 
-        public int GetLengthLimit()
-        {
-            return _configFile.LengthLimit;
-        }
+    public int GetLengthLimit()
+    {
+        return _configFile.LengthLimit;
+    }
 
-        //abuse encore un peu plus la prochaine fois
-        public int FindFirstFreeId()
-        {
-            for (int i = 0; i < 2147483647; i++)
-            {
-                if (this.GetSaveJob(i) == null)
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
+    //abuse encore un peu plus la prochaine fois
+    public int FindFirstFreeId()
+    {
+        for (var i = 0; i < 2147483647; i++)
+            if (GetSaveJob(i) == null)
+                return i;
 
-        public string? GetLogPath(){
-            return this._configFile.LogPath;
-        }
+        return -1;
+    }
 
-        public void SetLogPath(string logPath){
-            this._configFile.LogPath = logPath;
-            this.SaveConfiguration();
-            return;
-        }
+    public string? GetLogPath()
+    {
+        return _configFile.LogPath;
+    }
 
-        public void SetLanguage(string language)
-        {
-            this._configFile.Language = language;
-            this.SaveConfiguration();
-            return;
-        }
+    public void SetLogPath(string logPath)
+    {
+        _configFile.LogPath = logPath;
+        SaveConfiguration();
+    }
 
-        public string GetLanguage()
-        {
-            return this._configFile.Language;
-        }
+    public void SetLanguage(string language)
+    {
+        _configFile.Language = language;
+        SaveConfiguration();
+    }
 
-        public void SetLogType(string logType)
-        {
-            this._configFile.LogType = logType;
-            this.SaveConfiguration();
-        }
+    public string GetLanguage()
+    {
+        return _configFile.Language;
+    }
 
-        public string GetLogType()
-        {
-            return this._configFile.LogType;
-        }
+    public void SetLogType(string logType)
+    {
+        _configFile.LogType = logType;
+        SaveConfiguration();
+    }
 
-        public void SetCryptExtension(string[] cryptExtension)
-        {
-            this._configFile.CryptExtension = cryptExtension;
-            this.SaveConfiguration();
-        }
+    public string GetLogType()
+    {
+        return _configFile.LogType;
+    }
 
-        public string[] GetCryptExtension()
-        {
-            return this._configFile.CryptExtension;
-        }
+    public void SetCryptExtension(string[] cryptExtension)
+    {
+        _configFile.CryptExtension = cryptExtension;
+        SaveConfiguration();
+    }
 
-        public void AddCryptExtension(string cryptExtension)
-        {
-            Console.WriteLine(cryptExtension);
-            Console.WriteLine(this._configFile.CryptExtension.ToString());
-            if (!this._configFile.CryptExtension.Contains(cryptExtension))
-            {
-                this._configFile.CryptExtension = this._configFile.CryptExtension.Append(cryptExtension).ToArray();
-                this.SaveConfiguration();
-            }
-        }
+    public string[] GetCryptExtension()
+    {
+        return _configFile.CryptExtension;
+    }
 
-        public void RemoveCryptExtension(string cryptExtension)
+    public void AddCryptExtension(string cryptExtension)
+    {
+        Console.WriteLine(cryptExtension);
+        Console.WriteLine(_configFile.CryptExtension.ToString());
+        if (!_configFile.CryptExtension.Contains(cryptExtension))
         {
-            if (this._configFile.CryptExtension.Contains(cryptExtension))
-            {
-                this._configFile.CryptExtension = this._configFile.CryptExtension.Where(ext => ext != cryptExtension).ToArray();
-                this.SaveConfiguration();
-            }
+            _configFile.CryptExtension = _configFile.CryptExtension.Append(cryptExtension).ToArray();
+            SaveConfiguration();
         }
+    }
 
-        public void SetBuisnessApp(string[] buisnessApp)
+    public void RemoveCryptExtension(string cryptExtension)
+    {
+        if (_configFile.CryptExtension.Contains(cryptExtension))
         {
-            this._configFile.BuisnessApp = buisnessApp;
-            this.SaveConfiguration();
+            _configFile.CryptExtension = _configFile.CryptExtension.Where(ext => ext != cryptExtension).ToArray();
+            SaveConfiguration();
         }
+    }
 
-        public string[] GetBuisnessApp()
-        {
-            return this._configFile.BuisnessApp;
-        }
+    public void SetBuisnessApp(string[] buisnessApp)
+    {
+        _configFile.BuisnessApp = buisnessApp;
+        SaveConfiguration();
+    }
 
-        public void AddBuisnessApp(string buisnessApp)
-        {
-            if (!this._configFile.BuisnessApp.Contains(buisnessApp))
-            {
-                this._configFile.BuisnessApp = this._configFile.BuisnessApp.Append(buisnessApp).ToArray();
-                this.SaveConfiguration();
-            }
-        }
+    public string[] GetBuisnessApp()
+    {
+        return _configFile.BuisnessApp;
+    }
 
-        public void RemoveBuisnessApp(string buisnessApp)
+    public void AddBuisnessApp(string buisnessApp)
+    {
+        if (!_configFile.BuisnessApp.Contains(buisnessApp))
         {
-            if (this._configFile.BuisnessApp.Contains(buisnessApp))
-            {
-                this._configFile.BuisnessApp = this._configFile.BuisnessApp.Where(app => app != buisnessApp).ToArray();
-                this.SaveConfiguration();
-            }
+            _configFile.BuisnessApp = _configFile.BuisnessApp.Append(buisnessApp).ToArray();
+            SaveConfiguration();
         }
-        
-        
-        public void SetCryptKey(string cryptKey)
-        {
-            this._configFile.CryptoKey = cryptKey;
-            this.SaveConfiguration();
-        }
+    }
 
-        public string GetCryptKey()
+    public void RemoveBuisnessApp(string buisnessApp)
+    {
+        if (_configFile.BuisnessApp.Contains(buisnessApp))
         {
-            return this._configFile.CryptoKey;
+            _configFile.BuisnessApp = _configFile.BuisnessApp.Where(app => app != buisnessApp).ToArray();
+            SaveConfiguration();
         }
-        
-        
-        public void SetFileExtension(string[] fileExtension)
-        {
-            this._configFile.FileExtension = fileExtension;
-            this.SaveConfiguration();
-        }
+    }
 
-        public string[] GetFileExtension()
-        {
-            return this._configFile.FileExtension;
-        }
-        
-        public void AddFileExtension(string fileExtension)
-        {
-            if (!this._configFile.FileExtension.Contains(fileExtension))
-            {
-                this._configFile.FileExtension = this._configFile.FileExtension.Append(fileExtension).ToArray();
-                this.SaveConfiguration();
-            }
-        }
 
-        public void RemoveFileExtension(string fileExtension)
-        {
-            if (this._configFile.FileExtension.Contains(fileExtension))
-            {
-                this._configFile.FileExtension = this._configFile.FileExtension.Where(app => app != fileExtension).ToArray();
-                this.SaveConfiguration();
-            }
-        }
-        
-        
-        public void SetMaxFileSize(int maxFileSize)
-        {
-            this._configFile.LengthLimit = maxFileSize;
-            this.SaveConfiguration();
-        }
+    public void SetCryptKey(string cryptKey)
+    {
+        _configFile.CryptoKey = cryptKey;
+        SaveConfiguration();
+    }
 
-        public int GetMaxFileSize()
+    public string GetCryptKey()
+    {
+        return _configFile.CryptoKey;
+    }
+
+
+    public void SetFileExtension(string[] fileExtension)
+    {
+        _configFile.FileExtension = fileExtension;
+        SaveConfiguration();
+    }
+
+    public string[] GetFileExtension()
+    {
+        return _configFile.FileExtension;
+    }
+
+    public void AddFileExtension(string fileExtension)
+    {
+        if (!_configFile.FileExtension.Contains(fileExtension))
         {
-            return this._configFile.LengthLimit;
+            _configFile.FileExtension = _configFile.FileExtension.Append(fileExtension).ToArray();
+            SaveConfiguration();
         }
+    }
+
+    public void RemoveFileExtension(string fileExtension)
+    {
+        if (_configFile.FileExtension.Contains(fileExtension))
+        {
+            _configFile.FileExtension = _configFile.FileExtension.Where(app => app != fileExtension).ToArray();
+            SaveConfiguration();
+        }
+    }
+
+
+    public void SetMaxFileSize(int maxFileSize)
+    {
+        _configFile.LengthLimit = maxFileSize;
+        SaveConfiguration();
+    }
+
+    public int GetMaxFileSize()
+    {
+        return _configFile.LengthLimit;
     }
 }

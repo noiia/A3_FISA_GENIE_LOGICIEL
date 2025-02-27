@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using Job.Config;
+﻿using Job.Config;
 using Job.Config.i18n;
 using Job.Services;
 using Logger;
@@ -11,24 +8,25 @@ namespace Job.Controller;
 public class ExecuteSaveJob
 {
     private static Configuration _configuration;
-    public static async Task<(int, string)> Execute(List<int>  ids, string separator, ExecutionTracker execTracker, LockTracker lockTracker)
+
+    public static async Task<(int, string)> Execute(List<int> ids, string separator, ExecutionTracker execTracker,
+        LockTracker lockTracker)
     {
         _configuration = ConfigSingleton.Instance();
-        LoggerUtility.WriteLog(_configuration.GetLogType(),LoggerUtility.Info, $"{Translation.Translator.GetString("SjExecWith")} {string.Join(" ", ids, separator)}");
+        LoggerUtility.WriteLog(_configuration.GetLogType(), LoggerUtility.Info,
+            $"{Translation.Translator.GetString("SjExecWith")} {string.Join(" ", ids, separator)}");
         if (ids.Count > 1 && separator is "" or " ")
-        {
             return (3, $"{Translation.Translator.GetString("TooMuchIdWithoutSep")} {separator} {ids}");
-        }
-        
+
         int returnCode;
         string message;
         switch (separator)
         {
             case ";":
-                string listId = "";
-                
-                ImportantSaveJobs importantSaveJobs = new ImportantSaveJobs();
-                
+                var listId = "";
+
+                var importantSaveJobs = new ImportantSaveJobs();
+
                 importantSaveJobs.SetSaveJobHierarchies(ids.ToArray());
                 foreach (var id in ids)
                 {
@@ -49,13 +47,15 @@ public class ExecuteSaveJob
                                 return (returnCode, message);
                             }
                         }
-                        listId += $"{mostImportantJob.Id}, ";   
+
+                        listId += $"{mostImportantJob.Id}, ";
                     }
                 }
+
                 return (1, $"{Translation.Translator.GetString("SjExecSuccesfully")} {listId}");
-            
-            case  ",":
-                for (int i = ids[0]; i <= ids[1]; i++)
+
+            case ",":
+                for (var i = ids[0]; i <= ids[1]; i++)
                 {
                     (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(i, lockTracker);
                     execTracker.AddOrUpdateExecution(i, DateTime.Now, returnCode);
@@ -71,14 +71,15 @@ public class ExecuteSaveJob
                         }
                     }
                 }
+
                 return (1, $"{Translation.Translator.GetString("SjExecSuccesfully")} : {ids[0]} - {ids[1]}");
-            
+
             case "":
                 (returnCode, message) = await SaveJobRepo.ExecuteSaveJob(ids[0], lockTracker);
                 execTracker.AddOrUpdateExecution(ids[0], DateTime.Now, returnCode);
                 switch (returnCode)
                 {
-                    case 2 or 3 :
+                    case 2 or 3:
                     {
                         return (returnCode, $"{message} {ids[0]}");
                     }
@@ -87,8 +88,9 @@ public class ExecuteSaveJob
                         return (returnCode, message);
                     }
                 }
+
                 return (1, $"{message}");
-            
+
             default:
                 return (3, $"{Translation.Translator.GetString("SeparatorNotReco")} {separator}");
         }

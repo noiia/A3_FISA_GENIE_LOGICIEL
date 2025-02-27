@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace EasySaveServer;
 
-namespace EasySaveServer
+internal class Program
 {
-    internal class Program
+    private static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            Server server = new Server();
-            server.Run();
-        }
+        var server = new Server();
+        server.Run();
     }
 }

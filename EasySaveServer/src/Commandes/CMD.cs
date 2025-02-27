@@ -12,22 +12,22 @@ public class CMD
         this.commande = commande;
     }
 
-    public virtual string toString()
-    {
-        JObject json = new JObject();
-        json.Add("commande", commande);
-        string jsonString = JsonConvert.SerializeObject(json);
-        return jsonString;
-    }
-    
-    public virtual Task run(MessageList messageList)
-    {
-        return Task.CompletedTask;
-    }
-
     public string Commande
     {
         get => commande;
         set => commande = value ?? throw new ArgumentNullException(nameof(value));
+    }
+
+    public virtual string toString()
+    {
+        var json = new JObject();
+        json.Add("commande", commande);
+        var jsonString = JsonConvert.SerializeObject(json);
+        return jsonString;
+    }
+
+    public virtual Task run(MessageList messageList)
+    {
+        return Task.CompletedTask;
     }
 }

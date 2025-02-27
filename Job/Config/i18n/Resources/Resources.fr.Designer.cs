@@ -537,6 +537,15 @@ namespace Config.i18n.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reprendre.
+        /// </summary>
+        internal static string Resume {
+            get {
+                return ResourceManager.GetString("Resume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Un travail de sauvegarde existe déjà sous ce nom.
         /// </summary>
         internal static string SaveAlreadyExist {

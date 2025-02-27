@@ -1,5 +1,4 @@
 ﻿using EasySaveServer.Message;
-using Job.Config;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -9,24 +8,23 @@ public class CMDGetConfig : CMD
 {
     public CMDGetConfig() : base("GetConfig")
     {
-        
     }
-    
+
     public override string toString()
     {
-        JObject json = new JObject();
-        json.Add("commande", base.commande);
-        string jsonString = JsonConvert.SerializeObject(json);
+        var json = new JObject();
+        json.Add("commande", commande);
+        var jsonString = JsonConvert.SerializeObject(json);
         return jsonString;
     }
-    
+
     public override Task run(MessageList messageList)
     {
         try
         {
             Console.WriteLine("CMDGetConfig.run");
-            Configuration config = ConfigSingleton.Instance();
-            MSGConfigFile msgConfigFile = new MSGConfigFile(config.ConfigFile);
+            var config = ConfigSingleton.Instance();
+            var msgConfigFile = new MSGConfigFile(config.ConfigFile);
             messageList.Messages.Add(msgConfigFile.toString());
         }
         catch (Exception ex)

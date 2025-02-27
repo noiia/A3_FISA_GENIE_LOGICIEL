@@ -3,10 +3,10 @@ using Newtonsoft.Json.Linq;
 
 namespace AvaloniaApplicationClientDistant.Commandes;
 
-public class CMDResumeSaveJob:CMD
+public class CMDResumeSaveJob : CMD
 {
-    private int _Id;
-    
+    private readonly int _Id;
+
     public CMDResumeSaveJob(int id) : base("ResumeSaveJob")
     {
         _Id = id;
@@ -14,10 +14,10 @@ public class CMDResumeSaveJob:CMD
 
     public override string toString()
     {
-        JObject json = new JObject();
-        json.Add("commande", base.Command);
+        var json = new JObject();
+        json.Add("commande", Command);
         json.Add("id", _Id);
-        string jsonString = JsonConvert.SerializeObject(json);
+        var jsonString = JsonConvert.SerializeObject(json);
         return jsonString;
     }
 }

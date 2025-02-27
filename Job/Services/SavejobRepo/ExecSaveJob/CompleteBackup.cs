@@ -8,7 +8,9 @@ public class CompleteBackup : Backup
 
     private string BackupId;
 
-    public CompleteBackup(SaveJob saveJob) : base(saveJob) {}
+    public CompleteBackup(SaveJob saveJob) : base(saveJob)
+    {
+    }
 
     // public CompleteBackup GetInstance(SaveJob saveJob)
     // {
@@ -20,7 +22,4 @@ public class CompleteBackup : Backup
     //     // return instance;
     //     return new CompleteBackup(SaveJob);
     // }
-    
-
-    
 }

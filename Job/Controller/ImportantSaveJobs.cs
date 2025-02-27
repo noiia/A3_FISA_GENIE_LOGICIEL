@@ -12,33 +12,29 @@ public class DefineSaveJobsHierarchy(int id, int importance, int status)
 public class ImportantSaveJobs
 {
     private static int Importance;
+
+    private readonly List<DefineSaveJobsHierarchy> fileHierarchy = new();
+
     private static List<string> GetFiles(string RootDir, List<string> extensions)
     {
         Importance = 0;
         List<string> files = new List<string>();
-        foreach (string file in Directory.GetFiles(RootDir))
-        {
+        foreach (var file in Directory.GetFiles(RootDir))
             Importance = extensions.Contains(Path.GetExtension(file)) ? Importance += 1 : Importance;
-        }
 
-        foreach (string Dir in Directory.GetDirectories(RootDir))
-        {
-            GetFiles(Dir, files);
-        }
+        foreach (var Dir in Directory.GetDirectories(RootDir)) GetFiles(Dir, files);
 
         return files;
     }
-    
-    List<DefineSaveJobsHierarchy> fileHierarchy = new List<DefineSaveJobsHierarchy>();
 
     public void SetSaveJobHierarchies(int[] ids)
     {
-        var  configuration = ConfigSingleton.Instance();
+        var configuration = ConfigSingleton.Instance();
         // int1 = save job id
         // int2 = importance, highest is the most important
         // int3 = status, 0 not used in this session, 1 used, 2 waiting for use 
         SaveJob? saveJob = null;
-        foreach (int id in ids)
+        foreach (var id in ids)
         {
             saveJob = configuration.GetSaveJob(id);
             var test = configuration.GetFileExtension().ToList();
@@ -50,11 +46,8 @@ public class ImportantSaveJobs
     public DefineSaveJobsHierarchy? GetMostImportantSaveJobs(List<int> ids)
     {
         var activeJobs = new List<DefineSaveJobsHierarchy>();
-        foreach (var id in ids)
-        {
-            activeJobs.Add(fileHierarchy.First(x => x.Id == id));
-        }
-        
+        foreach (var id in ids) activeJobs.Add(fileHierarchy.First(x => x.Id == id));
+
         return activeJobs
             .Where(x => x.Status == 0)
             .OrderByDescending(x => x.Importance)

@@ -5,8 +5,8 @@ namespace AvaloniaApplicationClientDistant.Commandes;
 
 public class CMDDeleteSaveJob : CMD
 {
-    private int _Id;
-    
+    private readonly int _Id;
+
     public CMDDeleteSaveJob(int id) : base("DeleteSaveJob")
     {
         _Id = id;
@@ -14,10 +14,10 @@ public class CMDDeleteSaveJob : CMD
 
     public override string toString()
     {
-        JObject json = new JObject();
-        json.Add("commande", base.Command);
+        var json = new JObject();
+        json.Add("commande", Command);
         json.Add("id", _Id);
-        string jsonString = JsonConvert.SerializeObject(json);
+        var jsonString = JsonConvert.SerializeObject(json);
         return jsonString;
     }
 }

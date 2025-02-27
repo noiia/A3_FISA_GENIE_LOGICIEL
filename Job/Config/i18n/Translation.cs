@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
 using System.Resources;
-using System.Runtime.CompilerServices;
 
 namespace Job.Config.i18n;
 
@@ -13,13 +12,76 @@ public class Translation : INotifyPropertyChanged
     public static ResourceManager Translator { get; private set; } =
         new("Job.Config.i18n.Resources.Resources", typeof(Translation).Assembly);
 
-    public static event PropertyChangedEventHandler StaticPropertyChanged;
+    // Settings
+    public string SettingsTitle => Translator.GetString("SettingsTitle") ?? "[SettingsTitle]";
+    public string Resume => Translator.GetString("Resume") ?? "[Resume]";
+    public string SelectLanguageTitle => Translator.GetString("SelectLanguageTitle") ?? "[SelectLanguageTitle]";
+
+    public string SelectLanguagePlaceholder =>
+        Translator.GetString("SelectLanguagePlaceholder") ?? "[SelectLanguagePlaceholder]";
+
+    public string SelectLogTypeTitle => Translator.GetString("SelectLogTypeTitle") ?? "[SelectLogTypeTitle]";
+
+    public string SelectLogTypePlaceholder =>
+        Translator.GetString("SelectLogTypePlaceholder") ?? "[SelectLogTypePlaceholder]";
+
+    public string SetLogPathTitle => Translator.GetString("SetLogPathTitle") ?? "[SetLogPathTitle]";
+    public string SetLogPathWatermark => Translator.GetString("SetLogPathWatermark") ?? "[SetLogPathWatermark]";
+    public string BrowseButton => Translator.GetString("BrowseButton") ?? "[BrowseButton]";
+    public string ResetButton => Translator.GetString("ResetButton") ?? "[ResetButton]";
+
+    public string FileTypesToEncryptTitle =>
+        Translator.GetString("FileTypesToEncryptTitle") ?? "[FileTypesToEncryptTitle]";
+
+    public string AddFileTypeWatermark => Translator.GetString("AddFileTypeWatermark") ?? "[AddFileTypeWatermark]";
+    public string AddButton => Translator.GetString("AddButton") ?? "[AddButton]";
+    public string RemoveSelectedButton => Translator.GetString("RemoveSelectedButton") ?? "[RemoveSelectedButton]";
+
+    public string BusinessAppBlockingTitle =>
+        Translator.GetString("BusinessAppBlockingTitle") ?? "[BusinessAppBlockingTitle]";
+
+    public string AddBusinessAppWatermark =>
+        Translator.GetString("AddBusinessAppWatermark") ?? "[AddBusinessAppWatermark]";
+
+    public string SetEncryptionKeyTitle => Translator.GetString("SetEncryptionKeyTitle") ?? "[SetEncryptionKeyTitle]";
+
+    public string EnterEncryptionKeyWatermark =>
+        Translator.GetString("EnterEncryptionKeyWatermark") ?? "[EnterEncryptionKeyWatermark]";
+
+    public string UpdateKeyButton => Translator.GetString("UpdateKeyButton") ?? "[UpdateKeyButton]";
+    public string FilePriority => Translator.GetString("FilePriority") ?? "[FilePriority]";
+    public string AddFileExtension => Translator.GetString("AddFileExtension") ?? "[AddFileExtension]";
+    public string SetMaxFileSize => Translator.GetString("SetMaxFileSize") ?? "[SetMaxFileSize]";
+    public string MaxFileSizeWatermark => Translator.GetString("MaxFileSizeWatermark") ?? "[MaxFileSizeWatermark]";
+    public string Apply => Translator.GetString("Apply") ?? "[Apply]";
+
+    // addSaveJob
+    public string NameTranslate => Translator.GetString("Name") ?? "[Name]";
+    public string Browse => Translator.GetString("BrowseButton") ?? "[Browse]";
+    public string SrcPath => Translator.GetString("SrcPath") ?? "[SrcPath]";
+    public string DestPath => Translator.GetString("DestPath") ?? "[DestPath]";
+    public string SelectSaveType => Translator.GetString("SelectSaveType") ?? "[SelectSaveType]";
+    public string Confirm => Translator.GetString("Confirm") ?? "[Confirm]";
+
+    // home
+    public string Execute => Translator.GetString("Execute") ?? "[Execute]";
+    public string Delete => Translator.GetString("Delete") ?? "[Delete]";
+    public string Select => Translator.GetString("Select") ?? "[Select]";
+    public string LastExecution => Translator.GetString("LastExecution") ?? "[LastExecution]";
+    public string Creation => Translator.GetString("Creation") ?? "[Creation]";
+    public string Status => Translator.GetString("Status") ?? "[Status]";
+    public string Type => Translator.GetString("Type") ?? "[Type]";
+    public string Edit => Translator.GetString("Edit") ?? "[Edit]";
+    public string Progress => Translator.GetString("Progress") ?? "[Progress]";
     public event PropertyChangedEventHandler PropertyChanged;
+
+    public static event PropertyChangedEventHandler StaticPropertyChanged;
+
     protected void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-    
+
     public static void SelectLanguage(string language)
     {
         Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
@@ -49,14 +111,14 @@ public class Translation : INotifyPropertyChanged
         Instance.OnPropertyChanged(nameof(SetMaxFileSize));
         Instance.OnPropertyChanged(nameof(MaxFileSizeWatermark));
         Instance.OnPropertyChanged(nameof(Apply));
-        
+
         Instance.OnPropertyChanged(nameof(NameTranslate));
         Instance.OnPropertyChanged(nameof(Browse));
         Instance.OnPropertyChanged(nameof(SrcPath));
         Instance.OnPropertyChanged(nameof(DestPath));
         Instance.OnPropertyChanged(nameof(SelectSaveType));
         Instance.OnPropertyChanged(nameof(Confirm));
-        
+
         Instance.OnPropertyChanged(nameof(Execute));
         Instance.OnPropertyChanged(nameof(Delete));
         Instance.OnPropertyChanged(nameof(Select));
@@ -65,50 +127,6 @@ public class Translation : INotifyPropertyChanged
         Instance.OnPropertyChanged(nameof(Status));
         Instance.OnPropertyChanged(nameof(Type));
         Instance.OnPropertyChanged(nameof(Edit));
+        Instance.OnPropertyChanged(nameof(Resume));
     }
-
-    // Settings
-    public string SettingsTitle => Translator.GetString("SettingsTitle") ?? "[SettingsTitle]";
-    public string SelectLanguageTitle => Translator.GetString("SelectLanguageTitle") ?? "[SelectLanguageTitle]";
-    public string SelectLanguagePlaceholder => Translator.GetString("SelectLanguagePlaceholder") ?? "[SelectLanguagePlaceholder]";
-    public string SelectLogTypeTitle => Translator.GetString("SelectLogTypeTitle") ?? "[SelectLogTypeTitle]";
-    public string SelectLogTypePlaceholder => Translator.GetString("SelectLogTypePlaceholder") ?? "[SelectLogTypePlaceholder]";
-    public string SetLogPathTitle => Translator.GetString("SetLogPathTitle") ?? "[SetLogPathTitle]";
-    public string SetLogPathWatermark => Translator.GetString("SetLogPathWatermark") ?? "[SetLogPathWatermark]";
-    public string BrowseButton => Translator.GetString("BrowseButton") ?? "[BrowseButton]";
-    public string ResetButton => Translator.GetString("ResetButton") ?? "[ResetButton]";
-    public string FileTypesToEncryptTitle => Translator.GetString("FileTypesToEncryptTitle") ?? "[FileTypesToEncryptTitle]";
-    public string AddFileTypeWatermark => Translator.GetString("AddFileTypeWatermark") ?? "[AddFileTypeWatermark]";
-    public string AddButton => Translator.GetString("AddButton") ?? "[AddButton]";
-    public string RemoveSelectedButton => Translator.GetString("RemoveSelectedButton") ?? "[RemoveSelectedButton]";
-    public string BusinessAppBlockingTitle => Translator.GetString("BusinessAppBlockingTitle") ?? "[BusinessAppBlockingTitle]";
-    public string AddBusinessAppWatermark => Translator.GetString("AddBusinessAppWatermark") ?? "[AddBusinessAppWatermark]";
-    public string SetEncryptionKeyTitle => Translator.GetString("SetEncryptionKeyTitle") ?? "[SetEncryptionKeyTitle]";
-    public string EnterEncryptionKeyWatermark => Translator.GetString("EnterEncryptionKeyWatermark") ?? "[EnterEncryptionKeyWatermark]";
-    public string UpdateKeyButton => Translator.GetString("UpdateKeyButton") ?? "[UpdateKeyButton]";
-    public string FilePriority => Translator.GetString("FilePriority") ?? "[FilePriority]";
-    public string AddFileExtension => Translator.GetString("AddFileExtension") ?? "[AddFileExtension]";
-    public string SetMaxFileSize => Translator.GetString("SetMaxFileSize") ?? "[SetMaxFileSize]";
-    public string MaxFileSizeWatermark => Translator.GetString("MaxFileSizeWatermark") ?? "[MaxFileSizeWatermark]";
-    public string Apply => Translator.GetString("Apply") ?? "[Apply]";
-
-    // addSaveJob
-    public string NameTranslate => Translator.GetString("Name") ?? "[Name]";
-    public string Browse => Translator.GetString("BrowseButton") ?? "[Browse]";
-    public string SrcPath => Translator.GetString("SrcPath") ?? "[SrcPath]";
-    public string DestPath => Translator.GetString("DestPath") ?? "[DestPath]";
-    public string SelectSaveType => Translator.GetString("SelectSaveType") ?? "[SelectSaveType]";
-    public string Confirm => Translator.GetString("Confirm") ?? "[Confirm]";
-    
-    // home
-    public string Execute => Translator.GetString("Execute") ?? "[Execute]";
-    public string Delete => Translator.GetString("Delete") ?? "[Delete]";
-    public string Select => Translator.GetString("Select") ?? "[Select]";
-    public string LastExecution => Translator.GetString("LastExecution") ?? "[LastExecution]";
-    public string Creation => Translator.GetString("Creation") ?? "[Creation]";
-    public string Status => Translator.GetString("Status") ?? "[Status]";
-    public string Type => Translator.GetString("Type") ?? "[Type]";
-    public string Edit => Translator.GetString("Edit") ?? "[Edit]";
-    public string Progress => Translator.GetString("Progress") ?? "[Progress]";
-
 }

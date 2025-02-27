@@ -2,7 +2,8 @@
 
 public class SaveJob
 {
-    public SaveJob( int id, string name, string source, string destination, DateTime lastSave, DateTime created, string status, string type, int progress = 0)
+    public SaveJob(int id, string name, string source, string destination, DateTime lastSave, DateTime created,
+        string status, string type, int progress = 0)
     {
         Source = source;
         Destination = destination;

@@ -13,17 +13,17 @@ public class CMD
         this.command = command;
     }
 
-    public virtual string toString()
-    {
-        JObject json = new JObject();
-        json.Add("commande", command);
-        string jsonString = JsonConvert.SerializeObject(json);
-        return jsonString;
-    }
-
     public string Command
     {
         get => command;
         set => command = value ?? throw new ArgumentNullException(nameof(value));
+    }
+
+    public virtual string toString()
+    {
+        var json = new JObject();
+        json.Add("commande", command);
+        var jsonString = JsonConvert.SerializeObject(json);
+        return jsonString;
     }
 }

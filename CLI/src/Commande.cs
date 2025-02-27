@@ -1,60 +1,48 @@
-﻿using System;
-using Config;
-using Job.Config;
+﻿using Job.Config;
 
+namespace CLI;
 
-namespace CLI
+public class Commande
 {
-    public class Commande
+    private readonly string[] _CommandeAlias;
+    private readonly string _CommandeName;
+
+    public Commande(string commandeName, string[] commandeAlias)
     {
-        private string _CommandeName;
-        private string[] _CommandeAlias;
+        _CommandeName = commandeName;
+        _CommandeAlias = commandeAlias;
+    }
 
-        public Commande(string commandeName, string[] commandeAlias)
+    public void Run(Configuration config, string[] args)
+    {
+        try
         {
-            _CommandeName = commandeName;
-            _CommandeAlias = commandeAlias;
+            Action(config, args);
         }
-
-        public void Run(Configuration config, string[] args)
+        catch (Exception e)
         {
-            try
-            {
-                this.Action(config, args);
-            }
-            catch (Exception e)
-            {
-                this.Action(args);
-            }
+            Action(args);
         }
+    }
 
-        public bool IsCall(string commandeName)
-        {
+    public bool IsCall(string commandeName)
+    {
+        if (commandeName.Equals(_CommandeName, StringComparison.OrdinalIgnoreCase)) return true;
+
+        foreach (var alias in _CommandeAlias)
             if (commandeName.Equals(_CommandeName, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;   
-            }
-            else
-            {
-                foreach (string alias in _CommandeAlias)
-                {
-                    if (commandeName.Equals(_CommandeName, StringComparison.OrdinalIgnoreCase))
-                    {
-                        return true;   
-                    }
-                }
-                return false;
-            }
-        }
+                return true;
 
-        public virtual Task Action(string[] args)
-        {
-            throw new NotImplementedException();
-        }
+        return false;
+    }
 
-        public virtual void Action(Configuration config, string[] args)
-        {
-            throw new NotImplementedException();
-        }
+    public virtual Task Action(string[] args)
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual void Action(Configuration config, string[] args)
+    {
+        throw new NotImplementedException();
     }
 }

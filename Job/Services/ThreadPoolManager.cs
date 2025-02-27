@@ -1,12 +1,11 @@
-﻿namespace Job.Services;
+﻿using System.Collections.Concurrent;
 
-using System.Collections.Concurrent;
-using System.Threading;
+namespace Job.Services;
 
 public class ThreadPoolManager
 {
     private readonly SemaphoreSlim _semaphore;
-    private readonly ConcurrentQueue<Action> _tasks = new ConcurrentQueue<Action>();
+    private readonly ConcurrentQueue<Action> _tasks = new();
 
     public ThreadPoolManager(int maxThreads)
     {

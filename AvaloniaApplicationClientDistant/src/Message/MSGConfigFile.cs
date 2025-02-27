@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace AvaloniaApplicationClientDistant.Message;
 
-public class MSGConfigFile: MSG
+public class MSGConfigFile : MSG
 {
     private ConfigFile _configFile;
 
@@ -13,20 +13,20 @@ public class MSGConfigFile: MSG
     {
         _configFile = configFile;
     }
-    
-    public override string toString()
-    {
-        JObject json = new JObject();
-        json.Add("message", message);
-        json["configFile"] = JToken.FromObject(_configFile);
-        string jsonString = JsonConvert.SerializeObject(json);
-        return jsonString;
-    }
 
 
     public ConfigFile ConfigFile
     {
         get => _configFile;
         set => _configFile = value ?? throw new ArgumentNullException(nameof(value));
+    }
+
+    public override string toString()
+    {
+        var json = new JObject();
+        json.Add("message", message);
+        json["configFile"] = JToken.FromObject(_configFile);
+        var jsonString = JsonConvert.SerializeObject(json);
+        return jsonString;
     }
 }

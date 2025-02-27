@@ -2,7 +2,7 @@
 
 public class ClientList
 {
-    List<Client> clients;
+    private List<Client> clients;
 
     public ClientList()
     {

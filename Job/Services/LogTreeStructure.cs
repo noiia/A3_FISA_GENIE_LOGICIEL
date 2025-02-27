@@ -10,17 +10,15 @@ public class LogTreeStructure
     public static void WriteFile(string sourceDir, string outputDir)
     {
         var directoryTree = GetDirectoryAttribute(sourceDir);
-        string json = JsonSerializer.Serialize(directoryTree, new JsonSerializerOptions { WriteIndented = true });
+        var json = JsonSerializer.Serialize(directoryTree, new JsonSerializerOptions { WriteIndented = true });
         File.WriteAllText(Path.Combine(outputDir, ".structure.json"), json);
     }
 
-    static DirAttribute GetDirectoryAttribute(string path)
+    private static DirAttribute GetDirectoryAttribute(string path)
     {
         var files = new List<FileInfo>();
         foreach (var filePath in Directory.GetFiles(path))
-        {
             files.Add(new FileInfo(Path.GetFileName(filePath), ComputeFileHash(filePath)));
-        }
 
         return new DirAttribute
         {
@@ -32,7 +30,7 @@ public class LogTreeStructure
         };
     }
 
-    static string ComputeFileHash(string filePath)
+    private static string ComputeFileHash(string filePath)
     {
         using (var sha256 = SHA256.Create())
         {

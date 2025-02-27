@@ -1,11 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using AvaloniaApplicationClientDistant.Commandes;
 using Config;
 using Job.Config;
+using Logger;
 
 namespace AvaloniaApplicationClientDistant;
 
@@ -17,26 +17,8 @@ public class ConfigurationDistant
     // Constructeur privé pour empêcher l'instanciation directe
     private ConfigurationDistant()
     {
-        Client client = Client.GetInstance();
+        var client = Client.GetInstance();
         client.SendMessage(new CMDGetConfig());
-    }
-
-    public void WaitLoad()
-    {
-        while (_configFile == null)
-        {
-            Thread.Sleep(500);
-        }
-    }
-
-    // Propriété statique pour accéder à l'instance unique
-    public static ConfigurationDistant GetInstance()
-    {
-        if (_instance == null)
-        {
-            _instance = new ConfigurationDistant();
-        }
-        return _instance;
     }
 
     public ConfigFile ConfigFile
@@ -44,30 +26,37 @@ public class ConfigurationDistant
         get => _configFile;
         set => _configFile = value ?? throw new ArgumentNullException(nameof(value));
     }
-    
+
+    public void WaitLoad()
+    {
+        while (_configFile == null) Thread.Sleep(500);
+    }
+
+    // Propriété statique pour accéder à l'instance unique
+    public static ConfigurationDistant GetInstance()
+    {
+        if (_instance == null) _instance = new ConfigurationDistant();
+        return _instance;
+    }
+
     public void SaveConfiguration()
     {
-        string json = JsonSerializer.Serialize(this._configFile);
-        Client client = Client.GetInstance();
-        client.SendMessage(new CMDSetConfigFile(_configFile.SaveJobs ,_configFile.LogPath, _configFile.CryptoKey, _configFile.Language, _configFile.LogType, _configFile.CryptExtension, _configFile.BuisnessApp));
+        var json = JsonSerializer.Serialize(_configFile);
+        var client = Client.GetInstance();
+        client.SendMessage(new CMDSetConfigFile(_configFile.SaveJobs, _configFile.LogPath, _configFile.CryptoKey,
+            _configFile.Language, _configFile.LogType, _configFile.CryptExtension, _configFile.BuisnessApp));
     }
 
     public SaveJob GetSaveJob(int id)
     {
-        if (_configFile == null || _configFile.SaveJobs == null)
-        {
-            return null;
-        }
+        if (_configFile == null || _configFile.SaveJobs == null) return null;
 
         return _configFile.SaveJobs.FirstOrDefault(job => job.Id == id);
     }
 
     public SaveJob GetSaveJob(string name)
     {
-        if (_configFile == null || _configFile.SaveJobs == null)
-        {
-            return null;
-        }
+        if (_configFile == null || _configFile.SaveJobs == null) return null;
 
         return _configFile.SaveJobs.FirstOrDefault(job => job.Name == name);
     }
@@ -79,12 +68,9 @@ public class ConfigurationDistant
 
     public void SetSaveJobs(SaveJob[] saveJobs)
     {
-        Logger.LoggerUtility.WriteLog(GetLogType(), Logger.LoggerUtility.Info, "SetSaveJobs");
+        LoggerUtility.WriteLog(GetLogType(), LoggerUtility.Info, "SetSaveJobs");
         Console.WriteLine("SetSaveJobs");
-        foreach (var VARIABLE in saveJobs)
-        {
-            Console.WriteLine($"Saving job {VARIABLE.Name}");
-        }
+        foreach (var VARIABLE in saveJobs) Console.WriteLine($"Saving job {VARIABLE.Name}");
 
         _configFile.SaveJobs = saveJobs;
         SaveConfiguration();
@@ -92,42 +78,37 @@ public class ConfigurationDistant
 
     public void AddSaveJob(SaveJob saveJob)
     {
-        if (this.GetSaveJob(saveJob.Id) == null && this.GetSaveJob(saveJob.Name) == null)
+        if (GetSaveJob(saveJob.Id) == null && GetSaveJob(saveJob.Name) == null)
         {
             _configFile.SaveJobs = _configFile.SaveJobs.Append(saveJob).ToArray();
-            this.SaveConfiguration();
+            SaveConfiguration();
         }
         else
         {
-            if (this.GetSaveJob(saveJob.Id) != null)
-            {
-                throw new Exception("A SaveJob already exists with the same ID");
-            }
-            else
-            {
-                throw new Exception("A SaveJob already exists with the same Name");
-            }
+            if (GetSaveJob(saveJob.Id) != null) throw new Exception("A SaveJob already exists with the same ID");
+
+            throw new Exception("A SaveJob already exists with the same Name");
         }
     }
 
     public void AddSaveJob(int id, string name, string source, string destination, DateTime lastSave, DateTime created,
         string status, string type)
     {
-        SaveJob newSaveJob = new SaveJob(id, name, source, destination, lastSave, created, status, type);
-        this.AddSaveJob(newSaveJob);
+        var newSaveJob = new SaveJob(id, name, source, destination, lastSave, created, status, type);
+        AddSaveJob(newSaveJob);
     }
 
     public void DeleteSaveJob(SaveJob dsaveJob)
     {
-        this.DeleteSaveJob(dsaveJob.Id);
+        DeleteSaveJob(dsaveJob.Id);
     }
 
     public void DeleteSaveJob(int id)
     {
-        if (this.GetSaveJob(id) != null)
+        if (GetSaveJob(id) != null)
         {
             _configFile.SaveJobs = _configFile.SaveJobs.Where(job => job.Id != id).ToArray();
-            this.SaveConfiguration();
+            SaveConfiguration();
         }
         else
         {
@@ -137,10 +118,10 @@ public class ConfigurationDistant
 
     public void DeleteSaveJob(string name)
     {
-        if (this.GetSaveJob(name) != null)
+        if (GetSaveJob(name) != null)
         {
             _configFile.SaveJobs = _configFile.SaveJobs.Where(job => job.Name != name).ToArray();
-            this.SaveConfiguration();
+            SaveConfiguration();
         }
         else
         {
@@ -150,162 +131,156 @@ public class ConfigurationDistant
 
     public int FindFirstFreeId()
     {
-        for (int i = 0; i < 2147483647; i++)
-        {
-            if (this.GetSaveJob(i) == null)
-            {
+        for (var i = 0; i < 2147483647; i++)
+            if (GetSaveJob(i) == null)
                 return i;
-            }
-        }
 
         return -1;
     }
 
     public string? GetLogPath()
     {
-        return this._configFile.LogPath;
+        return _configFile.LogPath;
     }
 
     public void SetLogPath(string logPath)
     {
-        this._configFile.LogPath = logPath;
-        this.SaveConfiguration();
-        return;
+        _configFile.LogPath = logPath;
+        SaveConfiguration();
     }
 
     public void SetLanguage(string language)
     {
-        this._configFile.Language = language;
-        this.SaveConfiguration();
-        return;
+        _configFile.Language = language;
+        SaveConfiguration();
     }
 
     public string GetLanguage()
     {
-        return this._configFile.Language;
+        return _configFile.Language;
     }
 
     public void SetLogType(string logType)
     {
-        this._configFile.LogType = logType;
-        this.SaveConfiguration();
+        _configFile.LogType = logType;
+        SaveConfiguration();
     }
 
     public string GetLogType()
     {
-        return this._configFile.LogType;
+        return _configFile.LogType;
     }
 
     public void SetCryptExtension(string[] cryptExtension)
     {
-        this._configFile.CryptExtension = cryptExtension;
-        this.SaveConfiguration();
+        _configFile.CryptExtension = cryptExtension;
+        SaveConfiguration();
     }
 
     public string[] GetCryptExtension()
     {
-        return this._configFile.CryptExtension;
+        return _configFile.CryptExtension;
     }
 
     public void AddCryptExtension(string cryptExtension)
     {
-        if (!this._configFile.CryptExtension.Contains(cryptExtension))
+        if (!_configFile.CryptExtension.Contains(cryptExtension))
         {
-            this._configFile.CryptExtension = this._configFile.CryptExtension.Append(cryptExtension).ToArray();
-            this.SaveConfiguration();
+            _configFile.CryptExtension = _configFile.CryptExtension.Append(cryptExtension).ToArray();
+            SaveConfiguration();
         }
     }
 
     public void RemoveCryptExtension(string cryptExtension)
     {
-        if (this._configFile.CryptExtension.Contains(cryptExtension))
+        if (_configFile.CryptExtension.Contains(cryptExtension))
         {
-            this._configFile.CryptExtension =
-                this._configFile.CryptExtension.Where(ext => ext != cryptExtension).ToArray();
-            this.SaveConfiguration();
+            _configFile.CryptExtension =
+                _configFile.CryptExtension.Where(ext => ext != cryptExtension).ToArray();
+            SaveConfiguration();
         }
     }
 
     public void SetBuisnessApp(string[] buisnessApp)
     {
-        this._configFile.BuisnessApp = buisnessApp;
-        this.SaveConfiguration();
+        _configFile.BuisnessApp = buisnessApp;
+        SaveConfiguration();
     }
 
     public string[] GetBuisnessApp()
     {
-        return this._configFile.BuisnessApp;
+        return _configFile.BuisnessApp;
     }
 
     public void AddBuisnessApp(string buisnessApp)
     {
-        if (!this._configFile.BuisnessApp.Contains(buisnessApp))
+        if (!_configFile.BuisnessApp.Contains(buisnessApp))
         {
-            this._configFile.BuisnessApp = this._configFile.BuisnessApp.Append(buisnessApp).ToArray();
-            this.SaveConfiguration();
+            _configFile.BuisnessApp = _configFile.BuisnessApp.Append(buisnessApp).ToArray();
+            SaveConfiguration();
         }
     }
 
     public void RemoveBuisnessApp(string buisnessApp)
     {
-        if (this._configFile.BuisnessApp.Contains(buisnessApp))
+        if (_configFile.BuisnessApp.Contains(buisnessApp))
         {
-            this._configFile.BuisnessApp = this._configFile.BuisnessApp.Where(app => app != buisnessApp).ToArray();
-            this.SaveConfiguration();
+            _configFile.BuisnessApp = _configFile.BuisnessApp.Where(app => app != buisnessApp).ToArray();
+            SaveConfiguration();
         }
     }
 
 
     public void SetCryptKey(string cryptKey)
     {
-        this._configFile.CryptoKey = cryptKey;
-        this.SaveConfiguration();
+        _configFile.CryptoKey = cryptKey;
+        SaveConfiguration();
     }
 
     public string GetCryptKey()
     {
-        return this._configFile.CryptoKey;
+        return _configFile.CryptoKey;
     }
 
 
     public void SetFileExtension(string[] fileExtension)
     {
-        this._configFile.FileExtension = fileExtension;
-        this.SaveConfiguration();
+        _configFile.FileExtension = fileExtension;
+        SaveConfiguration();
     }
 
     public string[] GetFileExtension()
     {
-        return this._configFile.FileExtension;
+        return _configFile.FileExtension;
     }
 
     public void AddFileExtension(string fileExtension)
     {
-        if (!this._configFile.FileExtension.Contains(fileExtension))
+        if (!_configFile.FileExtension.Contains(fileExtension))
         {
-            this._configFile.FileExtension = this._configFile.FileExtension.Append(fileExtension).ToArray();
-            this.SaveConfiguration();
+            _configFile.FileExtension = _configFile.FileExtension.Append(fileExtension).ToArray();
+            SaveConfiguration();
         }
     }
 
     public void RemoveFileExtension(string fileExtension)
     {
-        if (this._configFile.FileExtension.Contains(fileExtension))
+        if (_configFile.FileExtension.Contains(fileExtension))
         {
-            this._configFile.FileExtension =
-                this._configFile.FileExtension.Where(app => app != fileExtension).ToArray();
-            this.SaveConfiguration();
+            _configFile.FileExtension =
+                _configFile.FileExtension.Where(app => app != fileExtension).ToArray();
+            SaveConfiguration();
         }
     }
-    
+
     public void SetMaxFileSize(int maxFileSize)
     {
-        this._configFile.LengthLimit = maxFileSize;
-        this.SaveConfiguration();
+        _configFile.LengthLimit = maxFileSize;
+        SaveConfiguration();
     }
 
     public int GetMaxFileSize()
     {
-        return this._configFile.LengthLimit;
+        return _configFile.LengthLimit;
     }
 }

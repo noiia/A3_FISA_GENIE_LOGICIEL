@@ -2,10 +2,10 @@
 
 public class MessageList
 {
-    List<string> messages;
+    private List<string> messages;
 
     public MessageList()
-    { 
+    {
         messages = new List<string>();
     }
 

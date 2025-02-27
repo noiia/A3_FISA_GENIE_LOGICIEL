@@ -1,11 +1,6 @@
-﻿using System.Diagnostics;
-using Job.Config.i18n;
-using ExecSaveJob;
+﻿using ExecSaveJob;
 using Job.Config;
 using Job.Services.ExecSaveJob;
-using Logger;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Job.Services;
 
@@ -15,12 +10,10 @@ public class ServiceResumeSaveJob
 
     public static (int, string) Run(Configuration configuration, int id)
     {
-        ResumeBackup resumeBackup = new ResumeBackup(configuration.GetSaveJob(id));
+        var resumeBackup = new ResumeBackup(configuration.GetSaveJob(id));
         resumeBackup.Resume(configuration, id);
         return (0, "");
     }
-
-
 
 
     // public static void ContinueSaveJob(Configuration configuration, int backupId)
@@ -41,12 +34,8 @@ public class ServiceResumeSaveJob
     //         // counter.DataCount = fileInfo.Length;
     //         // WriteState("ContinueSaveJob", counter, fileInfo, destination, "statefile.log", "Continue Save Job", backupId.ToString(), double.Parse(advancement));
     // }
-    
-    
-    
-    
-    
-    
+
+
     // public static (int, string) Run(Configuration configuration, int? id)
     // {
     //     SaveJob? saveJob = null;
@@ -92,5 +81,4 @@ public class ServiceResumeSaveJob
     //         return (2, returnSentence);
     //     }
     // }
-
 }

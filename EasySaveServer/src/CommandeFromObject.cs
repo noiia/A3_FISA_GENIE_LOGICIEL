@@ -12,9 +12,9 @@ namespace EasySaveServer;
 
 public class CommandeFromObject
 {
-    private string asciiMessage;
+    private readonly string asciiMessage;
+    private readonly MessageList messageList;
     private string commande;
-    private MessageList messageList;
 
     public CommandeFromObject(string asciiMessage, MessageList messageList)
     {
@@ -24,40 +24,40 @@ public class CommandeFromObject
 
     public Task run()
     {
-        CMD cmd = JsonConvert.DeserializeObject<CMD>(asciiMessage);
+        var cmd = JsonConvert.DeserializeObject<CMD>(asciiMessage);
         Console.WriteLine(cmd.Commande);
         switch (cmd.Commande)
         {
             case "AddSaveJob":
-                CMDAddSaveJob cmdAddSaveJob = JsonConvert.DeserializeObject<CMDAddSaveJob>(asciiMessage);
+                var cmdAddSaveJob = JsonConvert.DeserializeObject<CMDAddSaveJob>(asciiMessage);
                 cmdAddSaveJob.run(messageList);
                 break;
             case "DeleteSaveJob":
-                CMDDeleteSaveJob cmdDeleteSaveJob = JsonConvert.DeserializeObject<CMDDeleteSaveJob>(asciiMessage);
+                var cmdDeleteSaveJob = JsonConvert.DeserializeObject<CMDDeleteSaveJob>(asciiMessage);
                 cmdDeleteSaveJob.run(messageList);
                 break;
             case "ExecSaveJobs":
-                CMDExecSaveJobs cmdExecSaveJobs = JsonConvert.DeserializeObject<CMDExecSaveJobs>(asciiMessage);
+                var cmdExecSaveJobs = JsonConvert.DeserializeObject<CMDExecSaveJobs>(asciiMessage);
                 cmdExecSaveJobs.run(messageList);
                 break;
             case "GetConfig":
-                CMDGetConfig cmdGetConfig = JsonConvert.DeserializeObject<CMDGetConfig>(asciiMessage);
+                var cmdGetConfig = JsonConvert.DeserializeObject<CMDGetConfig>(asciiMessage);
                 cmdGetConfig.run(messageList);
                 break;
             case "SetConfigFile":
-                CMDSetConfigFile cmdSetConfigFile = JsonConvert.DeserializeObject<CMDSetConfigFile>(asciiMessage);
+                var cmdSetConfigFile = JsonConvert.DeserializeObject<CMDSetConfigFile>(asciiMessage);
                 break;
             case "PauseSaveJob":
-                CMDPauseSaveJob cmdPauseSaveJob = JsonConvert.DeserializeObject<CMDPauseSaveJob>(asciiMessage);
+                var cmdPauseSaveJob = JsonConvert.DeserializeObject<CMDPauseSaveJob>(asciiMessage);
                 break;
             case "ResumeSaveJob":
-                CMDResumeSaveJob cmdResumeSaveJob = JsonConvert.DeserializeObject<CMDResumeSaveJob>(asciiMessage);
+                var cmdResumeSaveJob = JsonConvert.DeserializeObject<CMDResumeSaveJob>(asciiMessage);
                 break;
             default:
                 Console.WriteLine($"Bad commande : {cmd.Commande}");
                 break;
         }
-        
+
         // if (message.commande)
         // {
         //     commande = message.commande;

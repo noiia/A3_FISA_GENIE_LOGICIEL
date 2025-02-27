@@ -1,12 +1,7 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Avalonia.Notification;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace AvaloniaApplication.ViewModels
+namespace AvaloniaApplication.ViewModels;
+
+public abstract class ViewModelBase : ObservableObject
 {
-    public abstract class ViewModelBase : ObservableObject
-    {
-
-    }
 }
