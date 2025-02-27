@@ -47,24 +47,7 @@ public class ConfigurationDistant
         get => _configFile;
         set => _configFile = value ?? throw new ArgumentNullException(nameof(value));
     }
-
-    public void LoadConfiguration()
-    {
-        // if (!File.Exists(this._configPath))
-        // {
-        //     Directory.CreateDirectory(Path.GetDirectoryName(this._configPath));
-        //     string defaultLogPath =
-        //         (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\")
-        //         .Replace("\\", "/");
-        //     ConfigFile tempConfigFile = new ConfigFile([], defaultLogPath, "CryptoKey", "en", "json", [], [], []);
-        //     string json = JsonSerializer.Serialize(tempConfigFile);
-        //     File.WriteAllText(this._configPath, json);
-        // }
-        //
-        // string fileContent = File.ReadAllText(this._configPath);
-        // this._configFile = JsonSerializer.Deserialize<ConfigFile>(fileContent);
-    }
-
+    
     public void SaveConfiguration()
     {
         string json = JsonSerializer.Serialize(this._configFile);
@@ -229,8 +212,6 @@ public class ConfigurationDistant
 
     public void AddCryptExtension(string cryptExtension)
     {
-        Console.WriteLine(cryptExtension);
-        Console.WriteLine(this._configFile.CryptExtension.ToString());
         if (!this._configFile.CryptExtension.Contains(cryptExtension))
         {
             this._configFile.CryptExtension = this._configFile.CryptExtension.Append(cryptExtension).ToArray();
