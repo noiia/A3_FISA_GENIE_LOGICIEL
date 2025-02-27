@@ -1,10 +1,8 @@
-﻿using EasySaveServer;
-using EasySaveServer.Message;
-using Job.Config;
+﻿using Client.Commandes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Client.Commandes;
+namespace EasySaveServer.Commandes;
 
 public class CMDPauseSaveJob:CMD
 {
@@ -24,7 +22,7 @@ public class CMDPauseSaveJob:CMD
         return jsonString;
     }
     
-    public override void run(MessageList messageList)
+    public override Task run(MessageList messageList)
     {
         try
         {
@@ -36,7 +34,7 @@ public class CMDPauseSaveJob:CMD
             Console.WriteLine(ex.StackTrace);
         }
 
-        return;
+        return Task.CompletedTask;
     }
 
     public int Id

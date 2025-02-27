@@ -1,35 +1,39 @@
-﻿using EasySaveServer;
+﻿using Client.Commandes;
 using EasySaveServer.Message;
 using Job.Config;
+using Job.Controller;
+using Job.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Client.Commandes;
+namespace EasySaveServer.Commandes;
 
 public class CMDDeleteSaveJob : CMD
 {
-    private int _Id;
+    private List<int> _Ids;
     
-    public CMDDeleteSaveJob(int id) : base("DeleteSaveJob")
+    public CMDDeleteSaveJob(List<int> ids) : base("DeleteSaveJob")
     {
-        _Id = id;
+        _Ids = ids;
     }
 
     public override string toString()
     {
         JObject json = new JObject();
         json.Add("commande", base.commande);
-        json.Add("id", _Id);
+        json["ids"] = JToken.FromObject(Ids);
         string jsonString = JsonConvert.SerializeObject(json);
         return jsonString;
     }
     
-    public override void run(MessageList messageList)
+    public override Task run(MessageList messageList)
     {
         try
         {
             Console.WriteLine("CMDDeleteSaveJob.run");
-            //Delete saveJob
+            //(int returnCode, string message) = SaveJobRepo.DeleteSaveJob(_Id);
+            string separator = Ids.Count >= 1 ? ";" : "";
+            DeleteSaveJob.Execute(Ids, separator);
             Configuration config = ConfigSingleton.Instance();
             MSGConfigFile msgConfigFile = new MSGConfigFile(config.ConfigFile);
             messageList.Messages.Add(msgConfigFile.toString());
@@ -40,12 +44,12 @@ public class CMDDeleteSaveJob : CMD
             Console.WriteLine(ex.StackTrace);
         }
 
-        return;
+        return Task.CompletedTask;
     }
 
-    public int Id
+    public List<int> Ids
     {
-        get => _Id;
-        set => _Id = value;
+        get => _Ids;
+        set => _Ids = value;
     }
 }

@@ -1,10 +1,10 @@
-﻿using EasySaveServer;
+﻿using Client.Commandes;
 using EasySaveServer.Message;
 using Job.Config;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Client.Commandes;
+namespace EasySaveServer.Commandes;
 
 public class CMDGetConfig : CMD
 {
@@ -21,7 +21,7 @@ public class CMDGetConfig : CMD
         return jsonString;
     }
     
-    public override void run(MessageList messageList)
+    public override Task run(MessageList messageList)
     {
         try
         {
@@ -36,6 +36,6 @@ public class CMDGetConfig : CMD
             Console.WriteLine(ex.StackTrace);
         }
 
-        return;
+        return Task.CompletedTask;
     }
 }
