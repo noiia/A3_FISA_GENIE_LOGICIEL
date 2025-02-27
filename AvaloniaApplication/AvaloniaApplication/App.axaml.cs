@@ -24,7 +24,7 @@ namespace AvaloniaApplication
 
         public override void OnFrameworkInitializationCompleted()
         {
-            Configuration configuration = new Configuration( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
+            Configuration configuration = ConfigSingleton.Instance();
             SaveJobRepo _ = new SaveJobRepo(configuration, 5);
             ParentHomeViewModelInstance = new ParentHomeSettingsViewModel();
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

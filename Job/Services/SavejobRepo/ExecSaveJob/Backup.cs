@@ -137,7 +137,7 @@ public abstract class Backup
         try
         {
             string extension = Path.GetExtension(RootFile);
-            Configuration configuration = new Configuration( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
+            Configuration configuration = ConfigSingleton.Instance();
             string[] extensionCrypt = configuration.GetCryptExtension();
             if (extensionCrypt.Contains(extension))
             {

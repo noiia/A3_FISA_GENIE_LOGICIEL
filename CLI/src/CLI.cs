@@ -24,7 +24,7 @@ namespace CLI
         public void Run(string[] args)
         {
             DisplayEasySave();
-            Configuration configuration = new Configuration( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
+            Configuration configuration = ConfigSingleton.Instance();
             //threadpool a 5 threads
             SaveJobRepo saveJobRepo = new SaveJobRepo(configuration, 5);
             if (args.Length == 0)
