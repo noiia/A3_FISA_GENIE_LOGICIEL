@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSoft", "CryptoSoft\Cr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySaveServer", "EasySaveServer\EasySaveServer.csproj", "{C7631534-7693-4327-B733-E9951EC7A1A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySaveClient", "EasySaveClient\EasySaveClient.csproj", "{764AE2DD-7E97-4BF1-94C1-E52379930D77}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaApplicationClientDistant", "AvaloniaApplicationClientDistant\AvaloniaApplicationClientDistant.csproj", "{45D2E5F7-5EA9-4AB5-9546-96349C134A27}"
 EndProject
 Global
@@ -61,10 +59,6 @@ Global
 		{C7631534-7693-4327-B733-E9951EC7A1A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7631534-7693-4327-B733-E9951EC7A1A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7631534-7693-4327-B733-E9951EC7A1A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{764AE2DD-7E97-4BF1-94C1-E52379930D77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{764AE2DD-7E97-4BF1-94C1-E52379930D77}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{764AE2DD-7E97-4BF1-94C1-E52379930D77}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{764AE2DD-7E97-4BF1-94C1-E52379930D77}.Release|Any CPU.Build.0 = Release|Any CPU
 		{45D2E5F7-5EA9-4AB5-9546-96349C134A27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{45D2E5F7-5EA9-4AB5-9546-96349C134A27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45D2E5F7-5EA9-4AB5-9546-96349C134A27}.Release|Any CPU.ActiveCfg = Release|Any CPU

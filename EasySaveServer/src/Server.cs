@@ -1,6 +1,8 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using Job.Config;
+using Job.Services;
 
 namespace EasySaveServer;
 
@@ -60,6 +62,9 @@ class Server
 
             List<Input> inputTasks = new List<Input>();
             Console.WriteLine("Input task list initialized.");
+            
+            Configuration configuration = ConfigSingleton.Instance();
+            SaveJobRepo _ = new SaveJobRepo(configuration, 5);
 
             while (true)
             {

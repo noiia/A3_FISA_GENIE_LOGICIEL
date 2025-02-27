@@ -1,5 +1,4 @@
-﻿using Client.Commandes;
-using Job.Config;
+﻿using Job.Config;
 using Job.Config.i18n;
 using Job.Controller;
 using Newtonsoft.Json;

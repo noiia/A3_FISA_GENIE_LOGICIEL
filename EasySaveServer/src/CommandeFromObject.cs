@@ -1,5 +1,4 @@
-﻿using Client.Commandes;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using CMD = EasySaveServer.Commandes.CMD;
 using CMDAddSaveJob = EasySaveServer.Commandes.CMDAddSaveJob;
 using CMDDeleteSaveJob = EasySaveServer.Commandes.CMDDeleteSaveJob;

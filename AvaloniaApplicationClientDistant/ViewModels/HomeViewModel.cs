@@ -248,15 +248,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         // (int returnCode, string message) = Job.Controller.DeleteSaveJob.Execute(ids, separator);
         Client client = Client.GetInstance();
         client.SendMessage(new CMDExecSaveJobs(ids));
-
-        // foreach (int id in ids)
-        // {
-        //     var itemToRemove = TableData.FirstOrDefault(i => i.Id == id);
-        //     if (itemToRemove != null)
-        //     {
-        //         TableData.Remove(itemToRemove);
-        //     }
-        // }
         
         NotificationMessageManagerSingleton.GenerateNotification(this.Manager, 1, "Execution des saveJob envoyer !");
     }
@@ -450,7 +441,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         TableData = new ObservableCollection<TableDataModel>();
         foreach (SaveJob saveJob in _configuration.GetSaveJobs())
         {
-            Console.WriteLine($"{saveJob.Name} : [{saveJob.Id}] : [{saveJob.Status}]");
+            Console.WriteLine($"iufebfiubf {saveJob.Name} : [{saveJob.Id}] : [{saveJob.Status}]");
             TableData.Add(new TableDataModel 
             { 
                 Checked = false,
@@ -466,6 +457,8 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
                 DelSaveJob = new RelayCommand<object>(DeleteSaveJob),
                 Progress = saveJob.Progress.ToString()
             });
+
+            
         }
     }
     
@@ -475,7 +468,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         Title = "Save job list";
         TableData = new ObservableCollection<TableDataModel>();
         _configuration = ConfigurationDistant.GetInstance();
-        // _configuration.LoadConfiguration();
         LoadSaveJob();
         Initialize();
     }
