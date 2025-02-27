@@ -1,0 +1,45 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AvaloniaApplicationClientDistant.ViewModels"
+             xmlns:avaloniaApplication="clr-namespace:AvaloniaApplicationClientDistant"
+             xmlns:views="clr-namespace:AvaloniaApplicationClientDistant.Views"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:viewModels="clr-namespace:AvaloniaApplicationClientDistant.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AvaloniaApplicationClientDistant.Views.AddSaveJobView"
+             x:DataType="viewModels:ParentAddSaveJobViewModel"
+             >
+
+    <Grid Margin="16">
+        <StackPanel Spacing="16">
+            <TextBlock Text="{Binding AddSaveJobVM.Name}" FontSize="24" Margin="0,0,0,20"/>
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <TextBox Watermark="{Binding SettingsVM.Translations.NameTranslate}" Width="300" Text="{Binding AddSaveJobVM.NameField, Mode=TwoWay}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <TextBox Watermark="{Binding SettingsVM.Translations.SrcPath}" Width="300" Text="{Binding AddSaveJobVM.SourceField, Mode=TwoWay}"/>
+                <Button Content="{Binding SettingsVM.Translations.BrowseButton}" Click="OnBrowseButtonClickedSource"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <TextBox Watermark="{Binding SettingsVM.Translations.DestPath}" Width="300" Text="{Binding AddSaveJobVM.DestinationField, Mode=TwoWay}"/>
+                <Button Content="{Binding SettingsVM.Translations.Browse}" Click="OnBrowseButtonClickedDestination"/>
+            </StackPanel>
+            
+            <ComboBox PlaceholderText="{Binding SettingsVM.Translations.SelectSaveType}" Width="300"
+                      SelectedItem="{Binding AddSaveJobVM.SaveType, Mode=TwoWay}">
+                <system:String>Full</system:String>
+                <system:String>Differential</system:String>
+            </ComboBox>
+
+            <Button Content="{Binding SettingsVM.Translations.Confirm}" HorizontalAlignment="Right" FontSize="18" Command="{Binding AddSaveJobVM.ConfirmCommand}"/>
+            
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <TextBlock Text="{Binding AddSaveJobVM.Status, Mode=TwoWay}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>
