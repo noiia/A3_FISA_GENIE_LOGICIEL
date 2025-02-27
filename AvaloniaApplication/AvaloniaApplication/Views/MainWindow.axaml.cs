@@ -7,29 +7,27 @@ using Avalonia.Media;
 using AvaloniaApplication.ViewModels;
 using SkiaSharp;
 
-namespace AvaloniaApplication.Views
+namespace AvaloniaApplication.Views;
+public partial class MainWindow : Window
 {
-    public partial class MainWindow : Window
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            string processName = "AvaloniaApplication.Desktop.exe";
-            KillProcessIfRunning(processName);
-            InitializeComponent();
-        }
+        string processName = "AvaloniaApplication.Desktop.exe";
+        KillProcessIfRunning(processName);
+        InitializeComponent();
+    }
 
-        private void InitializeComponent()
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+    
+    static void KillProcessIfRunning(string processName)
+    {
+        Process[] processes = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
+        if (processes.Length > 1)
         {
-            AvaloniaXamlLoader.Load(this);
-        }
-        
-        static void KillProcessIfRunning(string processName)
-        {
-            Process[] processes = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
-            if (processes.Length > 1)
-            {
-                Process.GetCurrentProcess().Kill();
-            }
+            Process.GetCurrentProcess().Kill();
         }
     }
 }

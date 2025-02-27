@@ -15,6 +15,7 @@ public partial class HomeView : UserControl, INotifyPropertyChanged
     public new HomeViewModel DataContext { get; set; }
     public HomeView()
     {
+        
         Configuration configuration = new Configuration( Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EasySave\\" + "config.json");
         SaveJobRepo _ = new SaveJobRepo(configuration, 5);
         InitializeComponent();

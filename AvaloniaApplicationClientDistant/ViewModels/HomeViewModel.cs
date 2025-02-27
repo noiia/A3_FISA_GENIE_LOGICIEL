@@ -11,6 +11,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -55,6 +56,27 @@ public class TableDataModel : ReactiveObject
             OnPropertyChanged(nameof(Status));
         }  
     }
+
+    
+
+    
+    private string _progress;
+    private int progress;
+    public string Progress
+    {
+        get 
+        {
+            int progressValue;
+            return int.TryParse(_progress, out progressValue) && progressValue < 99 ? _progress : "100";
+        }
+        set
+        {
+            _progress = value;
+            OnPropertyChanged(nameof(Progress));
+        }  
+    }
+    
+    
     public required string Type { get; set; }
     public required ICommand ExeSaveJob { get; set; }
     public required ICommand DelSaveJob { get; set; }
@@ -83,6 +105,48 @@ public class TableDataModel : ReactiveObject
 public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
 {
     private Configuration _configuration;
+    
+    // private Timer _timer = new Timer(TimerCallback, null, 0, 5000);
+    //
+    // private static void TimerCallback(object state)
+    // {
+    //     // Code to execute on each tick
+    //     Console.WriteLine("1s");
+    // }
+    
+    
+    private bool isInitialized = false;
+
+    private Timer timer;
+    public void Initialize()
+    {
+        if (!isInitialized)
+        {
+            timer = new Timer(TimerCallback, null, 0, 10000);
+            isInitialized = true;
+        }
+    }
+    
+    private void TimerCallback(object state)
+    {
+        Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            // Console.WriteLine("timer");
+            LoadSaveJob();
+        });
+    }
+    
+    public void StopTimer()
+    {
+        if (timer != null)
+        {
+            // Dispose the timer to stop it
+            timer.Dispose();
+            timer = null; // Optionally set to null to indicate it's stopped
+            isInitialized = false; // Reset the initialization flag
+        }
+    }
+    
     public new event PropertyChangedEventHandler? PropertyChanged;
     protected virtual void OnPropertyChanged(string propertyName)
     {
@@ -98,7 +162,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             if (_isAnySelected != value)
             {
                 _isAnySelected = value;
-                Console.WriteLine(_isAnySelected);
                 OnPropertyChanged(nameof(IsAnySelected));
             }
         }
@@ -178,9 +241,13 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         UpdateStatus(ids,RUNNING);
         ExecutionTracker executionTracker = new ExecutionTracker();
         executionTracker.OnTrackerChanged += UpdateLastExecDate;
+        LockTracker lockTracker = new LockTracker();
+        lockTracker.OnTrackerChanged += UpdateStatusOnLock;
         
-        var (returnCode, message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker);
+        var (returnCode, message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker, lockTracker);
         NotificationMessageManagerSingleton.GenerateNotification(Manager, returnCode, message);
+        
+        StopTimer();
     }
     
     private void DeleteSaveJob(object? args)
@@ -237,41 +304,90 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     {
         try
         {
-            List<SaveJob> saveJobs = _configuration.GetSaveJobs().ToList();
-            
-            SaveJob sj = saveJobs.FirstOrDefault(i => i.Id == eventArgs.Id);
-            if (sj != null)
+            Dispatcher.UIThread.InvokeAsync(() =>
             {
-                saveJobs.Remove(sj); 
-                sj.LastSave = eventArgs.Timestamp;
-                switch (eventArgs.ReturnCode)
+                List<SaveJob> saveJobs = _configuration.GetSaveJobs().ToList();
+            
+                SaveJob sj = saveJobs.FirstOrDefault(i => i.Id == eventArgs.Id);
+                if (sj != null)
                 {
-                    case 1 :
+                    saveJobs.Remove(sj); 
+                    sj.LastSave = eventArgs.Timestamp;
+                    switch (eventArgs.ReturnCode)
                     {
-                        sj.Status = STOP;
-                        break;
+                        case 1 :
+                        {
+                            sj.Status = STOP;
+                            break;
+                        }
+                        case 2 :
+                        {
+                            sj.Status = WARNING;
+                            break;
+                        }
+                        case 3 :
+                        {
+                            sj.Status = ERROR;
+                            break;
+                        }
+                        case 4 :
+                        {
+                            sj.Status = LOCK;
+                            break;
+                        }
                     }
-                    case 2 :
-                    {
-                        sj.Status = WARNING;
-                        break;
-                    }
-                    case 3 :
-                    {
-                        sj.Status = ERROR;
-                        break;
-                    }
-                    case 4 :
-                    {
-                        sj.Status = LOCK;
-                        break;
-                    }
-                }
                 
-                saveJobs.Add(sj);   
-            }
-            _configuration.SetSaveJobs(saveJobs.ToArray());
-            LoadSaveJob();   
+                    saveJobs.Add(sj);   
+                }
+                _configuration.SetSaveJobs(saveJobs.ToArray());
+                LoadSaveJob();  
+            });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private DateTime _lastNotificationDate;
+    public void UpdateStatusOnLock(object sender, TrackerLockEventArgs eventArgs)
+    {
+        try
+        {
+            Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                List<SaveJob> saveJobs = _configuration.GetSaveJobs().ToList();
+            
+                SaveJob sj = saveJobs.FirstOrDefault(i => i.Id == eventArgs.Id);
+                if (sj != null)
+                {
+                    saveJobs.Remove(sj); 
+                    switch (eventArgs.Status)
+                    {
+                        case 0 :
+                        {
+                            sj.Status = RUNNING;
+                            break;
+                        }
+                        case 4 :
+                        {
+                            sj.Status = LOCK;
+                            if ((DateTime.Now - _lastNotificationDate).TotalSeconds >= 7)
+                            {
+                                NotificationMessageManagerSingleton.GenerateNotification(this.Manager, 4, $"{Translation.Translator.GetString("SaveJobLockBy")} {eventArgs.BusinessAppName}");
+                                _lastNotificationDate = DateTime.Now;
+                            }
+                            break;
+                        }
+                    }
+                
+                    saveJobs.Add(sj);   
+                }
+                _configuration.SetSaveJobs(saveJobs.ToArray());
+                LoadSaveJob();   
+            });
+            
         }
         catch (Exception e)
         {
@@ -287,6 +403,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     private const string PAUSE = "PAUSE";
     private const string RUNNING = "RUNNING";
     public string Status;
+    public string Progress;
     public void UpdateStatus(List<int> ids, string status)
     {
         try
@@ -303,7 +420,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
                     saveJobs.Add(sj);   
                 }
                 _configuration.SetSaveJobs(saveJobs.ToArray());
-                LoadSaveJob();     
+                LoadSaveJob();
             }
         }
         catch (Exception e)
@@ -351,6 +468,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
                 Type = saveJob.Type,
                 ExeSaveJob = new AsyncRelayCommand<object>(ExecuteSaveJob),
                 DelSaveJob = new RelayCommand<object>(DeleteSaveJob),
+                Progress = saveJob.Progress.ToString()
             });
         }
     }
@@ -363,5 +481,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         _configuration = ConfigSingleton.Instance();
         _configuration.LoadConfiguration();
         LoadSaveJob();
+        Initialize();
     }
 }
