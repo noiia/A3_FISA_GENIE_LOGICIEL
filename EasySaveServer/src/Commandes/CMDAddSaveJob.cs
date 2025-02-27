@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using EasySaveServer;
+﻿using Client.Commandes;
 using EasySaveServer.Message;
 using Job.Config;
 using Job.Controller;
+using Job.Services;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-namespace Client.Commandes;
+namespace EasySaveServer.Commandes;
 
 public class CMDAddSaveJob : CMD
 {
@@ -35,12 +36,13 @@ public class CMDAddSaveJob : CMD
         return jsonString;
     }
     
-    public override void run(MessageList messageList)
+    public override Task run(MessageList messageList)
     {
         try
         {
             Console.WriteLine("CMDAddSaveJob.run");
-            //(int returnCode, string message) = Job.Controller.AddSaveJob.Execute(_Name, _Source, _Destination, _Type);
+            //(int returnCode, string message) = AddSaveJob.Execute(_Name, _Source, _Destination, _Type);
+            AddSaveJob.Execute(_Name, _Source, _Destination, _Type);
             Configuration config = ConfigSingleton.Instance();
             MSGConfigFile msgConfigFile = new MSGConfigFile(config.ConfigFile);
             messageList.Messages.Add(msgConfigFile.toString());
@@ -50,8 +52,8 @@ public class CMDAddSaveJob : CMD
             Console.WriteLine(ex.Message);
             Console.WriteLine(ex.StackTrace);
         }
-
-        return;
+        
+        return Task.CompletedTask;
     }
 
     public string Name

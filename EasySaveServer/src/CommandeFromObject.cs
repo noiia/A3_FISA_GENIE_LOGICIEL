@@ -1,5 +1,13 @@
 ﻿using Client.Commandes;
 using Newtonsoft.Json;
+using CMD = EasySaveServer.Commandes.CMD;
+using CMDAddSaveJob = EasySaveServer.Commandes.CMDAddSaveJob;
+using CMDDeleteSaveJob = EasySaveServer.Commandes.CMDDeleteSaveJob;
+using CMDExecSaveJobs = EasySaveServer.Commandes.CMDExecSaveJobs;
+using CMDGetConfig = EasySaveServer.Commandes.CMDGetConfig;
+using CMDPauseSaveJob = EasySaveServer.Commandes.CMDPauseSaveJob;
+using CMDResumeSaveJob = EasySaveServer.Commandes.CMDResumeSaveJob;
+using CMDSetConfigFile = EasySaveServer.Commandes.CMDSetConfigFile;
 
 namespace EasySaveServer;
 
@@ -15,7 +23,7 @@ public class CommandeFromObject
         this.messageList = messageList;
     }
 
-    public void run()
+    public Task run()
     {
         CMD cmd = JsonConvert.DeserializeObject<CMD>(asciiMessage);
         Console.WriteLine(cmd.Commande);
@@ -60,5 +68,6 @@ public class CommandeFromObject
         // {
         //     throw new Exception("No commande recived");
         // }
+        return Task.CompletedTask;
     }
 }

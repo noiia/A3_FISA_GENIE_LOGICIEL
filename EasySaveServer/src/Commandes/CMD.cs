@@ -1,8 +1,7 @@
-﻿using EasySaveServer;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Client.Commandes;
+namespace EasySaveServer.Commandes;
 
 public class CMD
 {
@@ -21,9 +20,9 @@ public class CMD
         return jsonString;
     }
     
-    public virtual void run(MessageList messageList)
+    public virtual Task run(MessageList messageList)
     {
-        return;
+        return Task.CompletedTask;
     }
 
     public string Commande
