@@ -79,10 +79,6 @@ namespace Logger
             }
         }
 
-        // fileInfo[0] = fileInfo.Name
-        // fileInfo[1] = fileInfo.FullName
-        // fileInfo[2] = fileInfo.Lenght
-
 
         public static void WriteMessage(string message)
         {
@@ -118,26 +114,11 @@ namespace Logger
 
             bool header = false;
 
-            // var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName, fileName);
-            // var destinationPath = Path.Combine(destinationPathDir, fileInfo.Name);
             counter.TransferedFileCount++;
             counter.TransferedData += fileInfo.Length;
 
             double remainingFile = counter.FileCount - counter.TransferedFileCount;
             double remainingData = counter.DataCount - counter.TransferedData;
-
-
-            // if (!header)
-            // {
-            //     using (var writer = File.AppendText(filePath))
-            //     {
-            //         string isActive = counter.IsActive ? "Active" : "Not Active";
-            //         string headerMessage = $"{SaveJobName} : {isActive}";
-            //         writer.WriteLine(headerMessage);
-            //     }
-            // }
-            
-            // string message = $"{DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss")} : Source : {fileInfo.FullName}, Destination:{destinationPath} remaining files :{remainingFile}, remaining data : {remainingData}";
 
             string message;
             
@@ -155,8 +136,6 @@ namespace Logger
             json.Advancement = $"{fileInfo.Length} 100%";
 
             message = JsonConvert.SerializeObject(json);
-
-            // Json deserializedProduct = JsonConvert.DeserializeObject<Json>(output);
             
             try
             {
@@ -187,22 +166,6 @@ namespace Logger
             //tests
             
             //# TODO try pause and resume here before implement
-            
-            // var advancementByBackupId = GetFilesAdvancementByBackupId(Convert.ToInt32(id));
-            // foreach (var advancement in advancementByBackupId)
-            // {
-            //     Console.WriteLine($"advancement : {advancement.Source} {advancement.Destination} {advancement.Advancement}");
-            //     if (advancement.Advancement.EndsWith("100%"))
-            //     {
-            //         Console.WriteLine($"finished job {advancement.Destination}");
-            //     }
-            //     else
-            //     {
-            //         Console.WriteLine(advancement.Destination + " : " + advancement.Advancement);
-            //     }
-            // }
-            // ContinueSaveJob(int.Parse(id));
-
         }
         
         
@@ -213,25 +176,8 @@ namespace Logger
 
             bool header = false;
 
-            
-            // var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName, fileName);
-            // var destinationPath = Path.Combine(destinationPathDir, fileInfo.Name);
-            // counter.TransferedFileCount++;
-            // counter.TransferedData += fileInfo.Length;
-
             double remainingFile = counter.FileCount - counter.TransferedFileCount;
             double remainingData = counter.DataCount - counter.TransferedData - advancement;
-
-
-            // if (!header)
-            // {
-            //     using (var writer = File.AppendText(filePath))
-            //     {
-            //         string isActive = counter.IsActive ? "Active" : "Not Active";
-            //         string headerMessage = $"{SaveJobName} : {isActive}";
-            //         writer.WriteLine(headerMessage);
-            //     }
-            // }
             
             string message = $"{DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss")} : Source : {fileInfo.FullName}, Destination:{destinationPath} remaining files :{remainingFile}, remaining data : {remainingData}";
 
@@ -248,8 +194,6 @@ namespace Logger
             json.Advancement = advancement.ToString();
 
             message = JsonConvert.SerializeObject(json);
-
-            // Json deserializedProduct = JsonConvert.DeserializeObject<Json>(output);
             
             try
             {
@@ -277,17 +221,6 @@ namespace Logger
                 }
             }
         }
-
-        // public static object ReadState(string id)
-        // {
-        //     string output = null;
-        //     Json deserializedProduct = JsonConvert.DeserializeObject<Json>(output);
-        //     
-        //     
-        //     
-        //     return null;
-        // }
-        
         
         public class BackupFile
         {
