@@ -71,6 +71,15 @@
                             <DataGridTextColumn Header="{Binding SettingsVM.Translations.LastExecution}" Binding="{Binding LastExec}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="{Binding SettingsVM.Translations.Creation}" Binding="{Binding CreatDate}" Width="110" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100" IsReadOnly="True"/>
+                            
+                            <DataGridTemplateColumn Header="{Binding SettingsVM.Translations.Progress}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ProgressBar Foreground="DodgerBlue" Height="30" Width="100" Minimum="0" Maximum="100" Value="{Binding Progress}" ShowProgressText="True"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            
                             <DataGridTemplateColumn Header="Type">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

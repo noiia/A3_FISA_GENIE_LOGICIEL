@@ -59,7 +59,6 @@ public partial class AddSaveJobViewModel : ReactiveObject
     public string SourcePath { get; set; }
 
     public string SaveType { get; set; }
-    // public string Status { get; set; }
     
     public string _status;
     public string _saveType;
@@ -69,20 +68,17 @@ public partial class AddSaveJobViewModel : ReactiveObject
     public string _sourceField;
     private string _notification;    
     private ConfigurationDistant config = ConfigurationDistant.GetInstance();
-    // public object ConfirmCommand { get; }
     
     public AddSaveJobViewModel()
     {
         Name = "AddSaveJob";
         DestinationPath = "Destination path";
         SourcePath = "Source path";
-        // config.LoadConfiguration();
     }
 
     [RelayCommand]
     public void ConfirmCommand()
     {
-        // Name = "AddSaveJob1";
         if ( NameField != null && SourceField != null && DestinationField != null && SaveType != null)
         {
             if (SaveType == "Full")
@@ -96,7 +92,6 @@ public partial class AddSaveJobViewModel : ReactiveObject
             if (Directory.Exists(SourceField))
             {
                 Console.WriteLine($"{NameField} {SourceField} {DestinationField} {SaveType}");
-                // AddSaveJob(new string[] { NameField, SourceField, DestinationField, SaveType });
                 AddSaveJob(NameField, SourceField, DestinationField, SaveType );
             }
             else
@@ -112,19 +107,6 @@ public partial class AddSaveJobViewModel : ReactiveObject
         }
     }
     
-    // private async void OnBrowseButtonClicked(object sender, RoutedEventArgs e)
-    // {
-    //     var dialog = new OpenFolderDialog();
-    //     string result = await dialog.ShowAsync(this.VisualRoot as Window);
-    //
-    //     if (!string.IsNullOrEmpty(result))
-    //     {
-    //         if (this.DataContext is SettingsViewModel viewModel)
-    //         {
-    //             viewModel.LogPath = result;
-    //         }
-    //     }
-    // }
     private void AddSaveJob(string name, string srcPath, string destPath, string type)
     {
         (int returnCode, string message) = Job.Controller.AddSaveJob.Execute(name, srcPath, destPath, type);

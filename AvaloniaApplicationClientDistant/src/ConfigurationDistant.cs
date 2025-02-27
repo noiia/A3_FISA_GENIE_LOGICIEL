@@ -298,5 +298,14 @@ public class ConfigurationDistant
         }
     }
     
-    
+    public void SetMaxFileSize(int maxFileSize)
+    {
+        this._configFile.LengthLimit = maxFileSize;
+        this.SaveConfiguration();
+    }
+
+    public int GetMaxFileSize()
+    {
+        return this._configFile.LengthLimit;
+    }
 }
