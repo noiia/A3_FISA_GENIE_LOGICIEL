@@ -18,10 +18,7 @@ public class ConfigurationDistant
     private ConfigurationDistant()
     {
         Client client = Client.GetInstance();
-        Console.WriteLine("Client client = Client.GetInstance()");
         client.SendMessage(new CMDGetConfig());
-        Console.WriteLine("client.SendMessage(new CMDGetConfig())");
-
     }
 
     public void WaitLoad()
