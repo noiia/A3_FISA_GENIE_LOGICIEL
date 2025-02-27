@@ -10,18 +10,15 @@ using Job.Services;
 
 namespace AvaloniaApplicationClientDistant.Views;
 
-public partial class HomeView : UserControl, INotifyPropertyChanged
+public partial class HomeView : UserControl
 { 
-    public new HomeViewModel DataContext { get; set; }
     public HomeView()
     {
-        ConfigurationDistant configuration = ConfigurationDistant.GetInstance();
         InitializeComponent();
-        DataContext = new HomeViewModel();
+        DataContext = new ParentHomeSettingsViewModel();
     }
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
     }
-
 }

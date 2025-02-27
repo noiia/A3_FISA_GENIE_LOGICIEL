@@ -8,7 +8,7 @@
              xmlns:controls="clr-namespace:Avalonia.Notification.Controls;assembly=Notification.Avalonia"
              x:Class="AvaloniaApplicationClientDistant.Views.HomeView"
              x:DataType="vm:ParentHomeSettingsViewModel">
-     <Grid Margin="0,0,0,50">
+     <Grid Margin="0,0,0,50">  
          <Border Grid.Column="1">
              <controls:NotificationMessageContainer Manager="{Binding HomeVM.Manager}" />
          </Border>
