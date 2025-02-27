@@ -14,13 +14,13 @@ namespace AvaloniaApplicationClientDistant.ViewModels
 {
     public class SettingsViewModel : INotifyPropertyChanged
     {
-        Configuration config;
+        ConfigurationDistant config;
         public INotificationMessageManager Manager => NotificationMessageManagerSingleton.Instance;
         public SettingsViewModel()
         {
             try
             {
-                config = ConfigSingleton.Instance();
+                config = ConfigurationDistant.GetInstance();
                 LoadDefaultSettings();
                 FileTypesToEncrypt = new ObservableCollection<string>(config.GetCryptExtension() ?? Array.Empty<string>());
                 BusinessApp = new ObservableCollection<string>(config.GetBuisnessApp() ?? Array.Empty<string>());

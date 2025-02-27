@@ -82,7 +82,7 @@ public class TableDataModel : ReactiveObject
 
 public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
 {
-    private Configuration _configuration;
+    private ConfigurationDistant _configuration;
     public new event PropertyChangedEventHandler? PropertyChanged;
     protected virtual void OnPropertyChanged(string propertyName)
     {
@@ -324,7 +324,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             
             if (_selectedTabIndex == 0)
             {
-                _configuration.LoadConfiguration();
+                // _configuration.LoadConfiguration();
                 LoadSaveJob();
             } else if (_selectedTabIndex == 1)
             {
@@ -335,9 +335,12 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     }
     public void LoadSaveJob()
     {
+        Console.WriteLine("LoadSaveJob");
+        Console.WriteLine(_configuration.GetSaveJobs().Length);
         TableData = new ObservableCollection<TableDataModel>();
         foreach (SaveJob saveJob in _configuration.GetSaveJobs())
         {
+            Console.WriteLine($"saveJob.Name: {saveJob.Name}");
             TableData.Add(new TableDataModel 
             { 
                 Checked = false,
@@ -360,8 +363,8 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     {
         Title = "Save job list";
         TableData = new ObservableCollection<TableDataModel>();
-        _configuration = ConfigSingleton.Instance();
-        _configuration.LoadConfiguration();
+        _configuration = ConfigurationDistant.GetInstance();
+        // _configuration.LoadConfiguration();
         LoadSaveJob();
     }
 }
