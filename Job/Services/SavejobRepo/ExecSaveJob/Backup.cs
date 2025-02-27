@@ -11,7 +11,6 @@ namespace Job.Services.ExecSaveJob;
 public class Json
 {
     public string BackupID { get; set; }
-
     // public string Name { get; set; }
     public string SaveJobID { get; set; }
     public string IsActive { get; set; }
@@ -24,10 +23,7 @@ public class Json
 
 public class Infos
 {
-    public Infos()
-    {
-    }
-
+    public Infos() { }
     public string ID { get; set; }
     public string SaveJobName { get; set; }
     public string SaveJobID { get; set; }
@@ -38,7 +34,7 @@ public class Infos
     public FileInfo FileInfo { get; set; }
 
     public Counters Counters { get; set; }
-
+    
     public DateTime lastSave { get; set; } = DateTime.MinValue;
 }
 
@@ -46,13 +42,13 @@ public abstract class Backup
 {
     public static List<string> BackupFiles { get; set; }
     public static int MillisecondForWriteProgressInConfig { get; set; } = 10000;
-
+    
     public string ID { get; set; }
     public string RootDir { get; set; }
     public string SavesDir { get; protected set; }
 
     public TimeSpan cryptDuration;
-
+    
     public SaveJob SaveJob { get; set; }
 
     public void setSavesDir(string savesDir)
@@ -61,25 +57,24 @@ public abstract class Backup
         this.setSaveDir();
         this.Refractor();
     }
-
     public string SaveDir { get; protected set; }
-
+    
     protected void Refractor()
     {
         if (RootDir[^1] != '\\') RootDir += '\\';
         if (SavesDir[^1] != '\\') SavesDir += '\\';
         if (SaveDir[^1] != '\\') SaveDir += '\\';
     }
-
+    
     protected void setSaveDir()
     {
         this.SaveDir = $"{this.SavesDir}\\{this.getLastBackupNumber(this.SavesDir) + 1}";
-
-
+        
+        
         // DirectoryInfo directory = new DirectoryInfo(savesDir);
         // System.IO.Directory.CreateDirectory($"{savesDir}\\{this.getLastBackupNumber(savesDir) + 1}");
     }
-
+    
     protected Backup BackupInstance { get; set; }
 
     public static void GetInstance(SaveJob saveJob)
@@ -102,15 +97,15 @@ public abstract class Backup
         {
             Console.WriteLine($"{saveJob.Source} doesn't exist");
         }
-    }
 
+    }
+    
     protected int getLastBackupNumber(string savesDir)
     {
         if (!Directory.Exists(savesDir))
         {
             return 0;
         }
-
         DirectoryInfo directory = new DirectoryInfo(savesDir);
         int lastBackupNumber = 0;
 
@@ -124,12 +119,12 @@ public abstract class Backup
                 }
             }
         }
-
         return lastBackupNumber;
     }
 
 
-    protected void CopyPasteFile(string RootFile, string ToFile, Infos infos, int Err = 0)
+    
+    protected void CopyPasteFile(string RootFile, string ToFile, Infos infos, int Err = 0 )
     {
         void HandleErrorLoop(int err, int Err1)
         {
@@ -139,7 +134,6 @@ public abstract class Backup
                 Environment.Exit(0);
             }
         }
-
         try
         {
             string extension = Path.GetExtension(RootFile);
@@ -147,6 +141,7 @@ public abstract class Backup
             string[] extensionCrypt = configuration.GetCryptExtension();
             if (extensionCrypt.Contains(extension))
             {
+                
                 // Control timer
                 string cryptKey = configuration.GetCryptKey();
                 string[] args = ["Crypt", RootFile, ToFile, cryptKey];
@@ -186,7 +181,6 @@ public abstract class Backup
                     Console.WriteLine("limited");
                     // CopyFileWithProgress(RootFile, ToFile, infos, BitsPerSec );
                 }
-
                 CopyFileWithProgress(RootFile, ToFile, infos);
             }
         }
@@ -203,14 +197,13 @@ public abstract class Backup
                 case nameof(DirectoryNotFoundException):
                     // Console.WriteLine($"Directory not found: From {RootFile} To {ToFile}");
                     HandleErrorLoop(Err, 2);
-                    string to = (Directory.GetParent(ToFile).FullName + "\\");
+                    string to = (Directory.GetParent(ToFile).FullName+"\\");
                     if (!Directory.Exists(to))
                     {
                         Directory.CreateDirectory(to);
                         // Directory.CreateDirectory(Path.GetFullPath(to));
                         CopyPasteFile(RootFile, ToFile, infos, 2);
                     }
-
                     break;
                 case nameof(FileNotFoundException):
                     // Console.WriteLine($"File not found: From {RootFile} To {ToFile}");
@@ -235,56 +228,73 @@ public abstract class Backup
                     break;
             }
         }
-    }
-
-
+    }    
+    
+    
     //from internet #TODO see if static is necessary and causes no problem to multi thread
     static void CopyFileWithProgress(string sourceFilePath, string destinationFilePath, Infos infos)
+{
+    const int bufferSize = 2 * 1048576; // 2 MB buffer size, you can adjust it as per your requirement
+    // const int bufferSize = 1024;
+    
+    using (var sourceStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
+    using (var destinationStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write))
     {
-        const int bufferSize = 2 * 1048576; // 2 MB buffer size, you can adjust it as per your requirement
-        // const int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+        int bytesRead;
+        long totalBytesCopied = 0;
+        long fileSize = sourceStream.Length;
 
-        using (var sourceStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
-        using (var destinationStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write))
+        DateTime LastUpload = infos.lastSave;
+        Configuration configuration = ConfigSingleton.Instance();
+        Config.SaveJob sj = configuration.GetSaveJob(int.Parse(infos.SaveJobID));
+
+        
+        
+        while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
         {
-            byte[] buffer = new byte[bufferSize];
-            int bytesRead;
-            long totalBytesCopied = 0;
-            long fileSize = sourceStream.Length;
+            destinationStream.Write(buffer, 0, bytesRead);
+            destinationStream.Flush();
+            totalBytesCopied += bytesRead;
 
-            DateTime LastUpload = infos.lastSave;
-            Configuration configuration = ConfigSingleton.Instance();
-            Config.SaveJob sj = configuration.GetSaveJob(int.Parse(infos.SaveJobID));
+            // Calculate progress
+            // double progress = (double)totalBytesCopied / fileSize * 100;
+            RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, destinationFilePath, infos.StateFileName, "", infos.ID, totalBytesCopied);
 
-            while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
+            if ((DateTime.Now - LastUpload) > TimeSpan.FromMicroseconds(MillisecondForWriteProgressInConfig))
             {
-                destinationStream.Write(buffer, 0, bytesRead);
-                destinationStream.Flush();
-                totalBytesCopied += bytesRead;
-
-                // Calculate progress
-                // double progress = (double)totalBytesCopied / fileSize * 100;
-                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, destinationFilePath,
-                    infos.StateFileName, "", infos.ID, totalBytesCopied);
-
+                
                 Counters counter = infos.Counters;
-
+                    
                 int progress = (int)((counter.TransferedData + totalBytesCopied) / counter.DataCount * 100);
-
+                
                 Console.WriteLine($"TransferedData: {counter.TransferedData}%");
                 Console.WriteLine($"totalBytesCopied: {totalBytesCopied}%");
                 Console.WriteLine($"counter.DataCount: {counter.DataCount}%");
-
+                
                 // Console.WriteLine($"Progress: {progress:F2}%");
                 UpdateConfigProgress(configuration, sj, progress);
                 infos.lastSave = DateTime.Now;
             }
+            
+            
         }
+        Counters counter2 = infos.Counters;
+                    
+        int progress2 = (int)((counter2.TransferedData + totalBytesCopied) / counter2.DataCount * 100);
+                
+        Console.WriteLine($"TransferedData: {counter2.TransferedData}%");
+        Console.WriteLine($"totalBytesCopied: {totalBytesCopied}%");
+        Console.WriteLine($"counter.DataCount: {counter2.DataCount}%");
+                
+        // Console.WriteLine($"Progress: {progress:F2}%");
+        UpdateConfigProgress(configuration, sj, progress2);
+        infos.lastSave = DateTime.Now;
     }
+}
 
-
-    public static void CopyFileWithProgress(Configuration configuration, string sourceFilePath,
-        string destinationFilePath, Infos infos, long offset)
+    
+    public static void CopyFileWithProgress(Configuration configuration, string sourceFilePath, string destinationFilePath, Infos infos, long offset)
     {
         const int bufferSize = 2 * 1048576;
 
@@ -303,54 +313,56 @@ public abstract class Backup
 
             // destination at end of file
             destinationStream.Seek(0, SeekOrigin.End);
-
+            
             DateTime LastUpload = infos.lastSave;
 
             Config.SaveJob sj = configuration.GetSaveJob(int.Parse(infos.SaveJobID));
-
+            
             while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
             {
+                
                 destinationStream.Write(buffer, 0, bytesRead);
                 destinationStream.Flush();
                 totalBytesCopied += bytesRead;
 
                 // Calculer la progression
-
-                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, destinationFilePath,
-                    infos.StateFileName, "", infos.ID, totalBytesCopied);
+                
+                RealTimeState.WriteState(infos.SaveJobName, infos.Counters, infos.FileInfo, destinationFilePath, infos.StateFileName, "", infos.ID, totalBytesCopied);
 
                 if ((DateTime.Now - LastUpload) > TimeSpan.FromSeconds(MillisecondForWriteProgressInConfig))
                 {
                     Counters counter = infos.Counters;
-
+                    
                     int progress = (int)(counter.TransferedData + totalBytesCopied / counter.DataCount * 100);
                     // Console.WriteLine($"Progress: {progress:F2}%");
                     // sj.Progress = (int)progress;
-                    UpdateConfigProgress(configuration, sj, progress);
+                    UpdateConfigProgress(configuration, sj, progress );
                     // configuration.LoadConfiguration();
                     LastUpload = DateTime.Now;
                 }
+                
+                
             }
         }
     }
-
-
-    public static void UpdateConfigProgress(Configuration configuration, SaveJob sj, int progress)
+    
+    
+    public static void UpdateConfigProgress(Configuration configuration , SaveJob sj, int progress)
     {
         try
         {
             List<SaveJob> saveJobs = configuration.GetSaveJobs().ToList();
-
+        
             // SaveJob sj = saveJobs.FirstOrDefault(i => i.Name == saveJobName);
             // if (sj != null)
             // {
             //     saveJobs.Remove(sj); 
             //     sj.Progress = progress;
             // }
-            saveJobs.Remove(sj);
+            saveJobs.Remove(sj); 
             sj.Progress = progress;
-            saveJobs.Add(sj);
-
+            saveJobs.Add(sj);   
+            
             configuration.SetSaveJobs(saveJobs.ToArray());
         }
         catch (Exception e)
@@ -359,16 +371,21 @@ public abstract class Backup
             throw;
         }
     }
-
-
+    
+    
     public virtual List<string> GetFiles(string rootDir, List<string> files)
     {
         string stateFileName = "statefile.log";
         
+        // DirectoryInfo directoryInfo = new DirectoryInfo(rootDir);
+        // Counters counters = new Counters(directoryInfo.GetFiles().Length, directoryInfo.GetFiles().Count(), true);
+        //
+        // RealTimeState.AddCounter(counters);
         foreach (string file in Directory.GetFiles(rootDir))
         {
             FileInfo fileInfo = new FileInfo(file);
-
+            
+            // RealTimeState.WriteState(this.SaveJob.Name, counters, fileInfo, SavesDir, stateFileName, "");
             files.Add(file);
         }
 
@@ -380,7 +397,7 @@ public abstract class Backup
         // counters.IsActive = false;
         return files;
     }
-
+    
     protected void TurnArchiveBitFalse(string filePath)
     {
         // Récupérer les attributs actuels du fichier
@@ -403,10 +420,9 @@ public abstract class Backup
                 return (true, process);
             }
         }
-
         return (false, String.Empty);
     }
-
+    
     protected void CopyDir(int id, LockTracker lockTracker, BigFileTracker bigFileTracker)
     {
         Configuration _configuration = ConfigSingleton.Instance();
@@ -414,14 +430,13 @@ public abstract class Backup
         List<string> files = new List<string>();
         files = GetFiles(RootDir, files);
         double DataCount = 0;
-
+        
         foreach (string file in files)
         {
             DataCount += new FileInfo(file).Length;
         }
-
         Counters counters = new Counters(DataCount, files.Count, true);
-
+        
         Infos infos = new Infos();
         // infos.SaveJobName = this.SaveJob.Name;
         infos.SaveJobID = this.SaveJob.Id.ToString();
@@ -444,8 +459,7 @@ public abstract class Backup
                     infos.FileInfo = new FileInfo(file);
                     RealTimeState.AddCounter(counters);
                     CopyPasteFile(file, file.Replace(RootDir, SaveDir), infos);
-                    RealTimeState.WriteState(this.SaveJob.Name, counters, new FileInfo(file),
-                        file.Replace(RootDir, SaveDir), stateFileName, "", this.ID);
+                    RealTimeState.WriteState(this.SaveJob.Name, counters, new FileInfo(file), file.Replace(RootDir, SaveDir), stateFileName, "", this.ID);
                     TurnArchiveBitFalse(file);
                 }
                 else
@@ -453,7 +467,7 @@ public abstract class Backup
                     tooBigFile.Add(file);
                     bigFileTracker.AddOrUpdateBigFile(id, tooBigFile);
                 }
-
+                
                 bigFiles = SaveJobRepo.SchedulingBigFileTransfert();
                 if (bigFiles.TryGetValue(id, out var bigFilesToTransfer) && bigFilesToTransfer.Count > 0)
                 {
@@ -462,9 +476,8 @@ public abstract class Backup
                         infos.FileInfo = new FileInfo(bigFile);
                         RealTimeState.AddCounter(counters);
                         CopyPasteFile(bigFile, bigFile.Replace(RootDir, SaveDir), infos);
-                        RealTimeState.WriteState(this.SaveJob.Id.ToString(), counters, new FileInfo(bigFile),
-                            bigFile.Replace(RootDir, SaveDir), stateFileName, "", this.ID);
-                        TurnArchiveBitFalse(bigFile);
+                        RealTimeState.WriteState(this.SaveJob.Id.ToString(), counters, new FileInfo(bigFile), bigFile.Replace(RootDir, SaveDir), stateFileName, "", this.ID);
+                        TurnArchiveBitFalse(bigFile);   
                     }
 
                     SaveJobRepo.RemoveFileTransfered(id);
@@ -480,7 +493,7 @@ public abstract class Backup
                 }
             }
         }
-
+        
         // RealTimeState.WriteMessage($"Job {this.SaveJob.Name}, with ID {this.ID} has been saved");
     }
 
@@ -488,9 +501,8 @@ public abstract class Backup
     {
         CopyDir(id, lockTracker, bigFileTracker);
         Configuration config = ConfigSingleton.Instance();
-        string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", cryptDuration.Hours, cryptDuration.Minutes,
-            cryptDuration.Seconds, cryptDuration.Milliseconds / 10);
-        LoggerUtility.WriteLog(config.GetLogType(), LoggerUtility.Warning, $"Crypt duration: {elapsedTime}");
+        string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", cryptDuration.Hours, cryptDuration.Minutes, cryptDuration.Seconds, cryptDuration.Milliseconds / 10);
+        LoggerUtility.WriteLog(config.GetLogType(),LoggerUtility.Warning, $"Crypt duration: {elapsedTime}");
     }
 
 
@@ -498,8 +510,7 @@ public abstract class Backup
     {
         string folderName = "EasySave";
         string fileName = "statefile.log";
-        string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName,
-            fileName);
+        string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName, fileName);
         int LastID = 0;
         if (File.Exists(filePath))
         {
@@ -514,7 +525,6 @@ public abstract class Backup
                 }
             }
         }
-
         this.ID = (LastID + 1).ToString();
     }
 }
