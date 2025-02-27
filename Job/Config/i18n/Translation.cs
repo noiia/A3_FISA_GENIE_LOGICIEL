@@ -46,12 +46,17 @@ public class Translation : INotifyPropertyChanged
         Instance.OnPropertyChanged(nameof(UpdateKeyButton));
         Instance.OnPropertyChanged(nameof(FilePriority));
         Instance.OnPropertyChanged(nameof(AddFileExtension));
+        Instance.OnPropertyChanged(nameof(SetMaxFileSize));
+        Instance.OnPropertyChanged(nameof(MaxFileSizeWatermark));
+        Instance.OnPropertyChanged(nameof(Apply));
+        
         Instance.OnPropertyChanged(nameof(NameTranslate));
         Instance.OnPropertyChanged(nameof(Browse));
         Instance.OnPropertyChanged(nameof(SrcPath));
         Instance.OnPropertyChanged(nameof(DestPath));
         Instance.OnPropertyChanged(nameof(SelectSaveType));
         Instance.OnPropertyChanged(nameof(Confirm));
+        
         Instance.OnPropertyChanged(nameof(Execute));
         Instance.OnPropertyChanged(nameof(Delete));
         Instance.OnPropertyChanged(nameof(Select));
@@ -83,6 +88,9 @@ public class Translation : INotifyPropertyChanged
     public string UpdateKeyButton => Translator.GetString("UpdateKeyButton") ?? "[UpdateKeyButton]";
     public string FilePriority => Translator.GetString("FilePriority") ?? "[FilePriority]";
     public string AddFileExtension => Translator.GetString("AddFileExtension") ?? "[AddFileExtension]";
+    public string SetMaxFileSize => Translator.GetString("SetMaxFileSize") ?? "[SetMaxFileSize]";
+    public string MaxFileSizeWatermark => Translator.GetString("MaxFileSizeWatermark") ?? "[MaxFileSizeWatermark]";
+    public string Apply => Translator.GetString("Apply") ?? "[Apply]";
 
     // addSaveJob
     public string NameTranslate => Translator.GetString("Name") ?? "[Name]";
@@ -101,5 +109,6 @@ public class Translation : INotifyPropertyChanged
     public string Status => Translator.GetString("Status") ?? "[Status]";
     public string Type => Translator.GetString("Type") ?? "[Type]";
     public string Edit => Translator.GetString("Edit") ?? "[Edit]";
+    public string Progress => Translator.GetString("Progress") ?? "[Progress]";
 
 }

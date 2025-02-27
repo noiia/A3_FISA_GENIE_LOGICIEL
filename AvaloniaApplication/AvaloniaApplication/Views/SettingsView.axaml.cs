@@ -1,8 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Notification;
 using AvaloniaApplication.ViewModels;
+using Job.Config.i18n;
 
 namespace AvaloniaApplication.Views
 {
@@ -106,7 +109,24 @@ namespace AvaloniaApplication.Views
                 }
             }
         }
-
+        
+        public INotificationMessageManager Manager => NotificationMessageManagerSingleton.Instance;
+        private void OnUpdateMaxFileSizeButtonClicked(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is SettingsViewModel viewModel)
+            {
+                viewModel.MaxFileSize = viewModel.MaxFileSize; // Force the update
+                Manager.CreateMessage()
+                    .Accent(NotifColors.green)
+                    .Animates(true)
+                    .Background("#333")
+                    .HasBadge("Info")
+                    .HasMessage($"{Translation.Translator.GetString("MaxFileSizeModified")}")
+                    .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
+                    .Queue();
+                
+            }
+        }
 
     }
 }

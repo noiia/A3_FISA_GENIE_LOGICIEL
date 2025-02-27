@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.Styling;
@@ -12,12 +13,23 @@ namespace AvaloniaApplication.Views
     {
         public MainWindow()
         {
+            string processName = "AvaloniaApplication.Desktop.exe";
+            KillProcessIfRunning(processName);
             InitializeComponent();
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+        
+        static void KillProcessIfRunning(string processName)
+        {
+            Process[] processes = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
+            if (processes.Length > 1)
+            {
+                Process.GetCurrentProcess().Kill();
+            }
         }
     }
 }

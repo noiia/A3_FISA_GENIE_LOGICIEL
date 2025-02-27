@@ -38,6 +38,7 @@ namespace Logger
     public class Json
     {
         public string BackupID { get; set; }
+        public string SaveJobID { get; set; }
         public string Name { get; set; }
         public string IsActive { get; set; }
         public string DateTime { get; set; }
@@ -111,7 +112,7 @@ namespace Logger
             }
         }
         
-        public static void WriteState(string saveJobName, Counters counter, FileInfo fileInfo, string destinationPath, string fileName, string msg, string id)
+        public static void WriteState(string saveJobId, Counters counter, FileInfo fileInfo, string destinationPath, string fileName, string msg, string id)
         {
             const string folderName = "EasySave";
 
@@ -143,7 +144,8 @@ namespace Logger
             Json json = new Json();
 
             json.BackupID = id;
-            json.Name = saveJobName;
+            // json.Name = saveJobName;
+            json.SaveJobID = saveJobId;
             json.IsActive = counter.IsActive ? "Active" : "Not Active";
             json.DateTime = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss");
             json.Source = fileInfo.FullName;
@@ -205,7 +207,7 @@ namespace Logger
         
         
         
-        public static void WriteState(string saveJobName, Counters counter, FileInfo fileInfo, string destinationPath, string fileName, string msg, string id, double advancement)
+        public static void WriteState(string saveJobID, Counters counter, FileInfo fileInfo, string destinationPath, string fileName, string msg, string id, double advancement)
         {
             const string folderName = "EasySave";
 
@@ -236,7 +238,7 @@ namespace Logger
             Json json = new Json();
 
             json.BackupID = id;
-            json.Name = saveJobName;
+            json.SaveJobID = saveJobID;
             json.IsActive = counter.IsActive ? "Active" : "Not Active";
             json.DateTime = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss");
             json.Source = fileInfo.FullName;
