@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Avalonia.Notification;
+using AvaloniaApplicationClientDistant.Commandes;
 using Job;
 using Job.Controller;
 using Job.Config;
@@ -88,17 +89,8 @@ public partial class AddSaveJobViewModel : ReactiveObject
             else if (SaveType == "Differential")
             {
                 SaveType = "diff";
-            }
-            if (Directory.Exists(SourceField))
-            {
-                Console.WriteLine($"{NameField} {SourceField} {DestinationField} {SaveType}");
-                AddSaveJob(NameField, SourceField, DestinationField, SaveType );
-            }
-            else
-            {
-                Console.WriteLine("incorrect source path");
-                Status = "incorrect source path";
-            }
+            } 
+            AddSaveJob(NameField, SourceField, DestinationField, SaveType );
         }
         else
         {
@@ -109,7 +101,8 @@ public partial class AddSaveJobViewModel : ReactiveObject
     
     private void AddSaveJob(string name, string srcPath, string destPath, string type)
     {
-        (int returnCode, string message) = Job.Controller.AddSaveJob.Execute(name, srcPath, destPath, type);
-        NotificationMessageManagerSingleton.GenerateNotification(this.Manager, returnCode, message);
+        Client client = Client.GetInstance();
+        client.SendMessage(new CMDAddSaveJob(name, srcPath, destPath, type));
+        NotificationMessageManagerSingleton.GenerateNotification(this.Manager,1 , "Demande envoyer au serveur !");
     }
 }
