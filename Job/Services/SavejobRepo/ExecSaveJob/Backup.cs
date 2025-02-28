@@ -275,6 +275,7 @@ public abstract class Backup
             else
             {
                 Thread.Sleep(500);
+                // Thread.CurrentThread.Abort();
             }
             
         }

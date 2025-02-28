@@ -125,7 +125,7 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
     {
         if (!isInitialized)
         {
-            timer = new Timer(TimerCallback, null, 0, 500);
+            timer = new Timer(TimerCallback, null, 0, 5000);
             isInitialized = true;
         }
     }
@@ -270,12 +270,9 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             
             if(saveJob.Status == STOP)
             {
-                
                 Initialize();
                 Console.WriteLine("exec");
                 UpdateStatus(ids,RUNNING);
-
-        
                 var (returnCode, message) = await Job.Controller.ExecuteSaveJob.Execute(ids, separator, executionTracker, lockTracker);
             }
             else if (saveJob.Status == RUNNING)
@@ -287,8 +284,9 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
             else if (saveJob.Status == PAUSE)
             {
                 UpdateStatus(ids,RUNNING);
-                
+                Initialize();
                 (int returnCode,string message) = await Job.Controller.ResumeSaveJob.Execute(saveJob.Id);
+                
                 Console.WriteLine("ended ResumeSaveJob");
                 LoadSaveJob();
                 
@@ -536,6 +534,6 @@ public partial class HomeViewModel : ReactiveObject, INotifyPropertyChanged
         _configuration = ConfigSingleton.Instance();
         _configuration.LoadConfiguration();
         LoadSaveJob();
-        Initialize();
+        // Initialize();
     }
 }
