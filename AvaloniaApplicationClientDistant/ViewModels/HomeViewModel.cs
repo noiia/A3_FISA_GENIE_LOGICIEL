@@ -444,8 +444,10 @@ public class HomeViewModel : ReactiveObject, INotifyPropertyChanged
 
                     saveJobs.Add(sj);
                 }
-
+                //TODO: a opti
                 _configuration.SetSaveJobs(saveJobs.ToArray());
+                var client = Client.GetInstance();
+                client.SendMessage(new CMDSetConfigFile(_configuration.GetSaveJobs(), _configuration.GetLogPath(), _configuration.GetCryptKey(), _configuration.GetLanguage(), _configuration.GetLogType(), _configuration.GetCryptExtension(), _configuration.GetBuisnessApp()));                
                 LoadSaveJob();
             });
         }
@@ -471,8 +473,11 @@ public class HomeViewModel : ReactiveObject, INotifyPropertyChanged
                     sj.Status = status;
                     saveJobs.Add(sj);
                 }
-
+                
+                //TODO: a opti
                 _configuration.SetSaveJobs(saveJobs.ToArray());
+                var client = Client.GetInstance();
+                client.SendMessage(new CMDSetConfigFile(_configuration.GetSaveJobs(), _configuration.GetLogPath(), _configuration.GetCryptKey(), _configuration.GetLanguage(), _configuration.GetLogType(), _configuration.GetCryptExtension(), _configuration.GetBuisnessApp()));                
                 LoadSaveJob();
             }
         }
